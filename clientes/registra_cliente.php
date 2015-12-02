@@ -2,13 +2,17 @@
 include ("../conexion_db.php");
 
 $codigo = $_POST['codigo'];
-$rs = $_POST['rs'];
+$fecha = $_POST['fecha'];
 $nombre = $_POST['publico'];
 
-echo "INSERT INTO clientes (codigo,razon_social,nombre_publico) VALUES ('".$codigo."','".$rs."','".$nombre."');";
+$mysqli = connectdb();
 
-$query = "INSERT INTO clientes (codigo,razon_social,nombre_publico) VALUES ('".$codigo."','".$rs."','".$nombre."');";
+//echo "INSERT INTO clientes (clave,nombre_comercial,fecha_alta) VALUES ('".$codigo."','".$nombre."','".$fecha."');";
+
+$query = "INSERT INTO clientes (clave,nombre_comercial,fecha_alta) VALUES ('".$codigo."','".$nombre."','".$fecha."');";
 
 $query = $mysqli->query( $query );
+
+unconnectdb($mysqli);
 
  ?>

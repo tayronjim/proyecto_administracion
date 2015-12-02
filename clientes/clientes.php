@@ -12,10 +12,10 @@
 			<td>Codigo</td>	<td><input type="text" id="txtCodigoCliente" name="codigo"></td>
 		</tr>
 		<tr>
-			<td>Razon Social</td><td><input type="text" id="txtRazonSocial" name="rs"></td>
+			<td>Nombre Comercial</td><td><input type="text" id="txtNombrePublico" name="publico"></td>
 		</tr>
 		<tr>
-			<td>Nombre Publico</td><td><input type="text" id="txtNombrePublico" name="publico"></td>
+			<td>Fecha Alta</td><td><input type="text" id="txtFechaAlta" name="fecha"></td>
 		</tr>
 		
 	</table>
