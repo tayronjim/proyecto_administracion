@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>Administración de proyectos - Clientes</title>
+	<?php include_once("../librerias_base.htm"); ?>
 </head>
 <body>
+<?php include_once("../header.htm"); ?>
 <h1>Registro de Cliente</h1>
 <form action="registra_cliente.php" method="post">
 	<table>

@@ -14,5 +14,7 @@ $query = "INSERT INTO clientes (clave,nombre_comercial,fecha_alta) VALUES ('".$c
 $query = $mysqli->query( $query );
 
 unconnectdb($mysqli);
+ 
+ header('Location: ../index.php');
 
  ?>
