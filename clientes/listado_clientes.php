@@ -15,11 +15,17 @@
 	 				$cont = 0;
 	 				
 	 				while(obj.Cliente[$cont]){
-	 					$("#tblClientes tbody").append("<tr><td>"+obj.Cliente[$cont].clave+"</td><td>"+obj.Cliente[$cont].nombre_comercial+"</td></tr>");
+	 					$("#tblClientes tbody").append("<tr><td>"+obj.Cliente[$cont].clave+"</td><td>"+obj.Cliente[$cont].nombre_comercial+"</td><td><span class='flechaClientes' valor='"+obj.Cliente[$cont].id+"'>-></span></td></tr>");
 						$cont++;
 	 				}
 	 			}
 	 		});
+
+	 		$(document).on('click','.flechaClientes',function(){
+	 			//alert($(this).attr('valor'));
+	 			window.location="clientes.php?c="+$(this).attr('valor');
+	 		});
+
 		});
 	</script>
 </head>
@@ -31,7 +37,7 @@
 <table id="tblClientes" border="1">
 	<thead>
 		<tr>
-			<td>Codigo</td><td>Nombre Comercial</td>
+			<td>Codigo</td><td>Nombre Comercial</td><td></td>
 		</tr>
 	</thead>
 	<tbody></tbody>

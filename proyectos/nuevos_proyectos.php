@@ -3,7 +3,7 @@
 <head>
 	<?php include_once("../librerias_base.htm"); ?>
 	<script type="text/javascript">
-	$filasActividades = 0;
+	
 	$(document).ready(function(){
 		$.ajax({
  			type: "POST",
@@ -32,14 +32,15 @@
 		 			url: "control.php",
 		 			data: { "funcion" :  "buscaRS", id_cliente:$("#listaClientes").val() },
 		 			success: function(data){
-		 				 // alert(data);
-		 				obj = JSON.parse(data);
+		 				$objRS = JSON.parse(data);
+		 				$datos = JSON.parse($objRS[0].fac);
 		 				$cont = 0;
+		 				while($datos[$cont]){
+		 					console.log($datos[$cont]);
 		 				
-		 				while(obj.RS[$cont]){
-		 					//$arregloTabla[$cont] = obj.Cliente[$cont];
-		 					if (obj.RS[$cont].reg_primario == 1) {$selected = "selected";} else {$selected = "";};
-		 					$("#listaRS").append("<option value='"+obj.RS[$cont].id+"' "+$selected+">"+obj.RS[$cont].razon_social+"</option>");
+		 					
+		 					if ($datos[$cont].primario == 1) {$selected = "selected";} else {$selected = "";};
+		 					$("#listaRS").append("<option value='"+$datos[$cont].idfac+"' "+$selected+">"+$datos[$cont].rs+"</option>");
 							$cont++;
 		 				}
 		 				
@@ -89,31 +90,11 @@
 	 			data: { "funcion" : "guardaProyecto", "datos" : jsonString },
 	 			success: function(data){
 	 				 console.log(data);
-	 				
+	 				 window.location="../index.php";
 	 			}
 	 		});
-
-	 		// $.ajax({
-	 		// 	type: "POST",
-	 		// 	url: "control.php",
-	 		// 	data: { "funcion" : "guardaRegistroActividades", "datos" : jsonStringAct, "proyecto" : 1 },
-	 		// 	success: function(data){
-	 		// 		 console.log(data);
-	 				
-	 		// 	}
-	 		// }); 
-
 		});
-		$("#btnMas").click(function(){
-			$filasActividades ++;
-			$("#tblActividades tbody").append('<tr id="fila_'+$filasActividades+'"><td><span class="btnMenos" id="btnMenos_'+$filasActividades+'">[-]</span><input type="hidden" class="registroActividades" id="numeroFila" value="'+$filasActividades+'"></td><td><input type="date" id="fecha_'+$filasActividades+'"></td><td colspan="2"> <textarea id="txtActividad_'+$filasActividades+'"></textarea></td></tr>');
-		});
-		$(document).on('click','.btnMenos',function(){
-			$elemento = this.id;
-			$elementoSeparado = $elemento.split("_");
-			$noFila = $elementoSeparado[1];
-			$("#tblActividades tbody tr#fila_"+$noFila).remove();
-		});
+		
 	}); // fin document ready
 
 	</script>
@@ -223,39 +204,7 @@
 <br><br>
 
 Titulo de Proyecto: <input type="text" class="formProyect" name="txtTituloProyecto">
-<!-- <br><br>
-Estatus: 
-<select class="formProyect" name="estatus">
-	<option value="1">Nuevo Proyecto</option>
-	<option value="2">En proceso</option>
-	<option value="3">Cerrado en Garantia</option>
-	<option value="4">Cerrrado Completo</option>
-</select>
-<br><br>
-Proyecto Completado al: <span>0%</span>
-<br><br>
 
-<table border="1" id="tblActividades">
-	<thead>
-		<tr>
-			<td></td><td>Registro de Actividades</td><td><span id="btnMas">[+]</span></td>
-		</tr>
-	</thead>
-	<tbody>
-		
-	</tbody>
-</table>
-<br><br>
-<table border="1">
-	<thead>
-		<tr>
-			<td></td><td>Seguimiento</td><td>[+]</td><td colspan="2"></td>
-		</tr>
-		<tr>
-			<td>[-]</td><td>Fecha</td><td colspan="2">Actividad</td><td>[/]</td><td>[X]</td>
-		</tr>
-	</thead>
-</table> -->
 <br><br>
 <input type="button" value="Guardar" id="guardaProyecto">
 </body>

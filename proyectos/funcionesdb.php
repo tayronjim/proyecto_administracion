@@ -22,7 +22,8 @@
 	}
 	
 	function recuperaRS($id_cliente){
-		$query = "SELECT * from registro_facturacion where id_cliente=".$id_cliente;
+		//$query = "SELECT * from registro_facturacion where id_cliente=".$id_cliente;
+		$query = "SELECT facturacion as fac FROM clientes where id=".$id_cliente;
 		$resultado = queryGeneral($query);
 		return $resultado;	
 	}

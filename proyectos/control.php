@@ -26,15 +26,14 @@
 		$struct = array("Cliente" => $cliente);
 		print json_encode($struct);
 	}
-	function buscaRS($id_cliente)
-	{
+	function buscaRS($id_cliente){
 		$rs = recuperaRS($id_cliente);
 		// print_r($contacto);
-		while ($row = mysqli_fetch_assoc($rs)){
+			$row = mysqli_fetch_assoc($rs);
 		    $clienteRS[] = $row;
-		}
-		$struct = array("RS" => $clienteRS);
-		print json_encode($struct);
+		
+		$struct = array("RS" => $row);
+		print json_encode($clienteRS);
 	}
 
 	function guardaProyecto($datos){

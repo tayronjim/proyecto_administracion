@@ -13,4 +13,10 @@
 		$resultado = queryGeneral($query);
 		return $resultado;	
 	}
+
+	function recuperaCliente($cliente){
+		$query = "SELECT * FROM `clientes` where id=".$cliente;
+		$resultado = queryGeneral($query);
+		return $resultado;	
+	}
  ?>
