@@ -21,7 +21,7 @@
  				while(col[$cont]){
  					console.log(col[$cont]);
  					var dato = JSON.parse(col[$cont].datos);
- 					$("#tblColaboradores tbody").append('<tr><td>'+dato.codigo+'</td><td>'+dato.nombrec+'</td><td>[edit]</td><td>[+]</td></tr>');
+ 					$("#tblColaboradores tbody").append('<tr><td>'+dato.codigo+'</td><td>'+dato.nombrec+'</td><td><span class="flechaColaborador" valor="'+col[$cont].id+'">[ > ]</span></td><td></td></tr>');
  					$cont++;
  				}
  				// console.log(Col);
@@ -30,6 +30,10 @@
  				// 	$("#txtNombreLargo").val(Col.nombrel);
  				// 	$("#idColaborador").val($colaborador);
  			}
+ 		});
+
+ 		$(document).on('click','.flechaColaborador',function(){
+ 			window.location="alta.php?c="+$(this).attr('valor');
  		});
 
 	}); // fin document ready

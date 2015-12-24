@@ -243,6 +243,50 @@
 </select>
 <br><br>
 Proyecto Completado al: <span>0%</span>
+<br>
+<table>
+	<tr>
+		<td>Fecha de Cierre de Garantia: </td><td>
+
+		<select class="formProyect" name="fGarantiaY">
+			<option value="<?php echo date('Y')+2; ?>"><?php echo date('Y')+2; ?></option>
+			<?php 
+				$anio = date('Y')+2;
+				for ($anio=date('Y')+1; $anio > 1986 ; $anio--) { 
+			?>
+					<option value="<?php echo $anio; ?>"><?php echo $anio; ?></option>
+			<?php
+				}
+			 ?>
+			
+			<option value="1986">1986</option>
+		</select>
+		<select class="formProyect" name="fGarantiaM">
+			<option value="01">Enero</option>
+			<option value="02">Febrero</option>
+			<option value="03">marzo</option>
+			<option value="04">abril</option>
+			<option value="05">Mayo</option>
+			<option value="06">Junio</option>
+			<option value="07">Julio</option>
+			<option value="08">Agosto</option>
+			<option value="09">Septiembre</option>
+			<option value="10">Octubre</option>
+			<option value="11">Noviembre</option>
+			<option value="12">Diciembre</option>
+		</select>
+		<select class="formProyect" name="fGarantiaD">
+		<?php 
+			$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+			for ($dia=1; $dia <= $numero ; $dia++) { ?>
+				<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
+		<?php	
+			}
+		 ?>
+		</select>
+		</td>
+	</tr>
+</table>
 <br><br>
 <table border="1" id="tblActividades">
 	<thead>
@@ -269,6 +313,43 @@ Proyecto Completado al: <span>0%</span>
 			<td><span class="btnMenosSeg" id="btnMenosSeg_0">[-]</span></td><td><input type="date" id="fechaSeg_0"> </td><td colspan="2"><textarea id="txtAreaSeg_0"></textarea></td><td><span class="btnAcepSeg" id="btnAcepSeg_0">[/]</span></td><td><span class="btnCancelSeg" id="btnCancelSeg_0">[X]</span></td>
 		</tr> -->
 	</tbody>
+</table>
+<br>
+
+
+<h2>Datos del Contrato</h2>
+Convenio:  <input type="text" class="formProyect" id="txtConvenio" name="convenio">
+<br>
+Garantia:  <input type="text" class="formProyect" id="txtGarantia" name="garantia">
+<br>
+Honorarios:  <input type="text" class="formProyect" id="txtHonorarios" name="honorarios">
+<br>
+Acuerdo de Facturacion:  <input type="text" class="formProyect" id="txtAcuerdoFacturacion" name="acuerdofacturacion">
+<br>
+
+
+<h2>Facturacion</h2>
+Valor del Proyecto:  <input type="text" class="formProyect" name="txtValorProyecto">
+<br>
+Total Facturado:  <input type="text" class="formProyect" id="txtTotalFacturado" name="totalfacturado">
+<br>
+% Facturado:  <input type="text" class="formProyect" id="txtPorcFacturado" name="porcfacturado">
+<br>
+$ por Facturar:  <input type="text" class="formProyect" id="txtXFacturar" name="xfacturar">
+<br>
+<table border="1">
+	<tr>
+		<td></td><td>No.</td><td>Monto</td><td>Fecha Envío</td><td>Fecha Pago</td>
+	</tr>
+	<tr>
+		<td>Factura 1</td><td></td><td></td><td></td><td></td>
+	</tr>
+	<tr>
+		<td>Factura 2</td><td></td><td></td><td></td><td></td>
+	</tr>
+	<tr>
+		<td>Factura 3</td><td></td><td></td><td></td><td></td>
+	</tr>
 </table>
 <br><br>
 <input type="button" value="Guardar" id="guardaProyecto">

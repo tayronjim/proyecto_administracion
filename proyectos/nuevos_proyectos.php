@@ -102,6 +102,13 @@
 <body>
 <?php include_once("../header.htm"); ?>
 
+WBS: <input type="text" class="formProyect" name="txtwbs">
+<br>
+CTA: <input type="text" class="formProyect" name="txtcta">
+<br>
+SEM:  <input type="text" class="formProyect" name="txtsem">
+<br>
+
 <table>
 	<tr>
 		<td>Cliente: <select id="listaClientes" class="formProyect" name="cliente">
@@ -201,9 +208,34 @@
 		</td>
 	</tr>
 </table>
-<br><br>
 
-Titulo de Proyecto: <input type="text" class="formProyect" name="txtTituloProyecto">
+<input type="hidden" class="formProyect" name="fGarantiaY" value="0000">
+<input type="hidden" class="formProyect" name="fGarantiaM" value="00">
+<input type="hidden" class="formProyect" name="fGarantiaD" value="00">
+<br>
+Posicion: <input type="text" class="formProyect" name="txtTituloProyecto">
+<br>
+KAM: <input type="text" class="formProyecto" name="txtkam">
+<br>
+Prioridad:  <input type="text" class="formProyect" name="txtprioridad">
+<br>
+Salario del Puesto:  <input type="text" class="formProyect" name="txtsalario">
+<br>
+
+
+<h2>Datos del Contrato</h2>
+Convenio:  <input type="text" class="formProyect" id="txtConvenio" name="convenio">
+<br>
+Garantia:  <input type="text" class="formProyect" id="txtGarantia" name="garantia">
+<br>
+Honorarios:  <input type="text" class="formProyect" id="txtHonorarios" name="honorarios">
+<br>
+Acuerdo de Facturacion:  <input type="text" class="formProyect" id="txtAcuerdoFacturacion" name="acuerdofacturacion">
+<br>
+
+
+<h2>Facturacion</h2>
+Valor del Proyecto:  <input type="text" class="formProyect" name="txtValorProyecto">
 
 <br><br>
 <input type="button" value="Guardar" id="guardaProyecto">

@@ -19,4 +19,9 @@
 		$resultado = queryGeneral($query);
 		return $resultado;	
 	}
+	function guardaDatos($cliente, $contacto, $facturacion){
+		$query = "INSERT INTO clientes (datos_cliente, datos_contacto, facturacion) VALUES ('".$cliente."','".$contacto."','".$facturacion."');";
+		$resultado = queryGeneral($query);
+		return $resultado;
+	}
  ?>

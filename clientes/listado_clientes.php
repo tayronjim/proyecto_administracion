@@ -15,14 +15,16 @@
 	 				$cont = 0;
 	 				
 	 				while(obj.Cliente[$cont]){
-	 					$("#tblClientes tbody").append("<tr><td>"+obj.Cliente[$cont].clave+"</td><td>"+obj.Cliente[$cont].nombre_comercial+"</td><td><span class='flechaClientes' valor='"+obj.Cliente[$cont].id+"'>-></span></td></tr>");
+	 					console.log(obj.Cliente[$cont]);
+	 					var datos = JSON.parse(obj.Cliente[$cont].datos_cliente);
+	 					console.log(datos);
+	 					$("#tblClientes tbody").append("<tr><td>"+datos.codigo+"</td><td>"+datos.publico+"</td><td><span class='flechaClientes' valor='"+obj.Cliente[$cont].id+"'>-></span></td></tr>");
 						$cont++;
 	 				}
 	 			}
 	 		});
 
 	 		$(document).on('click','.flechaClientes',function(){
-	 			//alert($(this).attr('valor'));
 	 			window.location="clientes.php?c="+$(this).attr('valor');
 	 		});
 
