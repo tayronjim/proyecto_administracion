@@ -6,7 +6,9 @@
 	switch($funcion){
 		case 'buscaClientes': buscaClientes(); break;
 		case 'buscaRS': buscaRS($_POST["id_cliente"]); break;
-		case 'guardaProyecto': guardaProyecto($_POST["datos"]); break;
+		case 'guardaProyecto': guardaProyecto($_POST["general"],$_POST['cliente'],$_POST["contrato"],$_POST["facturacion"]); break;
+		case 'actualizaProyecto': guardaProyecto($_POST["general"],$_POST['cliente'],$_POST["contrato"],$_POST["facturacion"],$_POST['actividades'],$_POST['seguimiento'],$_POST['proyecto']); break;
+		
 		case 'guardaRegistroActividades': guardaRegistroActividades($_POST["datos"],$_POST["proyecto"]); break;
 		case 'guardaRegistroSeguimiento': guardaRegistroSeguimiento($_POST["datos"],$_POST["proyecto"]); break;
 		case 'listadoInicialProyectos': listadoInicialProyectos(); break;
@@ -24,7 +26,7 @@
 		    $cliente[] = $row;
 		}
 		$struct = array("Cliente" => $cliente);
-		print json_encode($struct);
+		print json_encode($cliente);
 	}
 	function buscaRS($id_cliente){
 		$rs = recuperaRS($id_cliente);
@@ -36,25 +38,30 @@
 		print json_encode($clienteRS);
 	}
 
-	function guardaProyecto($datos){
-		$proyectoGuardado = nuevoProyecto($datos);
+	function guardaProyecto($general,$cliente,$contrato,$facturacion){
+		$proyectoGuardado = nuevoProyecto($general,$cliente,$contrato,$facturacion);
 		$ultimoProyecto = ultimoProyecto();
 
 		$lastId = mysqli_fetch_assoc($ultimoProyecto);
 		nuevasActividades($lastId['lastID']);
-		nuevosSeguimientos($lastId['lastID']);
+		// nuevosSeguimientos($lastId['lastID']);
 		print $lastId['lastID'];
 	}
 
-	function guardaRegistroActividades($datos, $proyecto){
-		$actividadesGuardadas = actualizaActividades($datos, $proyecto);
-		print $actividadesGuardadas;
+	// function guardaRegistroActividades($datos, $proyecto){
+	// 	$actividadesGuardadas = actualizaActividades($datos, $proyecto);
+	// 	print $actividadesGuardadas;
+	// }
+
+	function actualizaProyecto($general,$cliente,$contrato,$facturacion,$actividades,$seguimiento,$proyecto){
+		$proyecto = actualizaProy($general,$cliente,$contrato,$facturacion,$proyecto);
+		$actividadSeg = actualizaActividades($actividades,$seguimiento,$proyecto);
 	}
 
-	function guardaRegistroSeguimiento($datos, $proyecto){
-		$seguimientosGuardados = actualizaSeguimientos($datos, $proyecto);
-		echo $seguimientosGuardados; 
-	}
+	// function guardaRegistroSeguimiento($datos, $proyecto){
+	// 	$seguimientosGuardados = actualizaSeguimientos($datos, $proyecto);
+	// 	echo $seguimientosGuardados; 
+	// }
 
 	function listadoInicialProyectos(){
 		$listadoProyectos = listadoProyectos();
@@ -69,8 +76,12 @@
 		$listadoProyecto = recuperaProyectoCliente($proyecto);
 		while ($row = mysqli_fetch_assoc($listadoProyecto)){
 		    $proy[] = $row;
+		    $cliente = json_decode($row['cliente']);
 		}
-		$struct = array("Proyecto" => $proy);
+		
+		$busqueda_cliente = buscaCliente($cliente->cliente);
+		$cli[] = mysqli_fetch_assoc($busqueda_cliente);
+		$struct = array("Proyecto" => $proy, "Cliente" => $cli);
 		print json_encode($struct);
 	}
 
@@ -79,15 +90,15 @@
 		
 		$proy =  mysqli_fetch_assoc($listadoActividades);
 		
-		echo $proy['actividad'];
+		echo '{"actividad":'.$proy['actividad'].',"seguimiento":'.$proy['seguimiento'].'}';
 	}
 
-	function listaSeguimientos($proyecto){
-		$listadoSeguimientos = listadoSeguimientos($proyecto);
+	// function listaSeguimientos($proyecto){
+	// 	$listadoSeguimientos = listadoSeguimientos($proyecto);
 		
-		    $proy = mysqli_fetch_assoc($listadoSeguimientos);
+	// 	    $proy = mysqli_fetch_assoc($listadoSeguimientos);
 		
-		print $proy['actividad'];
-	}
+	// 	print $proy['actividad'];
+	// }
 
  ?>

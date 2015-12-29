@@ -3,7 +3,7 @@
 <head>
 	<?php include_once("../librerias_base.htm"); ?>
 	<script type="text/javascript">
-	
+	$facturacion = [];
 	$(document).ready(function(){
 		$.ajax({
  			type: "POST",
@@ -12,11 +12,15 @@
  			success: function(data){
  				 // alert(data);
  				var obj = JSON.parse(data);
+ 				console.log(obj);
  				$cont = 0;
  				
- 				while(obj.Cliente[$cont]){
+ 				while(obj[$cont]){
  					//$arregloTabla[$cont] = obj.Cliente[$cont];
- 					$("#listaClientes").append("<option value='"+obj.Cliente[$cont].id+"'>"+obj.Cliente[$cont].nombre_comercial+"</option>");
+ 					$facturacion[obj[$cont].id] = obj[$cont].facturacion;
+ 					
+ 					var cliente = JSON.parse(obj[$cont].datos_cliente);
+ 					$("#listaClientes").append("<option value='"+obj[$cont].id+"'>"+cliente.publico+"</option>");
 					$cont++;
  				}
  				
@@ -27,70 +31,63 @@
  			alert($("#listaClientes").val());
  			$("#listaRS").html("");
  			if ($("#listaClientes").val() > 0) {
- 				$.ajax({
-		 			type: "POST",
-		 			url: "control.php",
-		 			data: { "funcion" :  "buscaRS", id_cliente:$("#listaClientes").val() },
-		 			success: function(data){
-		 				$objRS = JSON.parse(data);
-		 				$datos = JSON.parse($objRS[0].fac);
-		 				$cont = 0;
-		 				while($datos[$cont]){
-		 					console.log($datos[$cont]);
-		 				
-		 					
-		 					if ($datos[$cont].primario == 1) {$selected = "selected";} else {$selected = "";};
-		 					$("#listaRS").append("<option value='"+$datos[$cont].idfac+"' "+$selected+">"+$datos[$cont].rs+"</option>");
-							$cont++;
-		 				}
-		 				
-		 			}
-		 		});
+ 				var fac = JSON.parse($facturacion[$("#listaClientes").val()]);
+ 				$cont = 0;
+ 				while(fac[$cont]){
+					if (fac[$cont].primario == 1) {$selected = "selected";} else {$selected = "";};
+	 				$("#listaRS").append("<option value='"+fac[$cont].idfac+"' "+$selected+">"+fac[$cont].rs+"</option>");
+	 				$cont++;
+ 				}
+
  			};
 				
 		});
 		$("#guardaProyecto").click(function(){
-			jsonObj = [];
-			// jsonActividades = [];
-		    $(".formProyect").each(function() {
+		    general = {};
+		    cliente = {};
+		    contrato = {};
+		    facturacion = {};
 
+		    
+
+		    $(".formProyectCliente").each(function() {
 		        var name = $(this).attr("name");
 		        var valor = $(this).val();
+		        cliente[name] = valor;
+		    }); 
+		    console.log(cliente);
 
-		        item = {}
-		        item ["name"] = name;
-		        item ["value"] = valor;
+		    $(".formProyect").each(function() {
+		        var name = $(this).attr("name");
+		        var valor = $(this).val();
+		        general[name] = valor;
+		    }); 
 
-		        jsonObj.push(item);
-		    });
+		    $(".formProyectContrato").each(function() {
+		        var name = $(this).attr("name");
+		        var valor = $(this).val();
+		        contrato[name] = valor;
+		    }); 
 
-		    // $(".registroActividades").each(function() {
+		    $(".formProyectFacturacion").each(function() {
+		        var name = $(this).attr("name");
+		        var valor = $(this).val();
+		        facturacion[name] = valor;
+		    }); 
 
-		    // 	$fila = $(this).val();
-		    // 	$fecha = $("#fecha_"+$fila).val();
-		    // 	$actividad = $("#txtActividad_"+$fila).val();
-
-		       
-		    //     item = {};
-		     
-		    //     item ["fecha"] = $fecha;
-		    //     item ["act"] = $actividad;
-
-		    //     jsonActividades.push(item);
-		    // });
-		    
-		    jsonString = JSON.stringify(jsonObj);
-		    // jsonStringAct = JSON.stringify(jsonActividades);
-
-		    //console.log(jsonStringAct);
+		    jsonStringGeneral = JSON.stringify(general);
+		    jsonStringCliente = JSON.stringify(cliente);
+		    jsonStringContrato = JSON.stringify(contrato);
+		    jsonStringFacturacion = JSON.stringify(facturacion);
+		   
 
 		    $.ajax({
 	 			type: "POST",
 	 			url: "control.php",
-	 			data: { "funcion" : "guardaProyecto", "datos" : jsonString },
+	 			data: { "funcion" : "guardaProyecto", "general" : jsonStringGeneral, "cliente" : jsonStringCliente, "contrato" : jsonStringContrato, "facturacion" : jsonStringFacturacion },
 	 			success: function(data){
 	 				 console.log(data);
-	 				 window.location="../index.php";
+	 				 window.location="proyectos.php?p="+data;
 	 			}
 	 		});
 		});
@@ -102,19 +99,19 @@
 <body>
 <?php include_once("../header.htm"); ?>
 
-WBS: <input type="text" class="formProyect" name="txtwbs">
+WBS: <input type="text" class="formProyect" id="txtwbs" name="wbs">
 <br>
-CTA: <input type="text" class="formProyect" name="txtcta">
+CTA: <input type="text" class="formProyect" id="txtcta" name="cta">
 <br>
-SEM:  <input type="text" class="formProyect" name="txtsem">
+SEM:  <input type="text" class="formProyect" id="txtsem" name="sem">
 <br>
 
 <table>
 	<tr>
-		<td>Cliente: <select id="listaClientes" class="formProyect" name="cliente">
+		<td>Cliente: <select id="listaClientes" class="formProyectCliente" name="cliente">
 			<option value="-1">-Selecciona un cliente-</option>
 		</select></td>
-		<td>Razon Social<select id="listaRS" class="formProyect" name="razonS"></select></td>
+		<td>Razon Social<select id="listaRS" class="formProyectCliente" name="razonS"></select></td>
 	</tr>
 </table>
 <table>
@@ -209,33 +206,34 @@ SEM:  <input type="text" class="formProyect" name="txtsem">
 	</tr>
 </table>
 
-<input type="hidden" class="formProyect" name="fGarantiaY" value="0000">
-<input type="hidden" class="formProyect" name="fGarantiaM" value="00">
-<input type="hidden" class="formProyect" name="fGarantiaD" value="00">
+
 <br>
-Posicion: <input type="text" class="formProyect" name="txtTituloProyecto">
+Posicion: <input type="text" class="formProyect" id="txtTituloProyecto" name="posicion">
 <br>
-KAM: <input type="text" class="formProyecto" name="txtkam">
+KAM: <input type="text" class="formProyect" id="txtkam" name="kam">
 <br>
-Prioridad:  <input type="text" class="formProyect" name="txtprioridad">
+Prioridad:  <input type="text" class="formProyect" id="txtprioridad" name="prioridad">
 <br>
-Salario del Puesto:  <input type="text" class="formProyect" name="txtsalario">
+Salario del Puesto:  <input type="text" class="formProyect" id="txtsalario" name="salario">
 <br>
 
 
 <h2>Datos del Contrato</h2>
-Convenio:  <input type="text" class="formProyect" id="txtConvenio" name="convenio">
+Convenio:  <input type="text" class="formProyectContrato" id="txtConvenio" name="convenio">
 <br>
-Garantia:  <input type="text" class="formProyect" id="txtGarantia" name="garantia">
+Garantia:  <input type="text" class="formProyectContrato" id="txtGarantia" name="garantia">
 <br>
-Honorarios:  <input type="text" class="formProyect" id="txtHonorarios" name="honorarios">
+Honorarios:  <input type="text" class="formProyectContrato" id="txtHonorarios" name="honorarios">
 <br>
-Acuerdo de Facturacion:  <input type="text" class="formProyect" id="txtAcuerdoFacturacion" name="acuerdofacturacion">
+Acuerdo de Facturacion:  <input type="text" class="formProyectContrato" id="txtAcuerdoFacturacion" name="acuerdofacturacion">
 <br>
+<input type="hidden" class="formProyectContrato" name="fGarantiaY" value="0000">
+<input type="hidden" class="formProyectContrato" name="fGarantiaM" value="00">
+<input type="hidden" class="formProyectContrato" name="fGarantiaD" value="00">
 
 
 <h2>Facturacion</h2>
-Valor del Proyecto:  <input type="text" class="formProyect" name="txtValorProyecto">
+Valor del Proyecto:  <input type="text" class="formProyectFacturacion" id="txtValorProyecto" name="valorproyecto">
 
 <br><br>
 <input type="button" value="Guardar" id="guardaProyecto">
