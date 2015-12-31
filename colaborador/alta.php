@@ -74,6 +74,7 @@
 </head>
 <body>
 	<?php include_once("../header.htm"); ?>
+<div class="cuerpo">
 	<h1>Registro de Colaboradores</h1>
 	<input	type="hidden" value="0" class="dataColaborador"  name="idColaborador" id="idColaborador">
 	<table>
@@ -91,6 +92,8 @@
 	<br><br>
 
 	<input type="button" value="Guardar" id="guardaCliente">
+</div>
+	
 
 </body>
 </html>

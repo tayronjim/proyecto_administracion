@@ -1,0 +1,25 @@
+﻿body{
+	background-color: #EEEEEE;
+	background-image: url(/proyecto_administracion/img/back2.jpg);
+	background-position: left top;
+	background-size: 100%;
+	background-repeat: repeat-y;
+	color: #fff;
+}
+#cabecera{
+	width: 100%;
+	margin:auto;
+	height: 100px;
+	border:0px solid;
+}
+.cuerpo{
+	width: 80%;
+	max-width: 1800px;
+	margin: auto;
+}
+.boton{
+	cursor: pointer;
+}
+.tblFormularios td{
+	padding: 5px;
+}

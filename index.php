@@ -10,12 +10,18 @@
 	 			url: "proyectos/control.php",
 	 			data: { "funcion" : "listadoInicialProyectos" },
 	 			success: function(data){
-	 				console.log(data);
-	 				var obj = JSON.parse(data);
-	 				$cont = 0;
 	 				
-	 				while(obj.Proyectos[$cont]){
-	 					$("#tblProyectos tbody").append("<tr><td>"+obj.Proyectos[$cont].proy_titulo+"</td><td>"+obj.Proyectos[$cont].clave+"</td><td>"+obj.Proyectos[$cont].nombre_comercial+" / "+obj.Proyectos[$cont].razon_social+"</td><td>"+obj.Proyectos[$cont].proy_alta+"</td><td>"+obj.Proyectos[$cont].proy_cierre_ideal+"</td><td>"+obj.Proyectos[$cont].proy_estatus+"</td><td>%</td><td><input type='hidden' value='"+obj.Proyectos[$cont].proy_id+"'><span class='flechaProyecto' valor='"+obj.Proyectos[$cont].proy_id+"'>-></span></td></tr>");
+	 				var obj = JSON.parse(data);
+	 				console.log(obj);
+	 				$cont = 0;
+	 				$alt = -1;
+	 				while(obj[$cont]){
+	 					var proy = JSON.parse(obj[$cont].datos_proyecto);
+	 					var cliente = JSON.parse(obj[$cont].cliente.otros.datos_cliente);
+	 					var rs = JSON.parse(obj[$cont].cliente.otros.facturacion);
+	 					if ($alt == 1) {$claseAlt = "class='alt'";}else $claseAlt = '';
+	 					$("#tblProyectos tbody").append("<tr "+$claseAlt+"><td>"+proy.posicion+"</td><td>"+cliente.codigo+"</td><td>"+cliente.publico+" / "+rs.rs+"</td><td>"+proy.fIniY+"/"+proy.fIniM+"/"+proy.fIniD+"</td><td>"+proy.fCIdealY+"/"+proy.fCIdealM+"/"+proy.fCIdealD+"</td><td>"+proy.estatus+"</td><td>%</td><td><input type='hidden' value='"+obj[$cont].id+"'><span class='flechaProyecto boton' valor='"+obj[$cont].id+"'><img src='img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
+	 					$alt = $alt * -1;
 						$cont++;
 	 				}
 	 			}
@@ -28,22 +34,47 @@
 
 		});//Fin Document Ready
 	</script>
+	<style type="text/css">
+	
+	
+	</style>
 
 </head>
 <body>
 <?php include_once("header.htm"); ?>
+<div class="cuerpo">
+	<div class="datagrid">
+		<table id="tblProyectos" >
+			<thead>
+				<tr>
+					<th>Proyecto</th><th>Cod. Cliente</th><th>Cliente/RS</th><th>Fecha Inicio</th><th>Fecha Limite</th><th>Estatus</th><th>% Avance</th><th></th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+			<tfoot><tr><td colspan="8"></td></tr></tfoot>	
+				
+		</table>
+	</div>
 
-<table id="tblProyectos" border="1">
-	<thead>
-		<tr>
-			<td>Proyecto</td><td>Cod. Cliente</td><td>Cliente/RS</td><td>Fecha Inicio</td><td>Fecha Limite</td><td>Estatus</td><td>% Avance</td>
-		</tr>
-	</thead>
-	<tbody></tbody>
-	<tfoot></tfoot>	
-		
-</table>
+		<br><br>
+</div>
 
+
+<!-- --Ejemplo de disseño de tabla--
+
+
+<div class="datagrid">
+	<table>
+	<thead><tr><th>header</th><th>header</th><th>header</th><th>header</th></tr></thead>
+	<tfoot><tr><td colspan="4"><div id="paging"><ul><li><a href="#"><span>Previous</span></a></li><li><a href="#" class="active"><span>1</span></a></li><li><a href="#"><span>2</span></a></li><li><a href="#"><span>3</span></a></li><li><a href="#"><span>4</span></a></li><li><a href="#"><span>5</span></a></li><li><a href="#"><span>Next</span></a></li></ul></div></tr></tfoot>
+	<tbody><tr><td>data</td><td>data</td><td>data</td><td>data</td></tr>
+	<tr class="alt"><td>data</td><td>data</td><td>data</td><td>data</td></tr>
+	<tr><td>data</td><td>data</td><td>data</td><td>data</td></tr>
+	<tr class="alt"><td>data</td><td>data</td><td>data</td><td>data</td></tr>
+	<tr><td>data</td><td>data</td><td>data</td><td>data</td></tr>
+	</tbody>
+	</table>
+</div> -->
 
 </body>
 </html>

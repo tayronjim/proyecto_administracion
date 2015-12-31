@@ -13,13 +13,15 @@
 	 				console.log(data);
 	 				var obj = JSON.parse(data);
 	 				$cont = 0;
-	 				
+	 				$alt = -1;
 	 				while(obj.Cliente[$cont]){
 	 					console.log(obj.Cliente[$cont]);
 	 					var datos = JSON.parse(obj.Cliente[$cont].datos_cliente);
 	 					console.log(datos);
-	 					$("#tblClientes tbody").append("<tr><td>"+datos.codigo+"</td><td>"+datos.publico+"</td><td><span class='flechaClientes' valor='"+obj.Cliente[$cont].id+"'>-></span></td></tr>");
+	 					if ($alt == 1) {$claseAlt = "class='alt'";}else $claseAlt = '';
+	 					$("#tblClientes tbody").append("<tr "+$claseAlt+"><td>"+datos.codigo+"</td><td>"+datos.publico+"</td><td><span class='flechaClientes boton' valor='"+obj.Cliente[$cont].id+"'><img src='../img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
 						$cont++;
+						$alt = $alt * -1;
 	 				}
 	 			}
 	 		});
@@ -30,22 +32,35 @@
 
 		});
 	</script>
+	<style type="text/css">
+	.datagrid{
+		max-width: 80%;
+		margin: auto;
+	}
+	
+	</style>
 </head>
 <body>
 <?php include_once("../header.htm"); ?>
+<div class="cuerpo">
+	<h1>Listado de Cliente</h1>
 
-<h1>Listado de Cliente</h1>
+	<div class="datagrid">
+		<table id="tblClientes" border="1">
+			<thead>
+				<tr>
+					<th>Codigo</th><th>Nombre Comercial</th><th></th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+			<tfoot></tfoot>	
+				
+		</table>
+	</div>
 
-<table id="tblClientes" border="1">
-	<thead>
-		<tr>
-			<td>Codigo</td><td>Nombre Comercial</td><td></td>
-		</tr>
-	</thead>
-	<tbody></tbody>
-	<tfoot></tfoot>	
-		
-</table>
+</div>
+	
+	
 
 
 

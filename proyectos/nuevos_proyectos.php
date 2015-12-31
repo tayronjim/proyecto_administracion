@@ -99,143 +99,173 @@
 <body>
 <?php include_once("../header.htm"); ?>
 
-WBS: <input type="text" class="formProyect" id="txtwbs" name="wbs">
-<br>
-CTA: <input type="text" class="formProyect" id="txtcta" name="cta">
-<br>
-SEM:  <input type="text" class="formProyect" id="txtsem" name="sem">
-<br>
+<div class="cuerpo">
 
-<table>
-	<tr>
-		<td>Cliente: <select id="listaClientes" class="formProyectCliente" name="cliente">
-			<option value="-1">-Selecciona un cliente-</option>
-		</select></td>
-		<td>Razon Social<select id="listaRS" class="formProyectCliente" name="razonS"></select></td>
-	</tr>
-</table>
-<table>
-	<tr>
-		<td>Fecha de Inicio</td><td>
+	WBS: <input type="text" class="formProyect" id="txtwbs" name="wbs">
+	<br>
+	<b>Empresa Interna:</b> </td><td><input id="txtEmpInt" type="text" value="" name="empint" class="formProyect">
+	<br>
+	# Puestos Req.: <input type="text" class="formProyect" id="txtcta" name="cta">
+	<br>
+	
 
-		<select class="formProyect" name="fIniY">
-			<option value="<?php echo date('Y'); ?>"><?php echo date('Y'); ?></option>
+	<table>
+		<tr>
+			<td>Cliente: <select id="listaClientes" class="formProyectCliente" name="cliente">
+				<option value="-1">-Selecciona un cliente-</option>
+			</select></td>
+			<td>Razon Social<select id="listaRS" class="formProyectCliente" name="razonS"></select></td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>Fecha de Inicio</td><td>
+
+			<select class="formProyect" name="fIniY">
+				<option value="<?php echo date('Y'); ?>"><?php echo date('Y'); ?></option>
+				<?php 
+					$anio = date('Y');
+					for ($anio=date('Y')-1; $anio > 1986 ; $anio--) { 
+				?>
+						<option value="<?php echo $anio; ?>"><?php echo $anio; ?></option>
+				<?php
+					}
+				 ?>
+				<option value="1986">1986</option>
+			</select>
 			<?php 
-				$anio = date('Y');
-				for ($anio=date('Y')-1; $anio > 1986 ; $anio--) { 
-			?>
-					<option value="<?php echo $anio; ?>"><?php echo $anio; ?></option>
-			<?php
+				$mesActual = date('m');
+			 ?>
+			<select class="formProyect" name="fIniM">
+				<option <?php if($mesActual=="01"){echo "selected";} ?> value="01">Enero</option>
+				<option <?php if($mesActual=="02"){echo "selected";} ?> value="02">Febrero</option>
+				<option <?php if($mesActual=="03"){echo "selected";} ?> value="03">marzo</option>
+				<option <?php if($mesActual=="04"){echo "selected";} ?> value="04">abril</option>
+				<option <?php if($mesActual=="05"){echo "selected";} ?> value="05">Mayo</option>
+				<option <?php if($mesActual=="06"){echo "selected";} ?> value="06">Junio</option>
+				<option <?php if($mesActual=="07"){echo "selected";} ?> value="07">Julio</option>
+				<option <?php if($mesActual=="08"){echo "selected";} ?> value="08">Agosto</option>
+				<option <?php if($mesActual=="09"){echo "selected";} ?> value="09">Septiembre</option>
+				<option <?php if($mesActual=="10"){echo "selected";} ?> value="10">Octubre</option>
+				<option <?php if($mesActual=="11"){echo "selected";} ?> value="11">Noviembre</option>
+				<option <?php if($mesActual=="12"){echo "selected";} ?> value="12">Diciembre</option>
+			</select>
+
+			<select class="formProyect" name="fIniD">
+			<?php 
+				$diaActual = date("j");
+				
+				$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+				for ($dia=1; $dia <= $numero ; $dia++) { ?>
+					<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>" <?php if ($diaActual == $dia) {echo "selected";} ?>><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
+			<?php	
 				}
 			 ?>
-			<option value="1986">1986</option>
-		</select>
-		<?php 
-			$mesActual = date('m');
-		 ?>
-		<select class="formProyect" name="fIniM">
-			<option <?php if($mesActual=="01"){echo "selected";} ?> value="01">Enero</option>
-			<option <?php if($mesActual=="02"){echo "selected";} ?> value="02">Febrero</option>
-			<option <?php if($mesActual=="03"){echo "selected";} ?> value="03">marzo</option>
-			<option <?php if($mesActual=="04"){echo "selected";} ?> value="04">abril</option>
-			<option <?php if($mesActual=="05"){echo "selected";} ?> value="05">Mayo</option>
-			<option <?php if($mesActual=="06"){echo "selected";} ?> value="06">Junio</option>
-			<option <?php if($mesActual=="07"){echo "selected";} ?> value="07">Julio</option>
-			<option <?php if($mesActual=="08"){echo "selected";} ?> value="08">Agosto</option>
-			<option <?php if($mesActual=="09"){echo "selected";} ?> value="09">Septiembre</option>
-			<option <?php if($mesActual=="10"){echo "selected";} ?> value="10">Octubre</option>
-			<option <?php if($mesActual=="11"){echo "selected";} ?> value="11">Noviembre</option>
-			<option <?php if($mesActual=="12"){echo "selected";} ?> value="12">Diciembre</option>
-		</select>
+			</select>
+			</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>Fecha de Cierre Ideal</td><td>
 
-		<select class="formProyect" name="fIniD">
-		<?php 
-			$diaActual = date("j");
-			
-			$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
-			for ($dia=1; $dia <= $numero ; $dia++) { ?>
-				<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>" <?php if ($diaActual == $dia) {echo "selected";} ?>><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
-		<?php	
-			}
-		 ?>
-		</select>
-		</td>
-	</tr>
-</table>
-<table>
-	<tr>
-		<td>Fecha de Cierre Ideal</td><td>
-
-		<select class="formProyect" name="fCIdealY">
-			<option value="<?php echo date('Y')+2; ?>"><?php echo date('Y')+2; ?></option>
+			<select class="formProyect" name="fCIdealY">
+				<option value="<?php echo date('Y')+2; ?>"><?php echo date('Y')+2; ?></option>
+				<?php 
+					$anio = date('Y')+2;
+					for ($anio=date('Y')+1; $anio > 1986 ; $anio--) { 
+				?>
+						<option value="<?php echo $anio; ?>"><?php echo $anio; ?></option>
+				<?php
+					}
+				 ?>
+				
+				<option value="1986">1986</option>
+			</select>
+			<select class="formProyect" name="fCIdealM">
+				<option value="01">Enero</option>
+				<option value="02">Febrero</option>
+				<option value="03">marzo</option>
+				<option value="04">abril</option>
+				<option value="05">Mayo</option>
+				<option value="06">Junio</option>
+				<option value="07">Julio</option>
+				<option value="08">Agosto</option>
+				<option value="09">Septiembre</option>
+				<option value="10">Octubre</option>
+				<option value="11">Noviembre</option>
+				<option value="12">Diciembre</option>
+			</select>
+			<select class="formProyect" name="fCIdealD">
 			<?php 
-				$anio = date('Y')+2;
-				for ($anio=date('Y')+1; $anio > 1986 ; $anio--) { 
-			?>
-					<option value="<?php echo $anio; ?>"><?php echo $anio; ?></option>
-			<?php
+				$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+				for ($dia=1; $dia <= $numero ; $dia++) { ?>
+					<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
+			<?php	
 				}
 			 ?>
-			
-			<option value="1986">1986</option>
+			</select>
+			</td>
+		</tr>
+	</table>
+
+
+	<br>
+	Posicion: <input type="text" class="formProyect" id="txtTituloProyecto" name="posicion">
+	<br>
+	<b>Disciplina: </b>
+		<select type="text" id="slcDisciplina" name="disciplina" class="formProyect">
+			<option value="-1">------</option>
+			<option value="1">1- CALIDAD</option>
+			<option value="2">2- DISTRIBUCIÓN-SUPPLY CHAIN</option>
+			<option value="3">3- FINANZAS</option>
+			<option value="4">4- INVESTIGACIÓN Y DESARROLLO</option>
+			<option value="5">5- IT</option>
+			<option value="6">6- MARKETING</option>
+			<option value="7">7- OPERACIONES</option>
+			<option value="8">8- RECURSOS HUMANOS</option>
+			<option value="9">9- SERVICIO AL CLIENTE</option>
+			<option value="10">10- VENTAS</option>
+			<option value="11">11- OTRO</option>
 		</select>
-		<select class="formProyect" name="fCIdealM">
-			<option value="01">Enero</option>
-			<option value="02">Febrero</option>
-			<option value="03">marzo</option>
-			<option value="04">abril</option>
-			<option value="05">Mayo</option>
-			<option value="06">Junio</option>
-			<option value="07">Julio</option>
-			<option value="08">Agosto</option>
-			<option value="09">Septiembre</option>
-			<option value="10">Octubre</option>
-			<option value="11">Noviembre</option>
-			<option value="12">Diciembre</option>
+	<br>
+	<b>Nivel: </b>
+		<select type="text" id="slcNivel" name="nivel" class="formProyect">
+			<option value="1">1- C-LEVEL</option>
+			<option value="2">2- ALTA DIRECCIÓN (SENIOR)</option>
+			<option value="3">3- GERENCIAS (MIDDLE)</option>
+			<option value="4">4- JEFATURAS (LOW)</option>
+			<option value="5">5- TECNICAS</option>
+			<option value="6">6- OTRO</option>
 		</select>
-		<select class="formProyect" name="fCIdealD">
-		<?php 
-			$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
-			for ($dia=1; $dia <= $numero ; $dia++) { ?>
-				<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
-		<?php	
-			}
-		 ?>
-		</select>
-		</td>
-	</tr>
-</table>
+	<br>
+	KAM: <input type="text" class="formProyect" id="txtkam" name="kam">
+	<br>
+	Prioridad:  <input type="text" class="formProyect" id="txtprioridad" name="prioridad">
+	<br>
+	Salario del Puesto:  <input type="text" class="formProyect" id="txtsalario" name="salario">
+	<br>
 
 
-<br>
-Posicion: <input type="text" class="formProyect" id="txtTituloProyecto" name="posicion">
-<br>
-KAM: <input type="text" class="formProyect" id="txtkam" name="kam">
-<br>
-Prioridad:  <input type="text" class="formProyect" id="txtprioridad" name="prioridad">
-<br>
-Salario del Puesto:  <input type="text" class="formProyect" id="txtsalario" name="salario">
-<br>
+	<h2>Datos del Contrato</h2>
+	Convenio:  <input type="text" class="formProyectContrato" id="txtConvenio" name="convenio">
+	<br>
+	Garantia:  <input type="text" class="formProyectContrato" id="txtGarantia" name="garantia">
+	<br>
+	Honorarios:  <input type="text" class="formProyectContrato" id="txtHonorarios" name="honorarios">
+	<br>
+	Acuerdo de Facturacion:  <input type="text" class="formProyectContrato" id="txtAcuerdoFacturacion" name="acuerdofacturacion">
+	<br>
+	<input type="hidden" class="formProyectContrato" name="fGarantiaY" value="0000">
+	<input type="hidden" class="formProyectContrato" name="fGarantiaM" value="00">
+	<input type="hidden" class="formProyectContrato" name="fGarantiaD" value="00">
 
 
-<h2>Datos del Contrato</h2>
-Convenio:  <input type="text" class="formProyectContrato" id="txtConvenio" name="convenio">
-<br>
-Garantia:  <input type="text" class="formProyectContrato" id="txtGarantia" name="garantia">
-<br>
-Honorarios:  <input type="text" class="formProyectContrato" id="txtHonorarios" name="honorarios">
-<br>
-Acuerdo de Facturacion:  <input type="text" class="formProyectContrato" id="txtAcuerdoFacturacion" name="acuerdofacturacion">
-<br>
-<input type="hidden" class="formProyectContrato" name="fGarantiaY" value="0000">
-<input type="hidden" class="formProyectContrato" name="fGarantiaM" value="00">
-<input type="hidden" class="formProyectContrato" name="fGarantiaD" value="00">
+	<h2>Facturacion</h2>
+	Valor del Proyecto:  <input type="text" class="formProyectFacturacion" id="txtValorProyecto" name="valorproyecto">
 
-
-<h2>Facturacion</h2>
-Valor del Proyecto:  <input type="text" class="formProyectFacturacion" id="txtValorProyecto" name="valorproyecto">
-
-<br><br>
-<input type="button" value="Guardar" id="guardaProyecto">
+	<br><br>
+	<input type="button" value="Guardar" id="guardaProyecto">
+</div>
 </body>
 </html>

@@ -37,7 +37,7 @@
 	 					$("#txtCodigoCliente").val(datosCliente.codigo);
 	 					$("#txtNombrePublico").val(datosCliente.publico);
 	 					$("#txtFechaAlta").val(datosCliente.fecha);
-	 					$("#txtIndustria").val(datosCliente.industria);
+	 					$("#slcIndustria").val(datosCliente.industria);
 	 					$("#idCliente").val(obj.Cliente[0].id);
 	 					//$facturacion = obj.Cliente[0].facturacion;
 	 					$("#txtFechaAlta").attr('disabled','true');
@@ -155,55 +155,71 @@
 </head>
 <body>
 <?php include_once("../header.htm"); ?>
-<h1>Registro de Cliente</h1>
-<!-- <form action="registra_cliente.php" method="post" id="formCliente"> -->
-	<input	type="hidden" value="0" name="idCliente" id="idCliente">
-	<table>
-		<tr>
-			<td>Codigo</td>	<td><input type="text" id="txtCodigoCliente" class="formClientes" name="codigo"></td>
-		</tr>
-		<tr>
-			<td>Nombre Comercial</td><td><input type="text" id="txtNombrePublico" class="formClientes" name="publico"></td>
-		</tr>
-		<tr>
-			<td>Industria</td><td><input type="text" id="txtIndustria" class="formClientes" name="industria"></td>
-		</tr>
-		<tr>
-			<td>Fecha Alta</td><td><input type="date" class="formClientes" id="txtFechaAlta" name="fecha"></td>
-		</tr>
+<div class="cuerpo">
+	<h1>Registro de Cliente</h1>
+	<!-- <form action="registra_cliente.php" method="post" id="formCliente"> -->
+		<input	type="hidden" value="0" name="idCliente" id="idCliente">
+		<table>
+			<tr>
+				<td>Codigo</td>	<td><input type="text" id="txtCodigoCliente" class="formClientes" name="codigo"></td>
+			</tr>
+			<tr>
+				<td>Nombre Comercial</td><td><input type="text" id="txtNombrePublico" class="formClientes" name="publico"></td>
+			</tr>
+			<tr>
+				<td>Industria</td>
+				<td><select type="text" id="slcIndustria" class="formClientes" name="industria">
+					<option value="-1">-----</option>
+					<option value="1">1- AGROINDUSTRIAL</option>
+					<option value="2">2- AUTOMOTRIZ</option>
+					<option value="3">3- CONSTRUCCIÓN</option>
+					<option value="4">4- EDUCACIÓN</option>
+					<option value="5">5- FARMACEUTICO</option>
+					<option value="6">6- FMCG-RETAIL</option>
+					<option value="7">7- INDUSTRIAL</option>
+					<option value="8">8- IT</option>
+					<option value="9">9- FINANCIERO</option>
+					<option value="10">10- OTRO</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td>Fecha Alta</td><td><input type="date" class="formClientes" id="txtFechaAlta" name="fecha"></td>
+			</tr>
+		</table>
+		<!-- <input type="hidden" id="facVal" name="facval"> -->
+	<!-- </form> -->
+	<br><br>
+	<table id="tblRS" border="1">
+		<thead>
+			<tr>
+				<td></td><td>Razon Social</td><td>RFC</td><td>Primario</td><td></td><td><span id="btnMasRS">[+]</span></td>
+			</tr>
+
+		</thead>
+		<tbody>
+			
+		</tbody>
+			
 	</table>
-	<!-- <input type="hidden" id="facVal" name="facval"> -->
-<!-- </form> -->
-<br><br>
-<table id="tblRS" border="1">
-	<thead>
-		<tr>
-			<td></td><td>Razon Social</td><td>RFC</td><td>Primario</td><td></td><td><span id="btnMasRS">[+]</span></td>
-		</tr>
+	<br><br>
+	<table id="tblContacto" border="1">
+		<thead>
+			<tr>
+				<td></td><td>Nombre</td><td>Area/Puesto</td><td>Telefono</td><td>Observaciones</td><td><span id="btnMasContacto">[+]</span></td>
+			</tr>
 
-	</thead>
-	<tbody>
-		
-	</tbody>
-		
-</table>
-<br><br>
-<table id="tblContacto" border="1">
-	<thead>
-		<tr>
-			<td></td><td>Nombre</td><td>Area/Puesto</td><td>Telefono</td><td>Observaciones</td><td><span id="btnMasContacto">[+]</span></td>
-		</tr>
-
-	</thead>
-	<tbody>
-		
-	</tbody>
-		
-</table>
+		</thead>
+		<tbody>
+			
+		</tbody>
+			
+	</table>
 
 
-<br><br>
-<input type="button" value="Guardar" id="guardaCliente">
+	<br><br>
+	<input type="button" value="Guardar" id="guardaCliente">
+</div>
+	
 
 </body>
 </html>
