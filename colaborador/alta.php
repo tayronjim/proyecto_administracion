@@ -91,7 +91,7 @@
 	</table>
 	<br><br>
 
-	<input type="button" value="Guardar" id="guardaCliente">
+	<input type="button" value="Guardar" id="guardaColabolador">
 </div>
 	
 

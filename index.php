@@ -15,14 +15,15 @@
 	 				console.log(obj);
 	 				$cont = 0;
 	 				$alt = -1;
-	 				while(obj[$cont]){
-	 					var proy = JSON.parse(obj[$cont].datos_proyecto);
-	 					var cliente = JSON.parse(obj[$cont].cliente.otros.datos_cliente);
-	 					var rs = JSON.parse(obj[$cont].cliente.otros.facturacion);
+	 				while(obj.Proyectos[$cont]){
+	 					var proy = JSON.parse(obj.Proyectos[$cont].datos_proyecto);
+	 					var cliente = JSON.parse(obj.Proyectos[$cont].cliente.otros.datos_cliente);
+	 					var rs = JSON.parse(obj.Proyectos[$cont].cliente.otros.facturacion);
+	 					var estatus = JSON.parse(obj.Estatus[proy.estatus].descripcion);
 	 					if ($alt == 1) {$claseAlt = "class='alt'";}else $claseAlt = '';
-	 					$("#tblProyectos tbody").append("<tr "+$claseAlt+"><td>"+proy.posicion+"</td><td>"+cliente.codigo+"</td><td>"+cliente.publico+" / "+rs.rs+"</td><td>"+proy.fIniY+"/"+proy.fIniM+"/"+proy.fIniD+"</td><td>"+proy.fCIdealY+"/"+proy.fCIdealM+"/"+proy.fCIdealD+"</td><td>"+proy.estatus+"</td><td>%</td><td><input type='hidden' value='"+obj[$cont].id+"'><span class='flechaProyecto boton' valor='"+obj[$cont].id+"'><img src='img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
-	 					$alt = $alt * -1;
+	 					$("#tblProyectos tbody").append("<tr "+$claseAlt+"><td>"+proy.posicion+"</td><td>"+cliente.codigo+"</td><td>"+cliente.publico+" / "+rs.rs+"</td><td>"+proy.fIniY+"/"+proy.fIniM+"/"+proy.fIniD+"</td><td>"+proy.fCIdealY+"/"+proy.fCIdealM+"/"+proy.fCIdealD+"</td><td>"+estatus.nombre+"</td><td>"+estatus.avance+"</td><td><input type='hidden' value='"+obj.Proyectos[$cont].id+"'><span class='flechaProyecto boton' valor='"+obj.Proyectos[$cont].id+"'><img src='img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
 						$cont++;
+						$alt = $alt * -1;
 	 				}
 	 			}
 	 		});

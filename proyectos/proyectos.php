@@ -96,12 +96,16 @@
 	 			success: function(data){
 	 			 	var obj = JSON.parse(data);
 	 			 	$.each( obj.actividad, function( filasActividades, actividad ) {
-					  $("#tblActividades tbody").append('<tr><td><input type="hidden" class="registroActividades" id="numeroFila" value="'+$filasActividades+'"></td><td><input type="date" value="'+actividad.fecha+'" id="fecha_'+$filasActividades+'" disabled></td><td colspan="1"> <textarea id="txtActividad_'+$filasActividades+'" disabled>'+actividad.act+'</textarea></td><td></td></tr>');
+					  $("#tblActividades tbody").append('<tr><td><input type="hidden" class="registroActividades" id="numeroFila" value="'+filasActividades+'"></td><td><input type="date" value="'+actividad.fecha+'" id="fecha_'+filasActividades+'" disabled></td><td colspan="1"> <textarea id="txtActividad_'+filasActividades+'" disabled>'+actividad.act+'</textarea></td><td></td></tr>');
+					  $filasActividades = filasActividades;
 					});
+ 					
 
 					$.each( obj.seguimiento, function( filasSeguimientos, actividad ) {
-					  $("#tblSeguimientos tbody").append('<tr id="filaSeg_'+$filasSeguimientos+'"><td><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+$filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+$filasSeguimientos+'" value="'+actividad.fecha+'" disabled> </td><td colspan="1"><textarea id="txtAreaSeg_'+$filasSeguimientos+'" disabled>'+actividad.act+'</textarea></td><td><span class="btnAcepSeg" id="btnAcepSeg_'+$filasSeguimientos+'">[/]</span></td><td><span class="btnCancelSeg" id="btnCancelSeg_'+$filasSeguimientos+'">[X]</span></td><td></td></tr>');
+					  $("#tblSeguimientos tbody").append('<tr id="filaSeg_'+filasSeguimientos+'"><td><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+filasSeguimientos+'" value="'+actividad.fecha+'" disabled> </td><td colspan="1"><textarea id="txtAreaSeg_'+filasSeguimientos+'" disabled>'+actividad.act+'</textarea></td><td><div class="btnAcepSeg" id="btnAcepSeg_'+filasSeguimientos+'"></div></td><td><div class="btnCancelSeg" id="btnCancelSeg_'+filasSeguimientos+'"></div></td><td></td></tr>');
+					  $filasSeguimientos = filasSeguimientos;
 					});
+					
 
 	 		
 	 			}
@@ -114,12 +118,12 @@
 
 			$("#btnMas").click(function(){
 				$filasActividades ++;
-				$("#tblActividades tbody").append('<tr id="fila_'+$filasActividades+'"><td><span class="btnMenos" id="btnMenos_'+$filasActividades+'">[-]</span><input type="hidden" class="registroActividades" id="numeroFila" value="'+$filasActividades+'"></td><td><input type="date" id="fecha_'+$filasActividades+'"></td><td colspan="1"> <textarea id="txtActividad_'+$filasActividades+'"></textarea></td><td></td></tr>');
+				$("#tblActividades tbody").append('<tr id="fila_'+$filasActividades+'"><td><div class="btnMenos" id="btnMenos_'+$filasActividades+'"></div><input type="hidden" class="registroActividades" id="numeroFila" value="'+$filasActividades+'"></td><td><input type="date" id="fecha_'+$filasActividades+'"></td><td colspan="1"> <textarea id="txtActividad_'+$filasActividades+'"></textarea></td><td></td></tr>');
 			});
 
 			$("#btnMasSeg").click(function(){
 				$filasSeguimientos ++;
-				$("#tblSeguimientos tbody").append('<tr id="filaSeg_'+$filasSeguimientos+'"><td><span class="btnMenosSeg" id="btnMenosSeg_'+$filasSeguimientos+'">[-]</span><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+$filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+$filasSeguimientos+'"> </td><td colspan="1"><textarea id="txtAreaSeg_'+$filasSeguimientos+'"></textarea></td><td><span class="btnAcepSeg" id="btnAcepSeg_'+$filasSeguimientos+'">[/]</span></td><td><span class="btnCancelSeg" id="btnCancelSeg_'+$filasSeguimientos+'">[X]</span></td><td></td></tr>');
+				$("#tblSeguimientos tbody").append('<tr id="filaSeg_'+$filasSeguimientos+'"><td><div class="btnMenosSeg" id="btnMenosSeg_'+$filasSeguimientos+'"></div><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+$filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+$filasSeguimientos+'"> </td><td colspan="1"><textarea id="txtAreaSeg_'+$filasSeguimientos+'"></textarea></td><td></td><td></td><td></td></tr>');
 			});
 
 			$(document).on('click','.btnMenos',function(){
@@ -143,6 +147,9 @@
 				$("#actividadSeguimientoTerminado").val($("#txtAreaSeg_"+$noFila).val());
 				$("#fechaSeguimientoTerminado").val($("#fechaSeg_"+$noFila).val());
 				$("#filaSeguimientoTerminado").val($noFila);
+				$(".fondoEmergente").css("visibility","visible");
+				$("#hideAceptaSegimiento").css("visibility","visible");
+				 
 			});
 
 			$(document).on('click','.btnCancelSeg',function(){
@@ -152,15 +159,11 @@
 				$("#actividadSeguimientoCancelado").val($("#txtAreaSeg_"+$noFila).val());
 				$("#fechaSeguimientoCancelado").val($("#fechaSeg_"+$noFila).val());
 				$("#filaSeguimientoCancelado").val($noFila);
+				$(".fondoEmergente").css("visibility","visible");
+				$("#hideCancelaSegimiento").css("visibility","visible");
 			});
 
-			$(document).on('click','.btnCancelSeg',function(){
-				$elemento = this.id;
-				$elementoSeparado = $elemento.split("_");
-				$noFila = $elementoSeparado[1];
-				$fecha = $("#fechaSeg_" + $noFila).val();
-				$act = $("#txtAreaSeg_" + $noFila).val();
-			});
+			
 			
 
 		}); // fin document ready
@@ -208,6 +211,7 @@
 		    	$fila = $(this).val();
 		    	$fecha = $("#fecha_"+$fila).val();
 		    	$actividad = $("#txtActividad_"+$fila).val();
+		    	$actividad = $actividad.replace(/\n/g, "\\n");
 
 		        item = {};
 		     
@@ -222,6 +226,7 @@
 		    	$filaS = $(this).val();
 		    	$fechaS = $("#fechaSeg_"+$filaS).val();
 		    	$actividadS = $("#txtAreaSeg_"+$filaS).val();
+		    	$actividadS = $actividadS.replace(/\n/g, "\\n");
 
 		        itemS = {};
 		        itemS ["fecha"] = $fechaS;
@@ -266,11 +271,13 @@
 			$fecha = $("#fechaSeguimientoTerminado").val();
 			$act = $("#actividadSeguimientoTerminado").val();
 			$filaSeguimiento = $("#filaSeguimientoTerminado").val();
-
-			$("#tblActividades tbody").append('<tr><td><input type="hidden" class="registroActividades" id="numeroFila" value="'+$filasActividades+'"></td><td><input type="date" value="'+$fecha+'" id="fecha_'+$filasActividades+'"></td><td colspan="2"> <textarea id="txtActividad_'+$filasActividades+'">'+$act+'</textarea></td></tr>');
 			$filasActividades++;
+			$("#tblActividades tbody").append('<tr><td><input type="hidden" class="registroActividades" id="numeroFila" value="'+$filasActividades+'"></td><td><input type="date" value="'+$fecha+'" id="fecha_'+$filasActividades+'"></td><td colspan="2"> <textarea id="txtActividad_'+$filasActividades+'">'+$act+'</textarea></td></tr>');
+			
 
 			$("#tblSeguimientos tbody tr#filaSeg_"+$filaSeguimiento).remove();
+			$(".fondoEmergente").css("visibility","hidden");
+			$("#hideAceptaSegimiento").css("visibility","hidden");
 					
 	 		//guardaProyecto();
 		}
@@ -279,24 +286,104 @@
 
 			$filaSeguimiento = $("#filaSeguimientoCancelado").val();
 			$("#tblSeguimientos tbody tr#filaSeg_"+$filaSeguimiento).remove();
+			$(".fondoEmergente").css("visibility","hidden");
+			$("#hideCancelaSegimiento").css("visibility","hidden");
 		}
 
 		function cancelaSeguimientoTerminado(){
 			$("#fechaSeguimientoTerminado").val("");
 			$("#actividadSeguimientoTerminado").val("");
 			$("#filaSeguimientoTerminado").val("");
+			$(".fondoEmergente").css("visibility","hidden");
+			$("#hideAceptaSegimiento").css("visibility","hidden");
+
 		}
 
 		function cancelaSeguimientoCancelado(){
 			$("#actividadSeguimientoCancelado").val();
 			$("#fechaSeguimientoCancelado").val();
 			$("#filaSeguimientoCancelado").val();
+			$(".fondoEmergente").css("visibility","hidden");
+			$("#hideCancelaSegimiento").css("visibility","hidden");
 		}
 		
 	</script>
 	<style type="text/css">
+		#tblActividades textarea,#tblSeguimientos textarea{
+			width: 300px;
+			height: 60px;
+		}
 		#tblFacturas td{
 			border-top: 1px solid #E1EEF4;
+		}
+		
+		#hideAceptaSegimiento, #hideCancelaSegimiento{
+			position: fixed;
+			left: 50%;
+			top: 50%;
+			z-index: 999;
+			background-color: white;
+			color:#000;
+			font-family: arial;
+			padding: 10px;
+			border:1px solid #fff;
+			border-radius: 8px;
+			visibility: hidden;
+		}
+		#hideAceptaSegimiento{
+			margin-left: -233px;
+			margin-top: -123px
+		}
+		#hideCancelaSegimiento{
+			margin-left: -378px;
+			margin-top: -123px
+		}
+		#hideAceptaSegimiento h2, #hideCancelaSegimiento h2{
+			text-align: center;
+
+		}
+		#tblSegAceptado th, #tblSegCancelado th{
+			
+			font-weight: bolder;
+			
+			font-size: 13px;
+			background-color: orange;
+		}
+		#tblSegAceptado textarea, #tblSegCancelado textarea{
+			width: 280px;
+			height: 90px;
+		}
+		#tblSegAceptado input[type="date"], #tblSegCancelado input[type="date"]{
+			border:0px;
+			margin-left: 30px;
+		}
+		.filaBotones{
+			height: 50px;
+			vertical-align: bottom;
+		}
+		.filaBotones input{
+			border-radius: 3px;
+			width: 90px;
+			height: 30px;
+			color: white;
+			font-weight: bold;
+		}
+		#colCancSeg, #colCancCancSeg{
+			text-align: left;
+			
+		}
+		#colCancSeg input, #colCancCancSeg input{
+			background-color: red;
+			border:1px solid red;
+			
+		}
+		#colAcepSeg, #colAcepCancSeg{
+			text-align: right;
+			
+		}
+		#colAcepSeg input, #colAcepCancSeg input{
+			background-color: green;
+			border:1px solid green;
 		}
 	</style>
 	
@@ -472,9 +559,9 @@
 	<div class="datagrid">
 		<table border="1" id="tblActividades" >
 			<thead>
-				<tr><th colspan="4" style="text-align: center;">Registro de Actividades</th></tr>
+				<tr><th colspan="4" style="text-align: center; width:560px;">Registro de Actividades</th></tr>
 				<tr>
-					<th colspan="2">Fecha</th><th>Actividad</th><th><span id="btnMas">[+]</span></th>
+					<th colspan="2" style="text-align: center; width:175px;">Fecha</th><th style="text-align: center; width:310px;">Actividad</th><th><div id="btnMas" class="btnMas"></div></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -488,9 +575,9 @@
 	<div class="datagrid">
 		<table border="1" id="tblSeguimientos" >
 			<thead>
-				<tr><th colspan="6">Seguimiento</th></tr>
+				<tr><th colspan="6" style="text-align: center; width:560px;">Seguimiento</th></tr>
 				<tr>
-					<th colspan="2">Fecha</th><th>Actividad</th><th colspan="2"></th><th><span id="btnMasSeg">[+]</span></th>
+					<th colspan="2" style="text-align: center; width:175px;">Fecha</th><th style="text-align: center; width:310px;">Actividad</th><th colspan="2" style="width:65px;"></th><th><div id="btnMasSeg" class="btnMas"></div></th>
 				</tr>
 				
 			</thead>
@@ -606,48 +693,52 @@
 		
 	<br><br>
 	<input type="button" value="Guardar" id="guardaProyecto">
-
+	<br><br><br>
+	<div class="fondoEmergente"></div>
 	<div id="hideAceptaSegimiento" >
-		<span>
+			<h2>Seguimiento Completado</h2>
 			<table id="tblSegAceptado">
 				<thead>
+					
 					<tr>
-						<td>Fecha</td><td>Actividad</td>
+						<th width="170px">Fecha</th><th>Actividad</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td><input type="date" id="fechaSeguimientoTerminado"></td><td><textarea id="actividadSeguimientoTerminado"></textarea></td>
+						<td><input type="date" id="fechaSeguimientoTerminado" placeholder="aaaa-mm-dd"></td><td><textarea id="actividadSeguimientoTerminado"></textarea></td>
 					</tr>
 					<tr>
-						<td><input type="hidden" id="filaSeguimientoTerminado"><input type="button" value="Cancelar" onclick="cancelaSeguimientoTerminado();"></td><td><input type="button" value="Aceptar" onclick="agregaSeguimientoTerminado();"></td>
+						<td class="filaBotones" id="colCancSeg"><input type="hidden" id="filaSeguimientoTerminado"><input type="button" value="Cancelar" onclick="cancelaSeguimientoTerminado();"></td><td class="filaBotones" id="colAcepSeg"><input type="button" value="Aceptar" class="agregaSeguimientoTerminado" onclick="agregaSeguimientoTerminado();"></td>
 					</tr>
 				</tbody>
 					
 			</table>
-		</span>
+		
 	</div>
 
-	<div id="hideCancelaSegimiento" >
+	
+</div>
+<div id="hideCancelaSegimiento" >
 		<span>
+			<h2>Cancela Seguimiento</h2>
 			<table id="tblSegCancelado">
 				<thead>
 					<tr>
-						<td>Fecha</td><td>Actividad</td><td>Observaciones</td>
+						<th>Fecha</th><th>Actividad</th><th>Observaciones</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td><input type="date" id="fechaSeguimientoCancelado"></td><td><textarea id="actividadSeguimientoCancelado"></textarea></td><td><textarea id="txtObservacionesSeguimientoCancelado"></textarea></td>
+						<td><input type="date" id="fechaSeguimientoCancelado" disabled="true"></td><td><textarea id="actividadSeguimientoCancelado" disabled="true"></textarea></td><td><textarea id="txtObservacionesSeguimientoCancelado"></textarea></td>
 					</tr>
 					<tr>
-						<td><input type="hidden" id="filaSeguimientoCancelado"><input type="button" value="Cancelar" onclick="cancelaSeguimientoCancelado();"></td><td></td><td><input type="button" value="Aceptar" onclick="eliminaSeguimientoCancelado();"></td>
+						<td class="filaBotones" id="colCancCancSeg"><input type="hidden" id="filaSeguimientoCancelado"><input type="button" value="Cancelar" onclick="cancelaSeguimientoCancelado();"></td><td></td><td class="filaBotones" id="colAcepCancSeg"><input type="button" value="Aceptar" onclick="eliminaSeguimientoCancelado();"></td>
 					</tr>
 				</tbody>
 					
 			</table>
 		</span>
 	</div>
-</div>
 </body>
 </html>
