@@ -4,6 +4,7 @@
 	<?php include_once("../librerias_base.htm"); ?>
 	<?php $proyecto = $_GET['p']; ?>
 	<script type="text/javascript">
+
 		$filasActividades = 0;
 		$filasSeguimientos = 0;
 		$proyecto = <?php echo $proyecto; ?>;
@@ -694,29 +695,33 @@
 	<br><br>
 	<input type="button" value="Guardar" id="guardaProyecto">
 	<br><br><br>
-	<div class="fondoEmergente"></div>
-	<div id="hideAceptaSegimiento" >
-			<h2>Seguimiento Completado</h2>
-			<table id="tblSegAceptado">
-				<thead>
-					
-					<tr>
-						<th width="170px">Fecha</th><th>Actividad</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td><input type="date" id="fechaSeguimientoTerminado" placeholder="aaaa-mm-dd"></td><td><textarea id="actividadSeguimientoTerminado"></textarea></td>
-					</tr>
-					<tr>
-						<td class="filaBotones" id="colCancSeg"><input type="hidden" id="filaSeguimientoTerminado"><input type="button" value="Cancelar" onclick="cancelaSeguimientoTerminado();"></td><td class="filaBotones" id="colAcepSeg"><input type="button" value="Aceptar" class="agregaSeguimientoTerminado" onclick="agregaSeguimientoTerminado();"></td>
-					</tr>
-				</tbody>
-					
-			</table>
-		
-	</div>
+	
+	
 
+	
+</div>
+
+<div class="fondoEmergente"></div>
+
+<div id="hideAceptaSegimiento" >
+		<h2>Seguimiento Completado</h2>
+		<table id="tblSegAceptado">
+			<thead>
+				
+				<tr>
+					<th width="170px">Fecha</th><th>Actividad</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="date" id="fechaSeguimientoTerminado" placeholder="aaaa-mm-dd"></td><td><textarea id="actividadSeguimientoTerminado"></textarea></td>
+				</tr>
+				<tr>
+					<td class="filaBotones" id="colCancSeg"><input type="hidden" id="filaSeguimientoTerminado"><input type="button" value="Cancelar" onclick="cancelaSeguimientoTerminado();"></td><td class="filaBotones" id="colAcepSeg"><input type="button" value="Aceptar" class="agregaSeguimientoTerminado" onclick="agregaSeguimientoTerminado();"></td>
+				</tr>
+			</tbody>
+				
+		</table>
 	
 </div>
 <div id="hideCancelaSegimiento" >

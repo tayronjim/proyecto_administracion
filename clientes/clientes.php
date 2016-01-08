@@ -70,7 +70,7 @@
 		});
 
 		$("#btnMasRS").click(function(){
-				$("#tblRS tbody").append('<tr id="filaRS_'+$filasRS+'"><td><div id="btnMenosRS_'+$filasRS+'" class="btnMenosRS"></div><input type="hidden" value="'+$filasRS+'" class="registroFacturacion"><input type="hidden" class="datoFac_'+$filasRS+'" id="idFac_'+$filasRS+'" name="idfac" value="'+$filasRS+'"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRS_'+$filasRS+'" name="rs" style="width:270px;"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRFC_'+$filasRS+'" name="rfc" style="width:120px;"></td><td><input type="radio" class="datoFac_'+$filasRS+'" id="txtprimario_'+$filasRS+'" name="primario" value="0" onclick="valorRadioTrue('+$filasRS+')"></td><td><div class="btnEditar"></div></td><td></td></tr>');
+				$("#tblRS tbody").append('<tr id="filaRS_'+$filasRS+'"><td><div id="btnMenosRS_'+$filasRS+'" class="btnMenosRS"></div><input type="hidden" value="'+$filasRS+'" class="registroFacturacion"><input type="hidden" class="datoFac_'+$filasRS+'" id="idFac_'+$filasRS+'" name="idfac" value="'+$filasRS+'"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRS_'+$filasRS+'" name="rs" style="width:270px;"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRFC_'+$filasRS+'" name="rfc" style="width:120px;"><input type="hidden" id="hdnCalle_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="calle" value=""><input type="hidden" id="hdnExt_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="ext" value=""><input type="hidden" id="hdnInt_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="nint" value=""><input type="hidden" id="hdnCP_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="cp" value=""><input type="hidden" id="hdnCiudad_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="ciudad" value=""><input type="hidden" id="hdnEstado_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="estado" value=""><input type="hidden" id="hdnTel_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="telefono" value=""><input type="hidden" id="hdnEmail_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="email" value=""></td><td><input type="radio" class="datoFac_'+$filasRS+'" id="txtprimario_'+$filasRS+'" name="primario" value="0" onclick="valorRadioTrue('+$filasRS+')"></td><td><div id="btnEditar_'+$filasRS+'" class="btnEditarRS"></div></td><td></td></tr>');
 				$filasRS++;
 		});
 		$(document).on('click','.btnMenosRS',function(){
@@ -85,8 +85,29 @@
 			$noFila = $elementoSeparado[1];
 			$("#tblContacto tbody tr#filaContacto_"+$noFila).remove();
 		});
+		$(document).on('click','.btnEditarRS',function(){
+			$elemento = this.id;
+			$elementoSeparado = $elemento.split("_");
+			$noFila = $elementoSeparado[1];
+			$("#cpyRS").val($("#txtRS_"+$noFila).val());
+			$("#cpyRFC").val($("#txtRFC_"+$noFila).val());
+			$("#cpyCalle").val($("#hdnCalle_"+$noFila).val());
+			$("#cpyNumExt").val($("#hdnExt_"+$noFila).val());
+			$("#cpyNumInt").val($("#hdnInt_"+$noFila).val());
+			$("#cpyCP").val($("#hdnCP_"+$noFila).val());
+			$("#cpyCiudad").val($("#hdnCiudad_"+$noFila).val());
+			$("#cpyEstado").val($("#hdnEstado_"+$noFila).val());
+			$("#cpyTel").val($("#hdnTel_"+$noFila).val());
+			$("#cpyEmail").val($("#hdnEmail_"+$noFila).val());
+			$("#cpyID").val($noFila);
+			
+			$("#hdnFormRS").css("visibility","visible");
+			$(".fondoEmergente").css("visibility","visible");
+			
+		});
 
 	}); //document ready
+
 		function guardaCliente(){
 			jsonFacturacion = [];
 			jsonContacto = [];
@@ -155,7 +176,106 @@
 			$("#txtprimario_"+radio).val('1');
 		}
 
+		function guardaCambiosRS(){
+
+
+			$noFila = $("#cpyID").val();
+
+
+
+			$("#txtRS_"+$noFila).val($("#cpyRS").val());
+			$("#txtRFC_"+$noFila).val($("#cpyRFC").val());
+			$("#hdnCalle_"+$noFila).val($("#cpyCalle").val());
+			$("#hdnExt_"+$noFila).val($("#cpyNumExt").val());
+			$("#hdnInt_"+$noFila).val($("#cpyNumInt").val());
+			$("#hdnCP_"+$noFila).val($("#cpyCP").val());
+			$("#hdnCiudad_"+$noFila).val($("#cpyCiudad").val());
+			$("#hdnEstado_"+$noFila).val($("#cpyEstado").val());
+			$("#hdnTel_"+$noFila).val($("#cpyTel").val());
+			$("#hdnEmail_"+$noFila).val($("#cpyEmail").val());
+
+			$("#hdnFormRS").css("visibility","hidden");
+			$(".fondoEmergente").css("visibility","hidden");
+
+			$("#cpyRS").val("");
+			$("#cpyRFC").val("");
+			$("#cpyCalle").val("");
+			$("#cpyNumExt").val("");
+			$("#cpyNumInt").val("");
+			$("#cpyCP").val("");
+			$("#cpyCiudad").val("");
+			$("#cpyEstado").val("");
+			$("#cpyTel").val("");
+			$("#cpyEmail").val("");
+			$("#cpyID").val("");
+			
+		}
+
 	</script>
+	<style type="text/css">
+		#hdnFormRS, #hdnFormContacto{
+			position: fixed;
+			left: 50%;
+			top: 50%;
+			z-index: 999;
+			background-color: white;
+			color:#000;
+			font-family: arial;
+			padding: 10px;
+			border:1px solid #fff;
+			border-radius: 8px;
+			visibility: hidden;
+		}
+		#hdnFormRS{
+			margin-left: -306px;
+			margin-top: -124px
+		}
+		#hdnFormContacto{
+			margin-left: -378px;
+			margin-top: -123px
+		}
+		#hdnFormRS h2, #hdnFormContacto h2{
+			text-align: center;
+
+		}
+		#cpyRS, #cpyCalle{
+			width: 220px;
+		}
+		
+		#cpyNumExt, #cpyNumInt, #cpyCP{
+			width: 50px;
+		}
+		#cpyCiudad, #cpyEstado, #cpyEmail,#cpyRFC, #cpyTel{
+			width: 150px;
+		}
+		
+		#btnGuardaRS{
+			background-color: green;
+			border:1px solid green;
+		}
+		#btnCancelaRS{
+			background-color: red;
+			border:1px solid red;
+		}
+		.filaBotones{
+			height: 50px;
+			vertical-align: bottom;
+		}
+		.filaBotones input{
+			border-radius: 3px;
+			width: 90px;
+			height: 30px;
+			color: white;
+			font-weight: bold;
+		}
+		#colBtnAceptar{
+			text-align: right;
+		}
+		#colBtnCancelar{
+			text-align: left;
+		}
+
+	</style>
 </head>
 <body>
 <?php include_once("../header.htm"); ?>
@@ -232,21 +352,38 @@
 	<br><br>
 	<input type="button" value="Guardar" id="guardaCliente">
 </div>
-
-<div>
-	Razon Social: <input type="text" id="cpyRS"><br>
-	RFC: <input type="text" id="cpyRFC"><br>
-	Calle: <input type="text" id="cpyCalle"><br>
-	Ext: <input type="text" id="cpyNumExt"><br>
-	Int: <input type="text" id="cpyNumInt"><br>
-	C.P.: <input type="text" id="cpyCP"><br>
-	Ciudad / Municipio: <input type="text" id="cpyCiudad"><br>
-	Estado: <input type="text" id="cpyEstado"><br>
-	Telefono: <input type="text" id="cpyTel"><br>
-	Email: <input type="text" id="cpyEmail"><br>
-
+<div class="fondoEmergente"></div>
+<div id="hdnFormRS">
+	<h2>Datos Fiscales</h2>
+	<table>
+		<tbody>
+			<tr>
+				<td>Razon Social:</td><td><input type="text" id="cpyRS"></td><td width="20px"></td><td>RFC:</td><td colspan="3"><input type="text" id="cpyRFC"></td>
+			</tr>
+			<tr>
+				<td>Calle:</td><td><input type="text" id="cpyCalle"></td><td></td><td>Ext:</td><td><input type="text" id="cpyNumExt"></td><td>Int: </td><td><input type="text" id="cpyNumInt"></td>
+			</tr>
+			<tr>
+				<td>C.P.:</td><td><input type="text" id="cpyCP"></td>
+			</tr>
+			<tr>
+				<td>Ciudad / Municipio: </td><td><input type="text" id="cpyCiudad"></td><td></td><td>Estado:</td><td  colspan="3"><input type="text" id="cpyEstado"></td>
+			</tr>
+			<tr>
+				<td>Telefono: </td><td><input type="text" id="cpyTel"></td><td></td><td>Email: </td><td colspan="3"><input type="text" id="cpyEmail"></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="filaBotones" id="colBtnCancelar"><input type="button" value="Cancelar" id="btnCancelaRS" onclick="cancelaCambiosRS();"></td><td class="filaBotones" colspan="5" id="colBtnAceptar"><input type="button" value="Guardar" id="btnGuardaRS" onclick="guardaCambiosRS();"></td>
+			</tr>
+				
+		</tbody>
+	</table>
+	<input type="hidden" value="" id="cpyID">
+	
 
 </div>
+<div id="hdnFormContacto"></div>
+
 
 </body>
 </html>
