@@ -32,34 +32,44 @@
 	 				var datosContacto = JSON.parse(obj.Cliente[0].datos_contacto);
 	 				
 	 				console.log(datosCliente);
-	 					//$arregloTabla[$cont] = obj.Cliente[$cont];
-	 					//$("#listaClientes").append("<option value='"+obj.Cliente[$cont].id+"'>"+obj.Cliente[$cont].nombre_comercial+"</option>");
-	 					$("#txtCodigoCliente").val(datosCliente.codigo);
-	 					$("#txtNombrePublico").val(datosCliente.publico);
-	 					$("#txtFechaAlta").val(datosCliente.fecha);
-	 					$("#slcIndustria").val(datosCliente.industria);
-	 					$("#idCliente").val(obj.Cliente[0].id);
-	 					//$facturacion = obj.Cliente[0].facturacion;
-	 					$("#txtFechaAlta").attr('disabled','true');
+ 					//$arregloTabla[$cont] = obj.Cliente[$cont];
+ 					//$("#listaClientes").append("<option value='"+obj.Cliente[$cont].id+"'>"+obj.Cliente[$cont].nombre_comercial+"</option>");
+ 					$("#txtCodigoCliente").val(datosCliente.codigo);
+ 					$("#txtNombrePublico").val(datosCliente.publico);
+ 					$("#txtFechaAlta").val(datosCliente.fecha);
+ 					$("#slcIndustria").val(datosCliente.industria);
+ 					$("#idCliente").val(obj.Cliente[0].id);
+ 					//$facturacion = obj.Cliente[0].facturacion;
+ 					$("#txtFechaAlta").attr('disabled','true');
 	 				console.log($facturacion);
 					//var objFac = JSON.parse($facturacion);
+					
 					$cont = 0;
 					while(objFac[$cont]){
 						console.log(objFac[$cont]);
 						$filasRS = objFac[$cont].idfac;
 						console.log($filasRS);
-						$("#tblRS tbody").append('<tr id="filaRS_'+$filasRS+'"><td><div id="btnMenosRS_'+$filasRS+'" class="btnMenosRS"></div><input type="hidden" value="'+$filasRS+'" class="registroFacturacion"><input type="hidden" class="datoFac_'+$filasRS+'" id="idFac_'+$filasRS+'" name="idfac" value="'+$filasRS+'"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRS_'+$filasRS+'" name="rs" value="'+objFac[$cont].rs+'" style="width:270px;"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRFC_'+$filasRS+'" name="rfc" value="'+objFac[$cont].rfc+'" style="width:120px;"><input type="hidden" id="hdnCalle" class="datoFac_'+$filasRS+'" name="calle" value="'+objFac[$cont].calle+'"><input type="hidden" id="hdnNumExt" class="datoFac_'+$filasRS+'" name="ext" value="'+objFac[$cont].ext+'"><input type="hidden" id="hdnNumInt" class="datoFac_'+$filasRS+'" name="nint" value="'+objFac[$cont].nint+'"><input type="hidden" id="hdnCP" class="datoFac_'+$filasRS+'" name="cp" value="'+objFac[$cont].cp+'"><input type="hidden" id="hdnCiudad" class="datoFac_'+$filasRS+'" name="ciudad" value="'+objFac[$cont].ciudad+'"><input type="hidden" id="hdnEstado" class="datoFac_'+$filasRS+'" name="estado" value="'+objFac[$cont].estado+'"><input type="hidden" id="hdnTel" class="datoFac_'+$filasRS+'" name="telefono" value="'+objFac[$cont].telefono+'"><input type="hidden" id="hdnEmail" class="datoFac_'+$filasRS+'" name="email" value="'+objFac[$cont].email+'"></td><td><input type="radio" class="datoFac_'+$filasRS+'" id="txtprimario_'+$filasRS+'" name="primario" value="'+objFac[$cont].primario+'" onclick="valorRadioTrue('+$filasRS+')"></td><td><div class="btnEditar"></div></td><td></td></tr>');
+						$("#tblRS tbody").append('<tr id="filaRS_'+$filasRS+'"><td><div id="btnMenosRS_'+$filasRS+'" class="btnMenosRS"></div><input type="hidden" value="'+$filasRS+'" class="registroFacturacion"><input type="hidden" class="datoFac_'+$filasRS+'" id="idFac_'+$filasRS+'" name="idfac" value="'+$filasRS+'"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRS_'+$filasRS+'" name="rs" value="'+objFac[$cont].rs+'" style="width:270px;"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRFC_'+$filasRS+'" name="rfc" value="'+objFac[$cont].rfc+'" style="width:120px;"><input type="hidden" id="hdnCalle_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="calle" value="'+objFac[$cont].calle+'"><input type="hidden" id="hdnExt_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="ext" value="'+objFac[$cont].ext+'"><input type="hidden" id="hdnInt_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="nint" value="'+objFac[$cont].nint+'"><input type="hidden" id="hdnCP_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="cp" value="'+objFac[$cont].cp+'"><input type="hidden" id="hdnCiudad_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="ciudad" value="'+objFac[$cont].ciudad+'"><input type="hidden" id="hdnEstado_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="estado" value="'+objFac[$cont].estado+'"><input type="hidden" id="hdnTel_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="telefono" value="'+objFac[$cont].telefono+'"><input type="hidden" id="hdnEmail_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="email" value="'+objFac[$cont].email+'"></td><td><input type="radio" class="datoFac_'+$filasRS+'" id="txtprimario_'+$filasRS+'" name="primario" value="'+objFac[$cont].primario+'" onclick="valorRadioTrue('+$filasRS+')"></td><td><div class="btnEditarRS" id="btnEditar_'+$filasRS+'"></div></td><td></td></tr>');
 						if ($("#txtprimario_"+$filasRS).val() == 1) {
 							$("#txtprimario_"+$filasRS).attr('checked',true);
 						};
 						$cont++;
 					}
-					$filasRS++;
+
+					$cont = 0;
+					while(datosContacto[$cont]){
+						$filasContacto = datosContacto[$cont].idcontacto;
+						$("#tblContacto tbody").append('<tr id="filaContacto_'+$filasContacto+'"><td><div id="btnMenosContacto_'+$filasContacto+'" class="btnMenosCont"></div><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" value="'+datosContacto[$cont].nombre+'" name="nombre" style="width:250px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" value="'+datosContacto[$cont].area+'" name="area" style="width:170px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtTelefono_'+$filasContacto+'" value="'+datosContacto[$cont].telefono+'" name="telefono" style="width:100px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;">'+datosContacto[$cont].observaciones+'</textarea></td><td></td></tr>');
+						$cont++;
+					}
+					
 	 			}
 	 		});
 
 	 		
-		};
+		} else{
+			$cliente = 0;
+		}
 		$("#guardaCliente").click(function(){
 			guardaCliente();
 		});
@@ -70,7 +80,7 @@
 		});
 
 		$("#btnMasRS").click(function(){
-				$("#tblRS tbody").append('<tr id="filaRS_'+$filasRS+'"><td><div id="btnMenosRS_'+$filasRS+'" class="btnMenosRS"></div><input type="hidden" value="'+$filasRS+'" class="registroFacturacion"><input type="hidden" class="datoFac_'+$filasRS+'" id="idFac_'+$filasRS+'" name="idfac" value="'+$filasRS+'"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRS_'+$filasRS+'" name="rs" style="width:270px;"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRFC_'+$filasRS+'" name="rfc" style="width:120px;"><input type="hidden" id="hdnCalle_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="calle" value=""><input type="hidden" id="hdnExt_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="ext" value=""><input type="hidden" id="hdnInt_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="nint" value=""><input type="hidden" id="hdnCP_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="cp" value=""><input type="hidden" id="hdnCiudad_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="ciudad" value=""><input type="hidden" id="hdnEstado_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="estado" value=""><input type="hidden" id="hdnTel_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="telefono" value=""><input type="hidden" id="hdnEmail_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="email" value=""></td><td><input type="radio" class="datoFac_'+$filasRS+'" id="txtprimario_'+$filasRS+'" name="primario" value="0" onclick="valorRadioTrue('+$filasRS+')"></td><td><div id="btnEditar_'+$filasRS+'" class="btnEditarRS"></div></td><td></td></tr>');
+				$("#tblRS tbody").append('<tr id="filaRS_'+$filasRS+'"><td><div id="btnMenosRS_'+$filasRS+'" class="btnMenosRS"></div><input type="hidden" value="'+$filasRS+'" class="registroFacturacion"><input type="hidden" class="datoFac_'+$filasRS+'" id="idFac_'+$filasRS+'" name="idfac" value="'+$filasRS+'"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRS_'+$filasRS+'" name="rs" style="width:270px;"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRFC_'+$filasRS+'" name="rfc" style="width:120px;"><input type="hidden" id="hdnCalle_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="calle" value=""><input type="hidden" id="hdnNumExt_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="ext" value=""><input type="hidden" id="hdnNumInt_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="nint" value=""><input type="hidden" id="hdnCP_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="cp" value=""><input type="hidden" id="hdnCiudad_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="ciudad" value=""><input type="hidden" id="hdnEstado_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="estado" value=""><input type="hidden" id="hdnTel_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="telefono" value=""><input type="hidden" id="hdnEmail_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="email" value=""></td><td><input type="radio" class="datoFac_'+$filasRS+'" id="txtprimario_'+$filasRS+'" name="primario" value="0" onclick="valorRadioTrue('+$filasRS+')"></td><td><div id="btnEditar_'+$filasRS+'" class="btnEditarRS"></div></td><td></td></tr>');
 				$filasRS++;
 		});
 		$(document).on('click','.btnMenosRS',function(){
@@ -133,8 +143,10 @@
 		    	$arreglo = {};
 		    	$fila = $(this).val();
 		    	$(".datoFac_"+$fila).each(function() {
-		    		$campo = $(this).attr('name').split("_");
-		    		$arreglo[$campo[0]] = $(this).val();
+		    		// $campo = $(this).attr('name').split("_");
+		    		// $arreglo[$campo[0]] = $(this).val();
+		    		$campo = $(this).attr('name');
+		    		$arreglo[$campo] = $(this).val();
 		    	});
 
 		        jsonFacturacion.push($arreglo);
@@ -163,7 +175,7 @@
 		    $.ajax({
 	 			type: "POST",
 	 			url: "control.php",
-	 			data: { "funcion" : "guardaCliente", "datos_cliente" : jsonStringCliente, "datos_contacto" : jsonStringContacto, "datos_facturacion" : jsonStringFac },
+	 			data: { "funcion" : "guardaCliente", "datos_cliente" : jsonStringCliente, "datos_contacto" : jsonStringContacto, "datos_facturacion" : jsonStringFac, "idCliente":$cliente },
 	 			success: function(data){
 	 				 window.location="listado_clientes.php";
 	 			}
@@ -209,6 +221,23 @@
 			$("#cpyEmail").val("");
 			$("#cpyID").val("");
 			
+		}
+
+		function cancelaCambiosRS(){
+			$("#hdnFormRS").css("visibility","hidden");
+			$(".fondoEmergente").css("visibility","hidden");
+
+			$("#cpyRS").val("");
+			$("#cpyRFC").val("");
+			$("#cpyCalle").val("");
+			$("#cpyNumExt").val("");
+			$("#cpyNumInt").val("");
+			$("#cpyCP").val("");
+			$("#cpyCiudad").val("");
+			$("#cpyEstado").val("");
+			$("#cpyTel").val("");
+			$("#cpyEmail").val("");
+			$("#cpyID").val("");
 		}
 
 	</script>

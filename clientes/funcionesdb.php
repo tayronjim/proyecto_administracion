@@ -24,4 +24,10 @@
 		$resultado = queryGeneral($query);
 		return $resultado;
 	}
+	function actualizaDatos($cliente, $contacto, $facturacion,$id){
+		$query = "UPDATE clientes SET datos_cliente='".$cliente."', datos_contacto='".$contacto."', facturacion='".$facturacion."' WHERE id=".$id;
+		//$query = "INSERT INTO clientes (datos_cliente, datos_contacto, facturacion) VALUES ('".$cliente."','".$contacto."','".$facturacion."');";
+		$resultado = queryGeneral($query);
+		return $resultado;
+	}
  ?>

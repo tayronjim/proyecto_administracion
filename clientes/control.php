@@ -8,7 +8,7 @@
 		case 'listado': listado(); break;
 		case 'buscaClientes': buscaClientes($_POST['cliente']); break;
 		case 'buscaRS': buscaRS($_POST['cliente']); break;
-		case 'guardaCliente': guardaCliente($_POST['datos_cliente'], $_POST['datos_contacto'], $_POST['datos_facturacion']); break;
+		case 'guardaCliente': guardaCliente($_POST['datos_cliente'], $_POST['datos_contacto'], $_POST['datos_facturacion'], $_POST['idCliente']); break;
 		
 		
 		default:
@@ -16,8 +16,14 @@
 			break;
 	}
 
-	function guardaCliente($cliente, $contacto, $facturacion){
-		$datos = guardaDatos($cliente, $contacto, $facturacion);
+	function guardaCliente($cliente, $contacto, $facturacion, $idCliente){
+		if ($idCliente=="0") {
+			$datos = guardaDatos($cliente, $contacto, $facturacion);
+		}
+		else{
+			$datos = actualizaDatos($cliente, $contacto, $facturacion, $idCliente);
+		}
+		
 	}
 
 	function listado(){

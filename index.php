@@ -12,7 +12,7 @@
 	 			success: function(data){
 	 				
 	 				var obj = JSON.parse(data);
-	 				console.log(obj);
+	 				//console.log(obj);
 	 				$cont = 0;
 	 				$alt = -1;
 	 				while(obj.Proyectos[$cont]){
@@ -57,7 +57,9 @@
 		</table>
 	</div>
 
-		<br><br>
+	<div class="recordatorios">
+		<?php include_once("recordatorios/recordatorios.php"); ?>
+	</div>
 </div>
 
 

@@ -89,3 +89,16 @@
 	background-size: 100%;
 	background-repeat: no-repeat;
 }
+.recordatorios{
+	border:1px solid black;
+	width: 250px;
+	min-height: 500px;
+	position: relative;
+	float: right;
+	background-color: #FCFBEB;
+	color:#000;
+	font-size: 11px;
+}
+.recordatorios b{
+	font-size: 12px;
+}
