@@ -36,7 +36,29 @@
 		});//Fin Document Ready
 	</script>
 	<style type="text/css">
-	
+	#desplegarSeguimiento,#desplegarCierres{
+		padding: 5px;
+		border:2px solid black;
+		top:10px;
+		left: 5px;
+		position: relative;
+		margin-top: 20px;
+		background-color: #fff;
+	}
+	#desplegarSeguimiento{
+		top:10px;
+	}
+	#seguimientoActividades{
+		margin-top: 20px;
+		margin-left: 10px;
+	}
+	#proyectosEnCierre{
+		margin-top: 35px;
+		margin-left: 10px;
+	}
+	#desplegarCierres{
+		top:25px;
+	}
 	
 	</style>
 

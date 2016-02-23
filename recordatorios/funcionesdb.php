@@ -13,4 +13,10 @@
 		$resultado = queryGeneral($query);
 		return $resultado;	
 	}
+	function buscaCierreIdeal(){
+		$query = "SELECT id, datos_proyecto FROM `proyecto`";
+		$resultado = queryGeneral($query);
+		return $resultado;	
+	}
+	
  ?>

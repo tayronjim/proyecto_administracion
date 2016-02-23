@@ -54,6 +54,7 @@
 							$("#txtprimario_"+$filasRS).attr('checked',true);
 						};
 						$cont++;
+						$filasRS++;
 					}
 
 					$cont = 0;
