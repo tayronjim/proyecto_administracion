@@ -20,6 +20,12 @@
 		$resultado = queryGeneral($query);
 		return $resultado;	
 	}
+
+	function recuperakam(){
+		$query = "SELECT * FROM `kam`";
+		$resultado = queryGeneral($query);
+		return $resultado;
+	}
 	
 	function recuperaRS($id_cliente){
 		$query = "SELECT facturacion as fac FROM clientes where id=".$id_cliente;
@@ -30,7 +36,7 @@
 	function nuevoProyecto($general,$cliente,$contrato,$facturacion){
 		
 		$dato_cliente = json_decode($cliente);
-		$query = "INSERT into proyecto (cliente,id_cliente, id_rs, id_proyecto_hermano,datos_proyecto, facturacion, contrato) values ('".$cliente."',".$dato_cliente->cliente.",".$dato_cliente->razonS.",0,'".$general."','".$facturacion."','".$contrato."');";
+		$query = "INSERT into proyecto (cliente, id_proyecto_hermano,datos_proyecto, facturacion, contrato) values ('".$cliente."',0,'".$general."','".$facturacion."','".$contrato."');";
 		$resultado = queryGeneral($query);
 
 		return $resultado;	

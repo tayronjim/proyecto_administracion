@@ -5,7 +5,7 @@
 
 	switch ($funcion) {
 		case 'seguimientos': seguimientos(); break;
-		case 'enFechaDeCierre': enFechaDeCierre(); break;
+		case 'datosProyectos': datosProyectos(); break;
 		
 		
 		
@@ -23,13 +23,22 @@
 		print json_encode($struct);
 		
 	}
-	function enFechaDeCierre(){
-		$listadoCierres = buscaCierreIdeal();
+	function datosProyectos(){
+		$listadoCierres = buscaDatosProyectos();
 		while ($row = mysqli_fetch_assoc($listadoCierres)){
 		    $cierre[] = $row;
 		}
-		$struct = array("Cierre" => $cierre);
+		$struct = array("proyecto" => $cierre);
 		print json_encode($struct);
 		
 	}
+
+	// function enFechaDeGarantia(){
+	// 	$listadoGarantia = buscaFechaGarantia();
+	// 	while ($row = mysqli_fetch_assoc($listadoGarantia)){
+	// 	    $garantias[] = $row;
+	// 	}
+	// 	$struct = array("Cierre" => $garantias);
+	// 	print json_encode($struct);
+	// }
  ?>

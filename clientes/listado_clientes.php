@@ -4,7 +4,8 @@
 	<?php include_once("../librerias_base.htm"); ?>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			
+			$("li").removeClass( "current" )
+			$("#menuClientes").addClass('current');
 			$.ajax({
 	 			type: "POST",
 	 			url: "control.php",
@@ -56,6 +57,9 @@
 			<tfoot></tfoot>	
 				
 		</table>
+	</div>
+	<div class="recordatorios">
+		<?php include_once("../recordatorios/recordatorios.php"); ?>
 	</div>
 
 </div>

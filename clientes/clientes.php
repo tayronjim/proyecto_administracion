@@ -5,6 +5,8 @@
 	<?php include_once("../librerias_base.htm"); ?>
 	<script type="text/javascript">
 	$(document).ready(function(){
+		$("li").removeClass( "current" )
+		$("#menuClientes").addClass('current');
 		$filasRS=0;
 		$filasContacto=0;
 		<?php 
@@ -81,7 +83,7 @@
 		});
 
 		$("#btnMasRS").click(function(){
-				$("#tblRS tbody").append('<tr id="filaRS_'+$filasRS+'"><td><div id="btnMenosRS_'+$filasRS+'" class="btnMenosRS"></div><input type="hidden" value="'+$filasRS+'" class="registroFacturacion"><input type="hidden" class="datoFac_'+$filasRS+'" id="idFac_'+$filasRS+'" name="idfac" value="'+$filasRS+'"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRS_'+$filasRS+'" name="rs" style="width:270px;"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRFC_'+$filasRS+'" name="rfc" style="width:120px;"><input type="hidden" id="hdnCalle_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="calle" value=""><input type="hidden" id="hdnNumExt_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="ext" value=""><input type="hidden" id="hdnNumInt_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="nint" value=""><input type="hidden" id="hdnCP_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="cp" value=""><input type="hidden" id="hdnCiudad_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="ciudad" value=""><input type="hidden" id="hdnEstado_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="estado" value=""><input type="hidden" id="hdnTel_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="telefono" value=""><input type="hidden" id="hdnEmail_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="email" value=""></td><td><input type="radio" class="datoFac_'+$filasRS+'" id="txtprimario_'+$filasRS+'" name="primario" value="0" onclick="valorRadioTrue('+$filasRS+')"></td><td><div id="btnEditar_'+$filasRS+'" class="btnEditarRS"></div></td><td></td></tr>');
+				$("#tblRS tbody").append('<tr id="filaRS_'+$filasRS+'"><td><div id="btnMenosRS_'+$filasRS+'" class="btnMenosRS"></div><input type="hidden" value="'+$filasRS+'" class="registroFacturacion"><input type="hidden" class="datoFac_'+$filasRS+'" id="idFac_'+$filasRS+'" name="idfac" value="'+$filasRS+'"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRS_'+$filasRS+'" name="rs" style="width:270px;"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRFC_'+$filasRS+'" name="rfc" style="width:120px;"><input type="hidden" id="hdnCalle_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="calle" value=""><input type="hidden" id="hdnExt_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="ext" value=""><input type="hidden" id="hdnInt_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="nint" value=""><input type="hidden" id="hdnCP_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="cp" value=""><input type="hidden" id="hdnCiudad_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="ciudad" value=""><input type="hidden" id="hdnEstado_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="estado" value=""><input type="hidden" id="hdnTel_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="telefono" value=""><input type="hidden" id="hdnEmail_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="email" value=""></td><td><input type="radio" class="datoFac_'+$filasRS+'" id="txtprimario_'+$filasRS+'" name="primario" value="0" onclick="valorRadioTrue('+$filasRS+')"></td><td><div id="btnEditar_'+$filasRS+'" class="btnEditarRS"></div></td><td></td></tr>');
 				$filasRS++;
 		});
 		$(document).on('click','.btnMenosRS',function(){
@@ -313,11 +315,9 @@
 	<h1>Registro de Cliente</h1>
 	<!-- <form action="registra_cliente.php" method="post" id="formCliente"> -->
 		<input	type="hidden" value="0" name="idCliente" id="idCliente">
-		<table>
+		<table class="tblFormularios">
 			<tr>
 				<td>Codigo</td>	<td><input type="text" id="txtCodigoCliente" class="formClientes" name="codigo"></td>
-			</tr>
-			<tr>
 				<td>Nombre Comercial</td><td><input type="text" id="txtNombrePublico" class="formClientes" name="publico"></td>
 			</tr>
 			<tr>
@@ -335,6 +335,7 @@
 					<option value="9">9- FINANCIERO</option>
 					<option value="10">10- OTRO</option>
 				</select></td>
+				<td hidden>Nivel de Riesgo</td><td hidden><select class="formClientes" id="slcRiesgo" name="riesgo"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></td>
 			</tr>
 			<tr>
 				<td>Fecha Alta</td><td><input type="date" class="formClientes" id="txtFechaAlta" name="fecha"></td>
@@ -380,7 +381,10 @@
 </div>
 
 	<br><br>
+	<textarea id="txtObservaciones" class="formClientes" name="observaciongenerales" placeholder="Observaciones Generales" rows="5" cols="100"></textarea>
+	<br><br>
 	<input type="button" value="Guardar" id="guardaCliente">
+
 </div>
 <div class="fondoEmergente"></div>
 <div id="hdnFormRS">
@@ -408,6 +412,9 @@
 				
 		</tbody>
 	</table>
+
+
+
 	<input type="hidden" value="" id="cpyID">
 	
 

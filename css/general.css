@@ -14,7 +14,7 @@
 	border:0px solid;
 }
 .cuerpo{
-	width: 80%;
+	width: 90%;
 	max-width: 1800px;
 	margin: auto;
 }
@@ -101,4 +101,5 @@
 }
 .recordatorios b{
 	font-size: 12px;
+	overflow:scroll;
 }

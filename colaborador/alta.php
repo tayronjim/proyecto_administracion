@@ -5,6 +5,8 @@
 	<?php include_once("../librerias_base.htm"); ?>
 	<script type="text/javascript">
 	$(document).ready(function(){
+		$("li").removeClass( "current" )
+		$("#menuColaboradores").addClass('current');
 		$arreglo = {};
 		$filasRS=0;
 		<?php 
@@ -25,23 +27,28 @@
 	 			url: "control.php",
 	 			data: { "funcion" :  "buscaColaborador", "id":$colaborador },
 	 			success: function(data){
-	 				console.log(data);
+	 				
 	 				var Col2 = JSON.parse(data);
 	 				var Col = JSON.parse(Col2.datos);
-	 				console.log(Col);
+	 		
 	 					$("#txtCodigo").val(Col.codigo);
 	 					$("#txtNombreCorto").val(Col.nombrec);
 	 					$("#txtNombreLargo").val(Col.nombrel);
 	 					$("#idColaborador").val($colaborador);
+	 					$("#txtPuesto").val(Col.puesto);
+	 					if (Col.activo == "1") {$("#chkactivo").attr('checked',true);}
+	 					else{$("#chkactivo").attr('checked',false);}
+	 					
 	 			}
 	 		});
 	 		
 		};
-		$("#guardaCliente").click(function(){
-			
+		$("#guardaColabolador").click(function(){
+			if ($("#chkactivo").is(':checked')) {$("#chkactivo").val("1");}
+			else {$("#chkactivo").val("0");}
 			$(".dataColaborador").each(function(){
 				$arreglo[$(this).attr('name')] = $(this).val();
-			});console.log($arreglo);	
+			});
 			$funcion = "guardaColaborador";
 			if ($colaborador != "") {
 				$funcion = "actualizaColaborador";
@@ -51,19 +58,20 @@
 		});
 
 	}); // fin document ready
+
+
 		function guardaColabodaor($funcion){
 
 		     $datos = JSON.stringify($arreglo);
 		     $id = $("#idColaborador").val();
-		     console.log($funcion);
 
 		     $.ajax({
 	 			type: "POST",
 	 			url: "control.php",
 	 			data: { "funcion" : $funcion, "datos" : $datos, "id" : $id },
 	 			success: function(data){
-	 				console.log(data);
 	 				// var obj = JSON.parse(data);
+	 				window.location="lista.php";
 	 				
 	 			}
 	 		});
@@ -77,7 +85,7 @@
 <div class="cuerpo">
 	<h1>Registro de Colaboradores</h1>
 	<input	type="hidden" value="0" class="dataColaborador"  name="idColaborador" id="idColaborador">
-	<table>
+	<table class="tblFormularios">
 		<tr>
 			<td>Codigo</td>	<td><input type="text" class="dataColaborador" id="txtCodigo" name="codigo"></td>
 		</tr>
@@ -86,6 +94,12 @@
 		</tr>
 		<tr>
 			<td>Nombre Completo</td><td><input type="text" class="dataColaborador" id="txtNombreLargo" name="nombrel"></td>
+		</tr>
+		<tr>
+			<td>Puesto</td><td><input type="text" class="dataColaborador" id="txtPuesto" name="puesto"></td>
+		</tr>
+		<tr>
+			<td></td><td>Activo <input type="checkbox" class="dataColaborador" id="chkactivo" name="activo" checked></td>
 		</tr>
 		
 	</table>

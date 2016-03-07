@@ -9,7 +9,8 @@
 		$filasSeguimientos = 0;
 		$proyecto = <?php echo $proyecto; ?>;
 		$(document).ready(function(){
-
+			$("li").removeClass( "current" )
+			$("#menuProyectos").addClass('current');
 			$.ajax({ // Busca datos del proyecto
 	 			type: "POST",
 	 			url: "control.php",
@@ -23,70 +24,89 @@
 	 				var datos_proyecto = JSON.parse(obj.Proyecto[0].datos_proyecto);
 	 				var datos_contrato = JSON.parse(obj.Proyecto[0].contrato);
 	 				var datos_facturacion = JSON.parse(obj.Proyecto[0].facturacion);
-
-
+	 				console.log(datos_contrato);
 	 				
-	 				$("#txtwbs").val(datos_proyecto.wbs);
-	 				$("#txtEmpInt").val(datos_proyecto.empint);
-	 				$("#txtcta").val(datos_proyecto.cta);
-	 				$("#txtsem").val(datos_proyecto.sem);
-	 				$("#txtCliente").val(cliente.publico);
-	 				$("#hdnCliente").val(datos_cliente.cliente);
-	 				$.each(rs, function($key, $value){
-	 					if ($value.idfac == datos_cliente.razonS) {$("#txtRS").val($value.rs); $("#hdnRS").val(datos_cliente.razonS);}
-	 				});
-	 				
-	 				$("#fIniY").val(datos_proyecto.fIniY);
-	 				$("#fIniM").val(datos_proyecto.fIniM);
-	 				$("#fIniD").val(datos_proyecto.fIniD);
-	 				
-	 				$("#fCIdealY").val(datos_proyecto.fCIdealY);
-	 				$("#fCIdealM").val(datos_proyecto.fCIdealM);
-	 				$("#fCIdealD").val(datos_proyecto.fCIdealD);
-
-	 				$("#txtPosicion").val(datos_proyecto.posicion);
-	 				$("#slcDisciplina").val(datos_proyecto.disciplina);
-	 				
-	 				$("#txtKAM").val(datos_proyecto.kam);
-	 				$("#txtPrioridad").val(datos_proyecto.prioridad);
-	 				$("#txtSalario").val(datos_proyecto.salario);
-	 				$("#txtConvenio").val(datos_contrato.convenio);
-	 				$("#slcNivel").val(datos_contrato.nivel);
-	 				$("#txtGarantia").val(datos_contrato.garantia);
-	 				$("#txtHonorarios").val(datos_contrato.honorarios);
-	 				$("#txtAcuerdo").val(datos_contrato.acuerdofacturacion);
-	 				$("#fGarantiaY").val(datos_contrato.fGarantiaY);
-	 				$("#fGarantiaM").val(datos_contrato.fGarantiaM);
-	 				$("#fGarantiaD").val(datos_contrato.fGarantiaD);
-	 				 
-	 				$("#txtValorProyecto").val(datos_facturacion.valorproyecto);
-	 				$("#txtTotalFacturado").val(datos_facturacion.totalfacturado);
-	 				$("#txtPorcFacturado").val(datos_facturacion.porcfacturado);
-	 				$("#txtXFacturar").val(datos_facturacion.xfacturar);
-	 				
-	 				
- 					$("#n1").val(datos_facturacion.lista.facno1);
-	 				$("#monto1").val(datos_facturacion.lista.monto1);
-	 				$("#fEnvio1").val(datos_facturacion.lista.fenvio1);
-	 				$("#fPago1").val(datos_facturacion.lista.fpago1);
-	 				
-	 				$("#n2").val(datos_facturacion.lista.facno2);
-	 				$("#monto2").val(datos_facturacion.lista.monto2);
-	 				$("#fEnvio2").val(datos_facturacion.lista.fenvio2);
-	 				$("#fPago2").val(datos_facturacion.lista.fpago2);
-
-	 				$("#n3").val(datos_facturacion.lista.facno3);
-	 				$("#monto3").val(datos_facturacion.lista.monto3);
-	 				$("#fEnvio3").val(datos_facturacion.lista.fenvio3);
-	 				$("#fPago3").val(datos_facturacion.lista.fpago3);
+	 					$("#txtwbs").val(datos_proyecto.wbs);
+		 				$("#txtEmpInt").val(datos_proyecto.empint);
+		 				$("#txtcta").val(datos_proyecto.cta);
+		 				$("#txtsem").val(datos_proyecto.sem);
+		 				$("#txtCliente").val(cliente.publico);
+		 				$("#hdnCliente").val(datos_cliente.cliente);
+		 				$.each(rs, function($key, $value){
+		 					if ($value.idfac == datos_cliente.razonS) {$("#txtRS").val($value.rs); $("#hdnRS").val(datos_cliente.razonS);}
+		 				});
 		 				
-		 			$cont=0;
-		 			while(obj.Estatus[$cont]){
-						var estatus = JSON.parse(obj.Estatus[$cont].descripcion)
-		 				$("#slcEstatus").append("<option value='"+estatus.id+"'>"+estatus.nombre+"</option>");
-		 				$cont++;
-		 			}
-	 				$("#slcEstatus").val(datos_proyecto.estatus);
+		 				$("#fIniY").val(datos_proyecto.fIniY);
+		 				$("#fIniM").val(datos_proyecto.fIniM);
+		 				$("#fIniD").val(datos_proyecto.fIniD);
+		 				
+		 				$("#fCIdealY").val(datos_proyecto.fCIdealY);
+		 				$("#fCIdealM").val(datos_proyecto.fCIdealM);
+		 				$("#fCIdealD").val(datos_proyecto.fCIdealD);
+
+		 				$("#fCRealY").val(datos_proyecto.fCRealY);
+		 				$("#fCRealM").val(datos_proyecto.fCRealM);
+		 				$("#fCRealD").val(datos_proyecto.fCRealD);
+
+		 				$("#txtPosicion").val(datos_proyecto.posicion);
+		 				$("#slcDisciplina").val(datos_proyecto.disciplina);
+		 				
+		 				$("#txtKAM").val(datos_proyecto.kam);
+		 				$("#txtPrioridad").val(datos_proyecto.prioridad);
+		 				$("#txtSalario").val(datos_proyecto.salario);
+		 				$("#txtConvenio").val(datos_contrato.convenio);
+		 				$("#slcNivel").val(datos_proyecto.nivel);
+		 				$("#txtGarantia").val(datos_contrato.garantia);
+		 				$("#txtHonorarios").val(datos_contrato.honorarios);
+		 				if (datos_contrato.hdnhonorarios == "fijo" || datos_contrato.hdnhonorarios == "otro" ) {
+		 					$("#slcHonorarios").val(datos_contrato.hdnhonorarios); $("#txtHonorarios").attr("hidden",false);
+		 				}
+		 				else{$("#slcHonorarios").val(datos_contrato.honorarios);$("#txtHonorarios").attr("hidden",true);}
+
+		 				$("#txtAcuerdo").val(datos_contrato.acuerdofacturacion);
+		 				if ($("#txtAcuerdo").val() == "opc3_7" || $("#txtAcuerdo").val() == "opc3_3_4" ) {
+		 					$("#slcAcuerdo").val($("#txtAcuerdo").val());
+		 					$("#txtAcuerdo").attr("hidden",true);
+		 				}
+		 				else{$("#slcAcuerdo").val("otro");$("#txtAcuerdo").attr("hidden",false);}
+		 				$("#fGarantiaY").val(datos_contrato.fGarantiaY);
+		 				$("#fGarantiaM").val(datos_contrato.fGarantiaM);
+		 				$("#fGarantiaD").val(datos_contrato.fGarantiaD);
+		 				 
+		 				$("#txtValorProyecto").val(datos_facturacion.valorproyecto);
+		 				$("#txtTotalFacturado").val(datos_facturacion.totalfacturado);
+		 				$("#txtPorcFacturado").val(datos_facturacion.porcfacturado);
+		 				$("#txtXFacturar").val(datos_facturacion.xfacturar);
+		 				
+		 			try{	
+	 					$("#n1").val(datos_facturacion.lista.facno1);
+		 				$("#monto1").val(datos_facturacion.lista.monto1);
+		 				$("#fEnvio1").val(datos_facturacion.lista.fenvio1);
+		 				$("#fPago1").val(datos_facturacion.lista.fpago1);
+		 				
+		 				$("#n2").val(datos_facturacion.lista.facno2);
+		 				$("#monto2").val(datos_facturacion.lista.monto2);
+		 				$("#fEnvio2").val(datos_facturacion.lista.fenvio2);
+		 				$("#fPago2").val(datos_facturacion.lista.fpago2);
+
+		 				$("#n3").val(datos_facturacion.lista.facno3);
+		 				$("#monto3").val(datos_facturacion.lista.monto3);
+		 				$("#fEnvio3").val(datos_facturacion.lista.fenvio3);
+		 				$("#fPago3").val(datos_facturacion.lista.fpago3);
+		 			}catch(err){console.log(err.message);}
+			 				
+			 			$cont=0;
+			 			while(obj.Estatus[$cont]){
+							var estatus = JSON.parse(obj.Estatus[$cont].descripcion)
+			 				$("#slcEstatus").append("<option value='"+estatus.id+"'>"+estatus.nombre+"</option>");
+			 				$cont++;
+			 			}
+		 				$("#slcEstatus").val(datos_proyecto.estatus);
+		 				muestraFechasXEstatus(datos_proyecto.estatus);
+		 				calculaFechaGarantia(datos_contrato.garantia);
+
+	 				
+		 				
 	 			}
 	 		});
 
@@ -109,6 +129,25 @@
 					
 
 	 		
+	 			}
+	 		});
+
+	 		$.ajax({
+	 			type: "POST",
+	 			url: "control.php",
+	 			data: { "funcion" :  "buscaKam" },
+	 			success: function(data){
+	 				 // alert(data);
+	 				var obj = JSON.parse(data);
+	 				console.log(obj);
+	 				$cont = 0;
+	 				
+	 				while(obj[$cont]){
+	 					var kamDatos = JSON.parse(obj[$cont].datos);
+	 					$("#txtkam").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
+						$cont++;
+	 				}
+	 				
 	 			}
 	 		});
 		
@@ -165,9 +204,63 @@
 			});
 
 			
-			
+			$("#monto1").change(function(){ 
+	 			calculaTotalFacturado();
+	 		});
+	 		$("#monto2").change(function(){
+	 			calculaTotalFacturado();
+	 		});
+	 		$("#monto3").change(function(){
+	 			calculaTotalFacturado();
+	 		});
+	 		$("#txtValorProyecto").change(function(){
+	 			calculaTotalFacturado();
+	 		});
+	 		
+	 		$("#slcAcuerdo").change(function(){
+	 			if ($("#slcAcuerdo").val() != "otro") {
+	 				$("#txtAcuerdo").attr("hidden",true);
+					$("#txtAcuerdo").val($("#slcAcuerdo").val());
+	 			}
+	 			else{
+	 				$("#txtAcuerdo").val("");
+	 				$("#txtAcuerdo").attr("hidden",false);
+	 			}
+	 				
 
+	 		});
+
+	 		$("#slcHonorarios").change(function(){
+	 			$("#hdnHonorarios").val($("#slcHonorarios").val());
+	 			if ($("#slcHonorarios").val() != "otro" && $("#slcHonorarios").val() != "fijo" ) {
+	 				$("#txtHonorarios").attr("hidden",true);
+					$("#txtHonorarios").val($("#slcHonorarios").val());
+	 			}
+	 			else{
+	 				$("#txtHonorarios").val("");
+	 				$("#txtHonorarios").attr("hidden",false);
+	 			}
+	 		});
+	 		$("#slcEstatus").change(function(){
+	 			muestraFechasXEstatus($("#slcEstatus").val());
+	 		});
+	 		$("#txtGarantia").change(function(){
+	 			calculaFechaGarantia($("#txtGarantia").val());
+	 		});
+	 			
 		}); // fin document ready
+
+		function addCommas(nStr){
+				nStr += '';
+				x = nStr.split('.');
+				x1 = x[0];
+				x2 = x.length > 1 ? '.' + x[1] : '';
+				var rgx = /(\d+)(\d{3})/;
+				while (rgx.test(x1)) {
+				x1 = x1.replace(rgx, '$1' + ',' + '$2');
+				}
+				return x1 + x2;
+		}
 
 		function guardaProyecto(){
 			general = {};
@@ -265,6 +358,29 @@
 	 				 window.location="proyectos.php?p="+$proyecto;
 	 			}
 	 		});
+	 		
+		}
+
+		function calculaTotalFacturado(){
+			if (isNaN($("#txtValorProyecto").val())) {$("#txtValorProyecto").val(0);}
+			$monto1 = $("#monto1").val();
+			$monto2 = $("#monto2").val();
+			$monto3 = $("#monto3").val();
+			if (isNaN($monto1)) {alert("Debes introducir solo numeros en el campo Monto Factura 1");}
+			if (isNaN($monto2)) {alert("Debes introducir solo numeros en el campo Monto Factura 2");}
+			if (isNaN($monto3)) {alert("Debes introducir solo numeros en el campo Monto Factura 3");}
+
+			if ($monto1 == "") {$monto1 = 0;}
+			if ($monto2 == "") {$monto2 = 0;}
+			if ($monto3 == "") {$monto3 = 0;}
+
+			$valor = $("#txtValorProyecto").val();
+			$totalFacturado = parseFloat($monto1)+parseFloat($monto2)+parseFloat($monto3);
+			$("#txtTotalFacturado").val($totalFacturado);
+			$porcFacturado = ($totalFacturado * 100) / $valor;
+			$("#txtPorcFacturado").val($porcFacturado + " %");
+			$("#txtXFacturar").val(parseFloat($("#txtValorProyecto").val()) - $totalFacturado);
+
 		}
 
 		function agregaSeguimientoTerminado(){
@@ -307,6 +423,42 @@
 			$(".fondoEmergente").css("visibility","hidden");
 			$("#hideCancelaSegimiento").css("visibility","hidden");
 		}
+		function muestraFechasXEstatus(estatus){
+			switch(estatus){
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7': $(".FCR").attr('hidden',true); $(".FCG").attr('hidden',true); break;
+				case '8': $(".FCR").attr('hidden',false); $(".FCG").attr('hidden',false); calculaFechaGarantia($("#txtGarantia").val()); break;
+				case '9': $(".FCR").attr('hidden',false); $(".FCG").attr('hidden',true); break;
+				case '10': $(".FCR").attr('hidden',false); $(".FCG").attr('hidden',true); break;
+				case '11': $(".FCR").attr('hidden',false); $(".FCG").attr('hidden',true); break;
+				default: $(".FCR").attr('hidden',true); $(".FCG").attr('hidden',true); break;
+			}
+		}
+		function calculaFechaGarantia(dias){
+			
+	 		$FCR = Date.parse($("#fCRealY").val()+"-"+$("#fCRealM").val()+"-"+$("#fCRealD").val());
+	 		fecha = new Date($FCR);
+	 			
+	 		tiempo = fecha.getTime();
+		    //Calculamos los milisegundos sobre la fecha que hay que sumar o restar...
+		    milisegundos=parseInt(dias*24*60*60*1000);
+		    //Modificamos la fecha actual
+		    total=fecha.setTime(tiempo+milisegundos);
+	
+		    day=fecha.getDate();
+		    month=fecha.getMonth()+1;
+		    year=fecha.getFullYear();
+	
+		    $("#fGarantiaY").val(year);
+		    $("#fGarantiaM").val(month);
+		    $("#fGarantiaD").val(day);
+		}
+
 		
 	</script>
 	<style type="text/css">
@@ -392,41 +544,28 @@
 <body>
 <?php include_once("../header.htm"); ?>
 <div class="cuerpo">
-	<table class="tblFormularios">
+	<table class="tblFormularios"> 
 		<tr>
-			<td><b>WBS:</b> </td><td><input id="txtwbs" type="text" value="" name="wbs" class="formProyect" disabled></td><td><b>Empresa<br>Interna:</b> </td><td><input id="txtEmpInt" type="text" value="" name="empint" class="formProyect" disabled></td><td><b>Prioridad: </b></td><td><input type="text" id="txtPrioridad" name="prioridad" class="formProyect"></td>
+			<td><b>WBS:</b> </td><td><input id="txtwbs" type="text" value="" name="wbs" class="formProyect" disabled></td><td><b>Empresa Interna:</b> </td><td><select id="txtEmpInt" type="text" value="" name="empint" class="formProyect">
+				<option value="contrata">Contrata</option>
+				<option value="dma">Diaz Morones</option>
+				<option value="aims">AIMS</option>
+				<option value="liase">Liase</option>
+				<option value="stonehc">Stone Human Capital</option>
+			</select></td>
 		</tr>
-		<TR>
-			<td>.</td>
-		</TR>
-	
-		<!-- <tr>
-			<td><b>SEM:</b> </td><td><input id="txtsem" type="text" value="" name="sem" class="formProyect"></td>
-		</tr> -->
-	
+		<tr>
+			<td><b>KAM:</b></td><td><select class="formProyect" id="txtkam" name="kam"></select></td>
+			<td><b>Prioridad: </b></td><td><select class="formProyect" id="txtPrioridad" name="prioridad"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></td>
+		</tr>
 		<tr>
 			<td><b>Cliente:</b> <input id="hdnCliente" type="hidden" value="" name="cliente" class="formProyectCliente"> </td><td><input id="txtCliente" type="text" disabled></td><td><b>Razon Social:</b> <input id="hdnRS" type="hidden" value="" name="razonS" class="formProyectCliente"></td><td><input id="txtRS" type="text" disabled></td>
 		</tr>
-		
+		<tr><td>&nbsp;</td></tr>
 
 		<tr>
-			<td>Fecha de Inicio</td><td>
-
-			<select class="formProyect" id="fIniY" name="fIniY" disabled>
-				<option value="<?php echo date('Y'); ?>"><?php echo date('Y'); ?></option>
-				<?php 
-					$anio = date('Y');
-					for ($anio=date('Y')-1; $anio > 1986 ; $anio--) { 
-				?>
-						<option value="<?php echo $anio; ?>"><?php echo $anio; ?></option>
-				<?php
-					}
-				 ?>
-				<option value="1986">1986</option>
-			</select>
-			<?php 
-				$mesActual = date('m');
-			 ?>
+			<td><b>Fecha de Inicio</b></td><td>
+			<select class="formProyect" id="fIniY" name="fIniY" disabled><?php insertAniosActual(); ?></select>
 			<select class="formProyect" id="fIniM" name="fIniM" disabled>
 				<option value="01">Enero</option>
 				<option value="02">Febrero</option>
@@ -441,37 +580,22 @@
 				<option value="11">Noviembre</option>
 				<option value="12">Diciembre</option>
 			</select>
-
 			<select class="formProyect" id="fIniD" name="fIniD" disabled>
 			<?php 
-				$diaActual = date("j");
-				
-				$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+				//$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+				$numero = 31;
 				for ($dia=1; $dia <= $numero ; $dia++) { ?>
-					<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>" <?php if ($diaActual == $dia) {echo "selected";} ?>><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
+					<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
 			<?php	
 				}
 			 ?>
 			</select>
 			</td>
-		</tr>
-	
-		<tr>
-			<td>Fecha de Cierre Ideal</td><td>
+		
+			<td><b>Fecha de Cierre Ideal</b></td>
+			<td>
 
-			<select class="formProyect" id="fCIdealY" name="fCIdealY">
-				<option value="<?php echo date('Y')+2; ?>"><?php echo date('Y')+2; ?></option>
-				<?php 
-					$anio = date('Y')+2;
-					for ($anio=date('Y')+1; $anio > 1986 ; $anio--) { 
-				?>
-						<option value="<?php echo $anio; ?>"><?php echo $anio; ?></option>
-				<?php
-					}
-				 ?>
-				
-				<option value="1986">1986</option>
-			</select>
+			<select class="formProyect" id="fCIdealY" name="fCIdealY"><?php insertAnioMasDos(); ?></select>
 			<select class="formProyect" id="fCIdealM" name="fCIdealM">
 				<option value="01">Enero</option>
 				<option value="02">Febrero</option>
@@ -488,7 +612,8 @@
 			</select>
 			<select class="formProyect" id="fCIdealD" name="fCIdealD">
 			<?php 
-				$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+				//$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+				$numero = 31;
 				for ($dia=1; $dia <= $numero ; $dia++) { ?>
 					<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
 			<?php	
@@ -497,12 +622,38 @@
 			</select>
 			</td>
 		</tr>
-
 		<tr>
-			<td><b>Posición: </b></td><td><input type="text" id="txtPosicion" name="posicion" class="formProyect"></td><td><b>Puestos Req.:</b> </td><td><input id="txtcta" type="text" value="" name="cta" class="formProyect"></td>
+			<td colspan="2"></td><td class="FCR"><b>Fecha de Cierre Real</b></td>
+			<td class="FCR">
+			<select class="formProyect" id="fCRealY" name="fCRealY"><?php insertAnioMasDos(); ?></select>
+			<select class="formProyect" id="fCRealM" name="fCRealM">
+				<option value="01">Enero</option>
+				<option value="02">Febrero</option>
+				<option value="03">marzo</option>
+				<option value="04">abril</option>
+				<option value="05">Mayo</option>
+				<option value="06">Junio</option>
+				<option value="07">Julio</option>
+				<option value="08">Agosto</option>
+				<option value="09">Septiembre</option>
+				<option value="10">Octubre</option>
+				<option value="11">Noviembre</option>
+				<option value="12">Diciembre</option>
+			</select>
+			<select class="formProyect" id="fCRealD" name="fCRealD">
+			<?php 
+				//$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+				$numero = 31;
+				for ($dia=1; $dia <= $numero ; $dia++) { ?>
+					<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
+			<?php	
+				}
+			 ?>
+			</select></td>
 		</tr>
+		<tr><td>&nbsp;</td></tr>
 		<tr>
-			<td><b>Disciplina: </b></td>
+			<td><b>Posición: </b></td><td><input type="text" id="txtPosicion" name="posicion" class="formProyect"></td><td><b>Disciplina: </b></td>
 			<td><select type="text" id="slcDisciplina" name="disciplina" class="formProyect">
 				<option value="-1">------</option>
 				<option value="1">1- CALIDAD</option>
@@ -520,6 +671,9 @@
 			</select></td>
 		</tr>
 		<tr>
+			<td><b>Puestos Req.:</b> </td><td><input id="txtcta" type="text" value="" name="cta" class="formProyect"></td>
+		</tr>
+		<tr>
 			<td><b>Nivel: </b></td>
 			<td><select type="text" id="slcNivel" name="nivel" class="formProyect">
 					<option value="1">1- C-LEVEL</option>
@@ -530,15 +684,9 @@
 					<option value="6">6- OTRO</option>
 				</select>
 			</td>
-		</tr>
-		<tr>
-			<td><b>KAM: </b></td><td><input type="text" id="txtKAM" name="kam" class="formProyect"></td>
-		</tr>
-		
-		<tr>
 			<td><b>Salario del Puesto: </b></td><td><input type="text" id="txtSalario" name="salario" class="formProyect"></td>
 		</tr>
-	
+		
 		<tr>
 			<td><b>Estatus: </b></td>
 			<td><select class="formProyect" name="estatus" id="slcEstatus">
@@ -551,10 +699,7 @@
 	<br><br>
 	<b>Proyecto Completado al: </b></td><td> <span>0%</span>
 
-
-
 	<br><br>
-
 
 	<br><br>
 	<div class="datagrid">
@@ -595,53 +740,67 @@
 	<h2>Datos del Contrato</h2>
 	<table class="tblFormularios">
 		<tr>
-			<td><b>Convenio: </b> </td><td><input type="text" class="formProyectContrato" id="txtConvenio" name="convenio"></td>
+			<td><b>Convenio Firmado: </b> </td><td><select type="text" class="formProyectContrato" id="txtConvenio" name="convenio"><option value="si">Si</option><option value="no">No</option></select></td>
 		</tr>
 		<tr>
-			<td><b>Garantia: </b></td><td><input type="text" class="formProyectContrato" id="txtGarantia" name="garantia"></td>
+			<td><b>Garantia: </b></td><td><select class="formProyectContrato" id="txtGarantia" name="garantia">
+				<option value="60">60</option>
+				<option value="90">90</option>
+				<option value="120">120</option>
+				<option value="150">150</option>
+				<option value="180">180</option>
+			</select></td>
 		</tr>
 		<tr>
-			<td><b>Honorarios: </b></td><td> <input type="text" class="formProyectContrato" id="txtHonorarios" name="honorarios"></td>
+			<td><b>Honorarios: </b></td>
+			<td><select id="slcHonorarios">
+				<option value="unMesNominal">1 Mes Nominal</option>
+				<option value="unMesIntegradoNominal">1 mes integrado nominal</option>
+				<option value="10">10%</option>
+				<option value="12">12%</option>
+				<option value="15">15%</option>
+				<option value="20">20%</option>
+				<option value="25">25%</option>
+				<option value="fijo">Fijo</option>
+				<option value="otro">Otro</option>
+			</select>
+			<input type="hidden" class="formProyectContrato" id="hdnHonorarios" name="hdnhonorarios">
+			<input type="text" class="formProyectContrato" id="txtHonorarios" name="honorarios" hidden></td>
 		</tr>
 		<tr>
-			<td><b>Acuerdo de Facturacion: </b></td><td><input id="txtAcuerdo" type="text" class="formProyectContrato" name="acuerdofacturacion"></td>
+			<td><b>Acuerdo de Facturacion: </b></td><td>
+			<select id="slcAcuerdo">
+				<option value="opc3_7">30% 70%</option>
+				<option value="opc3_3_4">30% 30% 40%</option>
+				<option value="otro">Otro</option>
+			</select>
+			<input id="txtAcuerdo" type="text" class="formProyectContrato" name="acuerdofacturacion" hidden></td>
 		</tr>
 	
 		<tr>
-			<td><b>Fecha de Cierre en Garantia: </b></td><td>
-
-			<select class="formProyectContrato" id="fGarantiaY" name="fGarantiaY">
-				<option value="<?php echo date('Y')+2; ?>"><?php echo date('Y')+2; ?></option>
-				<?php 
-					$anio = date('Y')+2;
-					for ($anio=date('Y')+1; $anio > 1986 ; $anio--) { 
-				?>
-						<option value="<?php echo $anio; ?>"><?php echo $anio; ?></option>
-				<?php
-					}
-				 ?>
-				
-				<option value="1986">1986</option>
-			</select>
+			<td class="FCG"><b>Fecha de Cierre en Garantia: </b></td>
+			<td class="FCG">
+			<select class="formProyectContrato" id="fGarantiaY" name="fGarantiaY"> <?php insertAnioMasDos(); ?></select>
 			<select class="formProyectContrato" id="fGarantiaM" name="fGarantiaM">
-				<option value="01">Enero</option>
-				<option value="02">Febrero</option>
-				<option value="03">marzo</option>
-				<option value="04">abril</option>
-				<option value="05">Mayo</option>
-				<option value="06">Junio</option>
-				<option value="07">Julio</option>
-				<option value="08">Agosto</option>
-				<option value="09">Septiembre</option>
+				<option value="1">Enero</option>
+				<option value="2">Febrero</option>
+				<option value="3">marzo</option>
+				<option value="4">abril</option>
+				<option value="5">Mayo</option>
+				<option value="6">Junio</option>
+				<option value="7">Julio</option>
+				<option value="8">Agosto</option>
+				<option value="9">Septiembre</option>
 				<option value="10">Octubre</option>
 				<option value="11">Noviembre</option>
 				<option value="12">Diciembre</option>
 			</select>
 			<select class="formProyectContrato" id="fGarantiaD" name="fGarantiaD">
 			<?php 
-				$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+				//$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+				$numero = 31;
 				for ($dia=1; $dia <= $numero ; $dia++) { ?>
-					<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
+					<option value="<?php echo $dia; ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
 			<?php	
 				}
 			 ?>
@@ -658,13 +817,13 @@
 			<td><b>Valor del Proyecto:</b></td><td><input type="text" class="formProyectFacturacion" id="txtValorProyecto" name="valorproyecto"></td>
 		</tr>
 		<tr>
-			<td><b>Total Facturado: </b></td><td><input type="text" class="formProyectFacturacion" id="txtTotalFacturado" name="totalfacturado"></td>
+			<td><b>Total Facturado: </b></td><td><input type="text" class="formProyectFacturacion" id="txtTotalFacturado" name="totalfacturado" disabled></td>
 		</tr>
 		<tr>
-			<td><b>% Facturado: </b></td><td><input type="text" class="formProyectFacturacion" id="txtPorcFacturado" name="porcfacturado"></td>
+			<td><b>% Facturado: </b></td><td><input type="text" class="formProyectFacturacion" id="txtPorcFacturado" name="porcfacturado" disabled></td>
 		</tr>
 		<tr>
-			<td><b>$ por Facturar: </b></td><td> <input type="text" class="formProyectFacturacion" id="txtXFacturar" name="xfacturar"></td>
+			<td><b>$ por Facturar: </b></td><td> <input type="text" class="formProyectFacturacion" id="txtXFacturar" name="xfacturar" disabled></td>
 		</tr>
 	</table>
 	 
@@ -674,18 +833,30 @@
 		<table border="1" id="tblFacturas"> <!-- Listado Pago de facturas -->
 			<thead>
 				<tr>
-					<th></th><th>No.</th><th>Monto</th><th>Fecha Envío</th><th>Fecha Pago</th>
+					<th></th><th>No.</th><th>Monto</th><th>Fecha de Factura</th><th>Fecha Pago</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<th style="background-color:#4D80E6; color:#fff;">Factura 1</th><td><input type="text" id="n1" name="facno1" class="formProyectFacturas"></td><td><input type="text" id="monto1" name="monto1" class="formProyectFacturas"></td><td><input type="text" id="fEnvio1" name="fenvio1" class="formProyectFacturas"></td><td><input type="text" id="fPago1" name="fpago1" class="formProyectFacturas"></td>
+					<th style="background-color:#4D80E6; color:#fff;">Factura 1</th>
+					<td><input type="text" id="n1" name="facno1" class="formProyectFacturas"></td>
+					<td><input type="text" id="monto1" name="monto1" class="formProyectFacturas"></td>
+					<td><input type="date" id="fEnvio1" name="fenvio1" class="formProyectFacturas"></td>
+					<td><input type="date" id="fPago1" name="fpago1" class="formProyectFacturas"></td>
 				</tr>
 				<tr >
-					<th style="background-color:#4D80E6; color:#fff;">Factura 2</th><td><input type="text" id="n2" name="facno2" class="formProyectFacturas"></td><td><input type="text" id="monto2" name="monto2" class="formProyectFacturas"></td><td><input type="text" id="fEnvio2" name="fenvio2" class="formProyectFacturas"></td><td><input type="text" id="fPago2" name="fpago2" class="formProyectFacturas"></td>
+					<th style="background-color:#4D80E6; color:#fff;">Factura 2</th>
+					<td><input type="text" id="n2" name="facno2" class="formProyectFacturas"></td>
+					<td><input type="text" id="monto2" name="monto2" class="formProyectFacturas"></td>
+					<td><input type="date" id="fEnvio2" name="fenvio2" class="formProyectFacturas"></td>
+					<td><input type="date" id="fPago2" name="fpago2" class="formProyectFacturas"></td>
 				</tr>
 				<tr>
-					<th style="background-color:#4D80E6; color:#fff;">Factura 3</th><td><input type="text" id="n3" name="facno3" class="formProyectFacturas"></td><td><input type="text" id="monto3" name="monto3" class="formProyectFacturas"></td><td><input type="text" id="fEnvio3" name="fenvio3" class="formProyectFacturas"></td><td><input type="text" id="fPago3" name="fpago3" class="formProyectFacturas"></td>
+					<th style="background-color:#4D80E6; color:#fff;">Factura 3</th>
+					<td><input type="text" id="n3" name="facno3" class="formProyectFacturas"></td>
+					<td><input type="text" id="monto3" name="monto3" class="formProyectFacturas"></td>
+					<td><input type="date" id="fEnvio3" name="fenvio3" class="formProyectFacturas"></td>
+					<td><input type="date" id="fPago3" name="fpago3" class="formProyectFacturas"></td>
 				</tr>
 			</tbody>
 				
@@ -695,10 +866,7 @@
 	<br><br>
 	<input type="button" value="Guardar" id="guardaProyecto">
 	<br><br><br>
-	
-	
 
-	
 </div>
 
 <div class="fondoEmergente"></div>
@@ -747,3 +915,51 @@
 	</div>
 </body>
 </html>
+<?php
+	function insertAniosActual(){
+		?><option value="<?php echo date('Y'); ?>"><?php echo date('Y'); ?></option>
+		<?php 
+			$anio = date('Y');
+			for ($anio=date('Y')-1; $anio > 1986 ; $anio--) { 
+		?>
+				<option value="<?php echo $anio; ?>"><?php echo $anio; ?></option>
+		<?php
+			}
+		 ?>
+		<option value="1986">1986</option><?php
+	}
+
+	function insertDiaActual(){
+		$diaActual = date("j");
+		
+		$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+		for ($dia=1; $dia <= $numero ; $dia++) { ?>
+			<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>" <?php if ($diaActual == $dia) {echo "selected";} ?>><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
+		<?php	
+			}
+	}
+
+	function insertAnioMasDos(){
+		?>
+		<option value="<?php echo date('Y')+2; ?>"><?php echo date('Y')+2; ?></option>
+		<?php 
+			$anio = date('Y')+2;
+			for ($anio=date('Y')+1; $anio > 1986 ; $anio--) { 
+		?>
+				<option value="<?php echo $anio; ?>"><?php echo $anio; ?></option>
+		<?php
+			}
+		?>
+		<option value="1986">1986</option>
+		<?php
+	}
+		
+	function insertDia_X_Mes(){
+		$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+		for ($dia=1; $dia <= $numero ; $dia++) { ?>
+			<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
+	<?php	
+		}
+	
+	}
+?>

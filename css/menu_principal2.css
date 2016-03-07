@@ -2,10 +2,10 @@
 /* main menu styles */
 #nav {
     display:inline-block;
-    width:80%;
+    width:90%;
     min-width: 600px;
     /*max-width: 1200px;*/
-    margin-left:10%;
+    margin-left:5%;
     
     padding:0;
     background:#335599 url(/proyecto_administracion/img/bg.png) repeat-x 0 -110px;

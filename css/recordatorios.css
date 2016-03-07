@@ -1,0 +1,43 @@
+#desplegarSeguimiento,#desplegarCierres,#desplegarGarantias,#desplegarFacturado{
+	padding: 5px;
+	border:2px solid black;
+	top:10px;
+	left: 5px;
+	position: relative;
+	margin-top: 20px;
+	background-color: #fff;
+}
+#desplegarSeguimiento{
+	top:10px;
+}
+#segActividades{
+	margin-top: 20px;
+	margin-left: 10px;
+	position: relative;
+}
+#EnCierre{
+	margin-top: 20px;
+	margin-left: 10px;
+	position: relative;
+}
+#desplegarCierres{
+	top:0px;
+}
+#proyectosEnGarantia{
+	margin-top: 20px;
+	margin-left: 10px;
+	position: relative;
+}
+#proyectosFacturados{
+	margin-top: 20px;
+	margin-left: 10px;
+	position: relative;
+}
+#desplegarGarantias{top:0px;}
+#contSeg,#contCierre,#contGarantia,#contFacturado{color:red; position: relative; margin-left: 13px; font-size:14px; font-weight: bold;}
+#contSeg{top: 10px;}
+#contCierre{top: 0px;}
+#contGarantia{top: 0px;}
+#contFacturado{top:10px; font-size: 11px;}
+
+#facturasPagadasActual, #facturasPagadasAnterior{font-size: 11px; margin-top: 10px; margin-left: 10px;}

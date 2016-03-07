@@ -13,10 +13,15 @@
 		$resultado = queryGeneral($query);
 		return $resultado;	
 	}
-	function buscaCierreIdeal(){
-		$query = "SELECT id, datos_proyecto FROM `proyecto`";
+	function buscaDatosProyectos(){
+		$query = "SELECT id, datos_proyecto, contrato, facturacion FROM `proyecto`";
 		$resultado = queryGeneral($query);
 		return $resultado;	
 	}
 	
+	// function buscaFechaGarantia(){
+	// 	$query = "SELECT id, datos_proyecto, contrato FROM `proyecto`";
+	// 	$resultado = queryGeneral($query);
+	// 	return $resultado;	
+	// }
  ?>

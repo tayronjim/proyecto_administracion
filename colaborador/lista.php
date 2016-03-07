@@ -5,6 +5,8 @@
 	<?php include_once("../librerias_base.htm"); ?>
 	<script type="text/javascript">
 	$(document).ready(function(){
+		$("li").removeClass( "current" )
+		$("#menuColaboradores").addClass('current');
 		$arreglo = {};
 		
 		
@@ -23,7 +25,7 @@
  					console.log(col[$cont]);
  					var dato = JSON.parse(col[$cont].datos);
  					if ($alt == 1) {$claseAlt = "class='alt'";}else $claseAlt = '';
- 					$("#tblColaboradores tbody").append('<tr '+$claseAlt+'><td>'+dato.codigo+'</td><td>'+dato.nombrec+'</td><td><span class="flechaColaborador boton" valor="'+col[$cont].id+'"><img src="../img/arrow-yellow.png" width="20px" height="auto"></span></td><td></td></tr>');
+ 					$("#tblColaboradores tbody").append('<tr '+$claseAlt+'><td>'+dato.codigo+'</td><td>'+dato.nombrec+'</td><td>'+dato.puesto+'</td><td><span class="flechaColaborador boton" valor="'+col[$cont].id+'"><img src="../img/arrow-yellow.png" width="20px" height="auto"></span></td></tr>');
  					$cont++;
  					$alt = $alt * -1;
  				}
@@ -60,7 +62,7 @@
 			<table border="1" id="tblColaboradores">
 				<thead>
 					<tr>
-						<th width="100px">Codigo</th><th width="300px">Nombre</th><th width="20px"></th><th width="20px">[+]</th>
+						<th width="100px">Codigo</th><th width="300px">Nombre</th><th>Puesto</th><th width="20px"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -68,25 +70,10 @@
 				</tbody>
 			</table>
 		</div>
-		
 
-
-		<!-- <input	type="hidden" value="0" class="dataColaborador"  name="idColaborador" id="idColaborador">
-		<table>
-			<tr>
-				<td>Codigo</td>	<td><input type="text" class="dataColaborador" id="txtCodigo" name="codigo"></td>
-			</tr>
-			<tr>
-				<td>Nombre Corto</td><td><input type="text" class="dataColaborador" id="txtNombreCorto" name="nombrec"></td>
-			</tr>
-			<tr>
-				<td>Nombre Completo</td><td><input type="text" class="dataColaborador" id="txtNombreLargo" name="nombrel"></td>
-			</tr>
-			
-		</table> -->
-		<br><br>
-
-		<input type="button" value="Guardar" id="guardaCliente">
+		<div class="recordatorios">
+			<?php include_once("../recordatorios/recordatorios.php"); ?>
+		</div>
 	</div>
 		
 

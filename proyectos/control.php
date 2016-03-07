@@ -15,6 +15,8 @@
 		case 'recuperaProyecto': recuperaProyecto($_POST["proyecto"]); break;
 		case 'listaActividades': listaActividades($_POST["proyecto"]); break;
 		// case 'listaSeguimientos': listaSeguimientos($_POST["proyecto"]); break;
+		case 'buscaKam': buscaKam(); break;
+		
 		
 	}
 
@@ -26,6 +28,16 @@
 		}
 		$struct = array("Cliente" => $cliente);
 		print json_encode($cliente);
+	}
+
+	function buscaKam(){
+		$res = recuperakam();
+		// print_r($contacto);
+		while ($row = mysqli_fetch_assoc($res)){
+		    $kam[] = $row;
+		}
+		$struct = array("Cliente" => $kam);
+		print json_encode($kam);
 	}
 
 	function buscaRS($id_cliente){
@@ -59,10 +71,11 @@
 		while ($row = mysqli_fetch_assoc($listadoProyectos)){
 		    $cliente = json_decode($row['cliente']);
 		    $busqueda_cliente = buscaCliente($cliente->cliente);
-			$cli[] = mysqli_fetch_assoc($busqueda_cliente);
+			$cli[0] = mysqli_fetch_assoc($busqueda_cliente);
 			$row['cliente'] = array("ids"=>$row['cliente'],"otros"=>$cli[0]);
 			
 			$proy[] = $row;
+			
 		}
 
 		$listadoEstatus = recuperaEstatus();
