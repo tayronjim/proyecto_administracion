@@ -57,12 +57,18 @@
 	 					listado.proyId = obj.Proyectos[$cont].id;
 	 					listado.prioridad = proy.prioridad;
 	 					listCuerpo[$cont] = listado;
-
+	 				
+	 					
 
 	 					
 						$cont++;
 						$alt = $alt * -1;
 	 				}
+
+	 				listCuerpo=listCuerpo.filter(function(el){
+	 						return el.prioridad == 3;
+	 					});
+
 	 				listCuerpo.sort(function (a, b){
 					   return (b.prioridad - a.prioridad)
 					});
@@ -77,6 +83,7 @@
 	 		});
 
 		});//Fin Document Ready
+
 	</script>
 	<style type="text/css">
 	

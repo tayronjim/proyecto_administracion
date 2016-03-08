@@ -29,7 +29,7 @@
 	 							fecha2 = new Date();								
 	 							var timeDiff = fecha.getTime() - fecha2.getTime();
 								var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-	 							console.log(diffDays);
+	 							
 	 							$("#seguimientoActividades").append("<b>Fecha: </b>"+$seguimiento[$cont2].fecha+"<br><a href='proyectos/proyectos.php?p="+obj.Seguimiento[$cont].id_proyecto+"'><b>Proyecto: </b>"+obj.Seguimiento[$cont].id_proyecto+"</a><br><b>Actividad: </b>"+$seguimiento[$cont2].act+"<br><br>")
 	 							$cont2++;
 	 						}
@@ -59,7 +59,7 @@
 	 					$datos_proyecto = JSON.parse(obj.proyecto[$cont].datos_proyecto);
 	 					$datos_contrato = JSON.parse(obj.proyecto[$cont].contrato);
 	 					$datos_facturacion = JSON.parse(obj.proyecto[$cont].facturacion);
-	 					console.log($datos_facturacion);
+	 				
 
 	 					fIdeal = $datos_proyecto.fCIdealY+"-"+$datos_proyecto.fCIdealM+"-"+$datos_proyecto.fCIdealD;
 	 					fI = Date.parse(fIdeal);
@@ -239,7 +239,7 @@
 	</div>
 
 	<a id='desplegarFacturado'>--Facturado Reciente--</a>
-	<label id="contFacturado">$ </label>
+	<label id="contFacturado" style="float: right; padding-right: 10px;">$ </label>
 	<div id="proyectosFacturados">
 		<div id="facturasPagadasActual"><b>-Facturado Mes Actual:</b><label style="float: right; padding-right: 10px;">$ </label></div>
 		<div id="facturasPagadasAnterior"><b>-Facturado Mes Anterior:</b><label style="float: right; padding-right: 10px;">$ </label></div>

@@ -291,6 +291,21 @@
 	<input type="hidden" class="formProyectFacturacion" id="txtPorcFacturado" name="porcfacturado" value="0">
 		
 	<input type="hidden" class="formProyectFacturacion" id="txtXFacturar" name="xfacturar" value="0">
+
+	<input type="hidden" id="n1" name="facno1" class="formProyectFacturas">
+	<input type="hidden" id="monto1" name="monto1" class="formProyectFacturas">
+	<input type="hidden" id="fEnvio1" name="fenvio1" class="formProyectFacturas">
+	<input type="hidden" id="fPago1" name="fpago1" class="formProyectFacturas">
+
+	<input type="hidden" id="n2" name="facno2" class="formProyectFacturas">
+	<input type="hidden" id="monto2" name="monto2" class="formProyectFacturas">
+	<input type="hidden" id="fEnvio2" name="fenvio2" class="formProyectFacturas">
+	<input type="hidden" id="fPago2" name="fpago2" class="formProyectFacturas">
+
+	<input type="hidden" id="n3" name="facno3" class="formProyectFacturas">
+	<input type="hidden" id="monto3" name="monto3" class="formProyectFacturas">
+	<input type="hidden" id="fEnvio3" name="fenvio3" class="formProyectFacturas">
+	<input type="hidden" id="fPago3" name="fpago3" class="formProyectFacturas">
 		
 
 </div>
