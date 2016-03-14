@@ -30,7 +30,8 @@
 	 				
 	 				var Col2 = JSON.parse(data);
 	 				var Col = JSON.parse(Col2.datos);
-	 		
+	 				var puestos = Col.puesto;
+	 		 console.log(puestos);
 	 					$("#txtCodigo").val(Col.codigo);
 	 					$("#txtNombreCorto").val(Col.nombrec);
 	 					$("#txtNombreLargo").val(Col.nombrel);
@@ -38,6 +39,15 @@
 	 					$("#txtPuesto").val(Col.puesto);
 	 					if (Col.activo == "1") {$("#chkactivo").attr('checked',true);}
 	 					else{$("#chkactivo").attr('checked',false);}
+
+	 					if (puestos.consultor == "1") {$("#chkPuestoConsultor").attr('checked',true);}
+	 					else{$("#chkPuestoConsultor").attr('checked',false);}
+
+	 					if (puestos.recrutador == "1") {$("#chkPuestoRecrutador").attr('checked',true);}
+	 					else{$("#chkPuestoRecrutador").attr('checked',false);}
+
+	 					if (puestos.apoyo == "1") {$("#chkPuestoApoyo").attr('checked',true);}
+	 					else{$("#chkPuestoApoyo").attr('checked',false);}
 	 					
 	 			}
 	 		});
@@ -46,9 +56,20 @@
 		$("#guardaColabolador").click(function(){
 			if ($("#chkactivo").is(':checked')) {$("#chkactivo").val("1");}
 			else {$("#chkactivo").val("0");}
+			if ($("#chkPuestoConsultor").is(':checked')) {$("#chkPuestoConsultor").val("1");}
+			else {$("#chkPuestoConsultor").val("0");}
+			if ($("#chkPuestoRecrutador").is(':checked')) {$("#chkPuestoRecrutador").val("1");}
+			else {$("#chkPuestoRecrutador").val("0");}
+			if ($("#chkPuestoApoyo").is(':checked')) {$("#chkPuestoApoyo").val("1");}
+			else {$("#chkPuestoApoyo").val("0");}
 			$(".dataColaborador").each(function(){
 				$arreglo[$(this).attr('name')] = $(this).val();
 			});
+			$arreglo['puesto'] = {
+									'consultor' : $("#chkPuestoConsultor").val(),
+									'reclutador' : $("#chkPuestoRecrutador").val(),
+									'apoyo' : $("#chkPuestoApoyo").val()
+								}
 			$funcion = "guardaColaborador";
 			if ($colaborador != "") {
 				$funcion = "actualizaColaborador";
@@ -96,7 +117,16 @@
 			<td>Nombre Completo</td><td><input type="text" class="dataColaborador" id="txtNombreLargo" name="nombrel"></td>
 		</tr>
 		<tr>
-			<td>Puesto</td><td><input type="text" class="dataColaborador" id="txtPuesto" name="puesto"></td>
+			<td>Puesto</td>
+			<td>
+				<table>
+					<tr>
+						<td>Consultor<input type="checkbox" class="dataColaboradorPuesto" id="chkPuestoConsultor" name="consultor"></td><td>Recrutador <input type="checkbox" class="dataColaboradorPuesto" id="chkPuestoRecrutador" name="recrutador"> </td>
+					</tr>
+					<tr><td>Apoyo<input type="checkbox" class="dataColaborador" id="chkPuestoApoyo" name="apoyo"></td></tr>
+				</table>
+			
+			<!-- <input type="text" class="dataColaboradorPuesto" id="txtPuesto" name="puesto"></td> -->
 		</tr>
 		<tr>
 			<td></td><td>Activo <input type="checkbox" class="dataColaborador" id="chkactivo" name="activo" checked></td>
@@ -108,6 +138,5 @@
 	<input type="button" value="Guardar" id="guardaColabolador">
 </div>
 	
-
 </body>
 </html>

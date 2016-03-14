@@ -101,7 +101,7 @@
 						hoy = new Date();
 						mesActual = hoy.getMonth();
 						
-
+						console.log($datos_facturacion);
 						if ($datos_facturacion.lista.fpago1 != "") {
 							fecha = new Date($datos_facturacion.lista.fpago1);
 							mesFactura = fecha.getMonth();

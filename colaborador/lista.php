@@ -16,16 +16,24 @@
  			url: "control.php",
  			data: { "funcion" :  "listaColaborador" },
  			success: function(data){
- 				console.log(data);
+ 				//console.log(data);
  				// var Col2 = JSON.parse(data);
  				var col = JSON.parse(data);
  				$cont = 0;
  				$alt = -1;
  				while(col[$cont]){
- 					console.log(col[$cont]);
+ 					
  					var dato = JSON.parse(col[$cont].datos);
+ 					console.log(dato);
+ 					var puesto = dato.puesto;
+ 					console.log(puesto);
+ 					$puestos = "";
+ 					$coma = "";
+ 					if (puesto.consultor == "1") {$puestos += "Consultor"; $coma = ", ";}
+ 					if (puesto.reclutador == "1") {$puestos += $coma + "Reclutador"; $coma = ", ";}
+ 					if (puesto.apoyo == "1") {$puestos += $coma + "Apoyo";}
  					if ($alt == 1) {$claseAlt = "class='alt'";}else $claseAlt = '';
- 					$("#tblColaboradores tbody").append('<tr '+$claseAlt+'><td>'+dato.codigo+'</td><td>'+dato.nombrec+'</td><td>'+dato.puesto+'</td><td><span class="flechaColaborador boton" valor="'+col[$cont].id+'"><img src="../img/arrow-yellow.png" width="20px" height="auto"></span></td></tr>');
+ 					$("#tblColaboradores tbody").append('<tr '+$claseAlt+'><td>'+dato.codigo+'</td><td>'+dato.nombrec+'</td><td>'+$puestos+'</td><td><span class="flechaColaborador boton" valor="'+col[$cont].id+'"><img src="../img/arrow-yellow.png" width="20px" height="auto"></span></td></tr>');
  					$cont++;
  					$alt = $alt * -1;
  				}
@@ -76,6 +84,5 @@
 		</div>
 	</div>
 		
-
 </body>
 </html>

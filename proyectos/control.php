@@ -16,6 +16,7 @@
 		case 'listaActividades': listaActividades($_POST["proyecto"]); break;
 		// case 'listaSeguimientos': listaSeguimientos($_POST["proyecto"]); break;
 		case 'buscaKam': buscaKam(); break;
+		case 'buscaEstatus': buscaEstatus(); break;
 		
 		
 	}
@@ -36,7 +37,6 @@
 		while ($row = mysqli_fetch_assoc($res)){
 		    $kam[] = $row;
 		}
-		$struct = array("Cliente" => $kam);
 		print json_encode($kam);
 	}
 
@@ -112,6 +112,15 @@
 		$proy =  mysqli_fetch_assoc($listadoActividades);
 		
 		echo '{"actividad":'.$proy['actividad'].',"seguimiento":'.$proy['seguimiento'].'}';
+	}
+
+	function buscaEstatus(){
+		$res = recuperaEstatus();
+		// print_r($contacto);
+		while ($row = mysqli_fetch_assoc($res)){
+		    $estatus[] = $row;
+		}
+		print json_encode($estatus);
 	}
 
  ?>

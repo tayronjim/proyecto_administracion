@@ -12,6 +12,8 @@
 	margin:auto;
 	height: 100px;
 	border:0px solid;
+	z-index: 999;
+	position: relative;
 }
 .cuerpo{
 	width: 90%;

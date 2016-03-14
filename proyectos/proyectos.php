@@ -11,6 +11,9 @@
 		$(document).ready(function(){
 			$("li").removeClass( "current" )
 			$("#menuProyectos").addClass('current');
+
+			
+
 			$.ajax({ // Busca datos del proyecto
 	 			type: "POST",
 	 			url: "control.php",
@@ -50,8 +53,43 @@
 
 		 				$("#txtPosicion").val(datos_proyecto.posicion);
 		 				$("#slcDisciplina").val(datos_proyecto.disciplina);
+		 				$.ajax({
+				 			type: "POST",
+				 			url: "control.php",
+				 			data: { "funcion" :  "buscaKam" },
+				 			success: function(data){
+				 				 // alert(data);
+				 				var obj = JSON.parse(data);
+				 			
+				 				$cont = 0;
+				 				
+				 				while(obj[$cont]){
+			 					//$arregloTabla[$cont] = obj.Cliente[$cont];
+			 					//$facturacion[obj[$cont].id] = obj[$cont].facturacion;
+			 					var kamDatos = JSON.parse(obj[$cont].datos);
+			 					if (kamDatos.puesto.consultor == "1") {
+			 						$("#txtkam").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");	
+			 					}
+
+			 					if (kamDatos.puesto.reclutador == "1") {
+			 						$("#slcRec").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");	
+			 					}
+
+			 					if (kamDatos.puesto.apoyo == "1") {
+			 						$("#slcApoyo").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");	
+			 					}
+			 					
+								$cont++;
+			 				}
+			 				ordenarSelect('txtkam');
+			 				ordenarSelect('slcRec');
+			 				ordenarSelect('slcApoyo');
+
+				 				$("#txtkam").val(datos_proyecto.kam);
 		 				
-		 				$("#txtKAM").val(datos_proyecto.kam);
+				 			}
+				 		});
+		 				
 		 				$("#txtPrioridad").val(datos_proyecto.prioridad);
 		 				$("#txtSalario").val(datos_proyecto.salario);
 		 				$("#txtConvenio").val(datos_contrato.convenio);
@@ -105,6 +143,16 @@
 		 				muestraFechasXEstatus(datos_proyecto.estatus);
 		 				calculaFechaGarantia(datos_contrato.garantia);
 
+		 				$("#fIniY").val(datos_proyecto.fIniY);
+		 				$("#fIniM").val(datos_proyecto.fIniM);
+		 				$("#fIniD").val(datos_proyecto.fIniD);
+
+		 				ms = Date.parse(datos_proyecto.fIniY + '-' +datos_proyecto.fIniM + '-' +datos_proyecto.fIniD);
+						fecha = new Date(ms);
+						fecha2 = new Date();								
+						var timeDiff = fecha2.getTime() - fecha.getTime();
+						var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+						$("#diasTranscurridos").append('<b>'+diffDays+'</b>');
 	 				
 		 				
 	 			}
@@ -129,25 +177,6 @@
 					
 
 	 		
-	 			}
-	 		});
-
-	 		$.ajax({
-	 			type: "POST",
-	 			url: "control.php",
-	 			data: { "funcion" :  "buscaKam" },
-	 			success: function(data){
-	 				 // alert(data);
-	 				var obj = JSON.parse(data);
-	 				console.log(obj);
-	 				$cont = 0;
-	 				
-	 				while(obj[$cont]){
-	 					var kamDatos = JSON.parse(obj[$cont].datos);
-	 					$("#txtkam").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
-						$cont++;
-	 				}
-	 				
 	 			}
 	 		});
 		
@@ -202,7 +231,6 @@
 				$(".fondoEmergente").css("visibility","visible");
 				$("#hideCancelaSegimiento").css("visibility","visible");
 			});
-
 			
 			$("#monto1").change(function(){ 
 	 			calculaTotalFacturado();
@@ -227,7 +255,6 @@
 	 				$("#txtAcuerdo").attr("hidden",false);
 	 			}
 	 				
-
 	 		});
 
 	 		$("#slcHonorarios").change(function(){
@@ -251,16 +278,24 @@
 		}); // fin document ready
 
 		function addCommas(nStr){
-				nStr += '';
-				x = nStr.split('.');
-				x1 = x[0];
-				x2 = x.length > 1 ? '.' + x[1] : '';
-				var rgx = /(\d+)(\d{3})/;
-				while (rgx.test(x1)) {
-				x1 = x1.replace(rgx, '$1' + ',' + '$2');
-				}
-				return x1 + x2;
+			nStr += '';
+			x = nStr.split('.');
+			x1 = x[0];
+			x2 = x.length > 1 ? '.' + x[1] : '';
+			var rgx = /(\d+)(\d{3})/;
+			while (rgx.test(x1)) {
+			x1 = x1.replace(rgx, '$1' + ',' + '$2');
+			}
+			return x1 + x2;
 		}
+
+		function ordenarSelect(id_componente){
+	    	var selectToSort = jQuery('#' + id_componente);
+	    	var optionActual = selectToSort.val();
+	    	selectToSort.html(selectToSort.children('option').sort(function (a, b) {
+	    		return a.text === b.text ? 0 : a.text < b.text ? -1 : 1;
+	      	})).val(optionActual);
+	    }
 
 		function guardaProyecto(){
 			general = {};
@@ -458,6 +493,12 @@
 		    $("#fGarantiaM").val(month);
 		    $("#fGarantiaD").val(day);
 		}
+		function commaSeparateNumber(val){
+			while (/(\d+)(\d{3})/.test(val.toString())){
+			  val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
+			}
+			return val;
+		}
 
 		
 	</script>
@@ -623,6 +664,9 @@
 			</td>
 		</tr>
 		<tr>
+			<td><b>Días transcurridos:</b></td><td><label id="diasTranscurridos"></label></td>
+		</tr>
+		<tr>
 			<td colspan="2"></td><td class="FCR"><b>Fecha de Cierre Real</b></td>
 			<td class="FCR">
 			<select class="formProyect" id="fCRealY" name="fCRealY"><?php insertAnioMasDos(); ?></select>
@@ -770,6 +814,7 @@
 		<tr>
 			<td><b>Acuerdo de Facturacion: </b></td><td>
 			<select id="slcAcuerdo">
+				<option value="opc100">100%</option>
 				<option value="opc3_7">30% 70%</option>
 				<option value="opc3_3_4">30% 30% 40%</option>
 				<option value="otro">Otro</option>
@@ -807,6 +852,14 @@
 			</select>
 			</td>
 		</tr>
+		<tr>
+			<td>Actividad mitad de garantia:</td><td><input type="checkbox" class="formProyectContrato" name="garantiaMedioTiempo"></td>
+		</tr>
+		<tr>
+			<td>Actividad 5 dias de garantia</td><td><input type="checkbox" class="formProyectContrato" name="garantia5Dias"></td>
+		</tr>
+		
+			
 	</table>
 	<br>
 

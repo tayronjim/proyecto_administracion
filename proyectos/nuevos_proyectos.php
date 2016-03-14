@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 	<?php include_once("../librerias_base.htm"); ?>
@@ -58,15 +58,103 @@
 	 					//$arregloTabla[$cont] = obj.Cliente[$cont];
 	 					//$facturacion[obj[$cont].id] = obj[$cont].facturacion;
 	 					var kamDatos = JSON.parse(obj[$cont].datos);
-	 					$("#txtkam").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
+	 					if (kamDatos.puesto.consultor == "1") {
+	 						$("#txtkam").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");	
+	 					}
+
+	 					if (kamDatos.puesto.reclutador == "1") {
+	 						$("#slcRec").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");	
+	 					}
+
+	 					if (kamDatos.puesto.apoyo == "1") {
+	 						$("#slcApoyo").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");	
+	 					}
+	 					
 						$cont++;
 	 				}
+	 				ordenarSelect('txtkam');
+	 				ordenarSelect('slcRec');
+	 				ordenarSelect('slcApoyo');
 	 				
 	 			}
 	 		});
 
 			$("#guardaProyecto").click(function(){
-			    general = {};
+				dotosObligatorios();
+				
+			    
+			});
+			$("#slcAcuerdo").change(function(){
+	 			if ($("#slcAcuerdo").val() != "otro") {
+	 				$("#txtAcuerdo").attr("hidden",true);
+					$("#txtAcuerdo").val($("#slcAcuerdo").val());
+	 			}
+	 			else{
+	 				$("#txtAcuerdo").val("");
+	 				$("#txtAcuerdo").attr("hidden",false);
+	 			}
+	 		});
+
+	 		$("#slcHonorarios").change(function(){
+	 			if ($("#slcHonorarios").val() != "otro" && $("#slcHonorarios").val() != "fijo" ) {
+	 				$("#txtHonorarios").attr("hidden",true);
+					$("#txtHonorarios").val($("#slcHonorarios").val());
+	 			}
+	 			else{
+	 				$("#txtHonorarios").val("");
+	 				$("#txtHonorarios").attr("hidden",false);
+	 			}
+	 		});
+			
+		}); // fin document ready
+	function ordenarSelect(id_componente){
+    	var selectToSort = jQuery('#' + id_componente);
+    	var optionActual = selectToSort.val();
+    	selectToSort.html(selectToSort.children('option').sort(function (a, b) {
+    		return a.text === b.text ? 0 : a.text < b.text ? -1 : 1;
+      	})).val(optionActual);
+    }
+    function dotosObligatorios(){
+    	if ($("#txtwbs").val() == "") {
+    		alert("WBS no puede estar vacío");
+    		return 0;
+    	}
+    	if ($("#txtkam").val() == "-1") {
+    		alert("Selecciona un KAM");
+    		return 0;
+    	}
+    	if ($("#listaClientes").val() == "-1") {
+    		alert("Selecciona un Cliente");
+    		return 0;
+    	}
+    	if ($("#listaRS").val() == null) {
+    		alert("El cliente no tiene una razon social asociada");
+    	}
+    	if ($("#txtTituloProyecto").val() == "") {
+    		alert("La posicion no puede estar vacía");
+    		return 0;
+    	}
+    	if ($("#txtcta").val() == "") {
+    		alert("No. de puestos no puede estar vacío");
+    		return 0;
+    	}
+    	$nuevoValor = $("#txtValorProyecto").val().replace(/,/g, '');
+    	
+    	if (isNaN($nuevoValor)){
+    		alert("Coloque un numero valido en Valor de Proyecto");
+    		return 0;
+    	} 
+    	if($("#txtValorProyecto").val() == "") {
+    		$("#txtValorProyecto").val("0");
+    	}
+    	
+    	guardaDatos();
+    	
+    	
+    	
+    }
+    function guardaDatos(){
+    	general = {};
 			    cliente = {};
 			    contrato = {};
 			    facturacion = {};
@@ -100,6 +188,7 @@
 			        facturacion[name] = valor;
 			    }); 
 
+
 			    jsonStringGeneral = JSON.stringify(general);
 			    jsonStringCliente = JSON.stringify(cliente);
 			    jsonStringContrato = JSON.stringify(contrato);
@@ -115,30 +204,7 @@
 		 				 window.location="proyectos.php?p="+data;
 		 			}
 		 		});
-			});
-			$("#slcAcuerdo").change(function(){
-	 			if ($("#slcAcuerdo").val() != "otro") {
-	 				$("#txtAcuerdo").attr("hidden",true);
-					$("#txtAcuerdo").val($("#slcAcuerdo").val());
-	 			}
-	 			else{
-	 				$("#txtAcuerdo").val("");
-	 				$("#txtAcuerdo").attr("hidden",false);
-	 			}
-	 		});
-
-	 		$("#slcHonorarios").change(function(){
-	 			if ($("#slcHonorarios").val() != "otro" && $("#slcHonorarios").val() != "fijo" ) {
-	 				$("#txtHonorarios").attr("hidden",true);
-					$("#txtHonorarios").val($("#slcHonorarios").val());
-	 			}
-	 			else{
-	 				$("#txtHonorarios").val("");
-	 				$("#txtHonorarios").attr("hidden",false);
-	 			}
-	 		});
-			
-		}); // fin document ready
+    }
 
 	</script>
 	<style type="text/css"></style>
@@ -148,23 +214,30 @@
 <div class="cuerpo">
 	<table class="tblFormularios">
 		<tr>
-			<td><b>WBS:</b></td><td><input type="text" class="formProyect" id="txtwbs" name="wbs"></td>
+			<td><b>WBS*:</b></td><td><input type="text" class="formProyect" id="txtwbs" name="wbs"></td>
 			<td><b>Empresa Interna:</b></td><td>
 			<select id="txtEmpInt" type="text" value="" name="empint" class="formProyect">
-				<option value="contrata">Contrata</option>
-				<option value="dma">Diaz Morones</option>
-				<option value="aims">AIMS</option>
-				<option value="liase">Liase</option>
-				<option value="stonehc">Stone Human Capital</option>
+				<option value="SICSA">Servicios Industriales Contrata SA</option>
+				<option value="SCO">Servicios Contrata</option>
+				<option value="OCO">Outsourcing Contrata</option>
+				<option value="DMA">Diaz Morones y Asociados</option>
+				<option value="AIMS">AIMS</option>
+				<option value="LIASE">Liase</option>
+				<option value="STONEHC">Stone Human Capital</option>
 			</select></td>
 		</tr>
 		<tr>
-			<td><b>KAM:</b></td><td><select class="formProyect" id="txtkam" name="kam"><option value="-1"> - </option></select></td>
+			<td><b>KAM*:</b></td><td><select class="formProyect" id="txtkam" name="kam"><option value="-1"> - </option></select></td>
+			<td><b>Reclutador:</b></td><td><select class="formProyect" id="slcRec" name="reclutador"><option value="-1"> N/A </option></select></td>
+		</tr>
+			
+		<tr>
+			<td><b>Apoyo:</b></td><td><select class="formProyect" id="slcApoyo" name="apoyo"><option value="-1"> N/A </option></select></td>
 			<td><b>Prioridad:</b></td><td><select class="formProyect" id="txtPrioridad" name="prioridad"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></td>
 		</tr>
 		
 		<tr>
-			<td><b>Cliente:</b></td><td><select id="listaClientes" class="formProyectCliente" name="cliente"><option value="-1">-Selecciona un cliente-</option></select></td><td><b>Razon Social</b></td><td><select id="listaRS" class="formProyectCliente" name="razonS"><option>-Seleccione un Cliente-</option></select></td>
+			<td><b>Cliente*:</b></td><td><select id="listaClientes" class="formProyectCliente" name="cliente"><option value="-1">-Selecciona un cliente-</option></select></td><td><b>Razon Social</b></td><td><select id="listaRS" class="formProyectCliente" name="razonS"><option>-Seleccione un Cliente-</option></select></td>
 		</tr>
 		<tr><td>&nbsp;</td></tr>
 		<tr>
@@ -204,7 +277,7 @@
 		</tr>
 		<tr><td>&nbsp;</td></tr>
 		<tr>
-			<td><b>Posicion:</b></td><td><input type="text" class="formProyect" id="txtTituloProyecto" name="posicion"></td><td><b>Disciplina:</b></td>
+			<td><b>Posicion*:</b></td><td><input type="text" class="formProyect" id="txtTituloProyecto" name="posicion"></td><td><b>Disciplina:</b></td>
 			<td><select type="text" id="slcDisciplina" name="disciplina" class="formProyect">
 					<option value="-1">------</option>
 					<option value="1">1- CALIDAD</option>
@@ -222,7 +295,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td><b># Puestos Req.:</b></td><td> <input type="text" class="formProyect" id="txtcta" name="cta"></td>
+			<td><b># Puestos Req.*:</b></td><td> <input type="text" class="formProyect" id="txtcta" name="cta"></td>
 		</tr>
 		<tr>
 			<td><b>Nivel: </b></td>
@@ -241,7 +314,14 @@
 	</table>
 	<table class="tblFormularios">
 		<tr><td><h2>Datos del Contrato</h2></td></tr>
-		<tr><td><b>Convenio Firmado:</b></td><td><select type="text" class="formProyectContrato" id="txtConvenio" name="convenio"><option value="si">Si</option><option value="no">No</option></select></td></tr>
+		<tr>
+			<td><b>Convenio Firmado:</b></td>
+			<td><select type="text" class="formProyectContrato" id="txtConvenio" name="convenio">
+				<option value="no">No</option>
+				<option value="si">Si</option>
+				</select>
+			</td>
+		</tr>
 		<tr><td><b>Garantia:</b></td>
 			<td><select class="formProyectContrato" id="txtGarantia" name="garantia">
 				<option value="60">60</option>
@@ -278,6 +358,8 @@
 			<input type="hidden" class="formProyectContrato" name="fGarantiaY" value="0000">
 			<input type="hidden" class="formProyectContrato" name="fGarantiaM" value="00">
 			<input type="hidden" class="formProyectContrato" name="fGarantiaD" value="00">
+			<input type="hidden" class="formProyectContrato" name="garantiaMedioTiempo" value="0">
+			<input type="hidden" class="formProyectContrato" name="garantia5Dias" value="0">
 			</td>
 		</tr>
 		<tr><td><h2>Facturacion</h2></td></tr>
@@ -292,20 +374,20 @@
 		
 	<input type="hidden" class="formProyectFacturacion" id="txtXFacturar" name="xfacturar" value="0">
 
-	<input type="hidden" id="n1" name="facno1" class="formProyectFacturas">
-	<input type="hidden" id="monto1" name="monto1" class="formProyectFacturas">
-	<input type="hidden" id="fEnvio1" name="fenvio1" class="formProyectFacturas">
-	<input type="hidden" id="fPago1" name="fpago1" class="formProyectFacturas">
+	<input type="hidden" id="n1" name="facno1" class="formProyectFacturacion">
+	<input type="hidden" id="monto1" name="monto1" class="formProyectFacturacion">
+	<input type="hidden" id="fEnvio1" name="fenvio1" class="formProyectFacturacion">
+	<input type="hidden" id="fPago1" name="fpago1" class="formProyectFacturacion">
 
-	<input type="hidden" id="n2" name="facno2" class="formProyectFacturas">
-	<input type="hidden" id="monto2" name="monto2" class="formProyectFacturas">
-	<input type="hidden" id="fEnvio2" name="fenvio2" class="formProyectFacturas">
-	<input type="hidden" id="fPago2" name="fpago2" class="formProyectFacturas">
+	<input type="hidden" id="n2" name="facno2" class="formProyectFacturacion">
+	<input type="hidden" id="monto2" name="monto2" class="formProyectFacturacion">
+	<input type="hidden" id="fEnvio2" name="fenvio2" class="formProyectFacturacion">
+	<input type="hidden" id="fPago2" name="fpago2" class="formProyectFacturacion">
 
-	<input type="hidden" id="n3" name="facno3" class="formProyectFacturas">
-	<input type="hidden" id="monto3" name="monto3" class="formProyectFacturas">
-	<input type="hidden" id="fEnvio3" name="fenvio3" class="formProyectFacturas">
-	<input type="hidden" id="fPago3" name="fpago3" class="formProyectFacturas">
+	<input type="hidden" id="n3" name="facno3" class="formProyectFacturacion">
+	<input type="hidden" id="monto3" name="monto3" class="formProyectFacturacion">
+	<input type="hidden" id="fEnvio3" name="fenvio3" class="formProyectFacturacion">
+	<input type="hidden" id="fPago3" name="fpago3" class="formProyectFacturacion">
 		
 
 </div>
