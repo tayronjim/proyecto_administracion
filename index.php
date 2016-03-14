@@ -16,6 +16,23 @@
 		$(document).ready(function(){
 			$("li").removeClass( "current" )
 			$("#menuHome").addClass('current');
+			$kams = [];
+			$.ajax({
+	 			type: "POST",
+	 			url: "proyectos/control.php",
+	 			data: { "funcion" : "buscaKam" },
+	 			success: function(data){
+	 				var obj = JSON.parse(data);
+	 				$contKam = 0;
+	 				while(obj[$contKam]){
+						$kams[obj[$contKam].id] = JSON.parse(obj[$contKam].datos);
+						$contKam ++;
+	 				}
+	 				
+	 				console.log($kams[1].nombrec);
+	 			}
+	 		});
+
 			$.ajax({
 	 			type: "POST",
 	 			url: "proyectos/control.php",
@@ -46,7 +63,7 @@
 	 					listado = new Object();
 	 					listado.alt = $claseAlt;
 	 					listado.posicion = proy.posicion;
-	 					listado.kam = proy.kam;
+	 					listado.kam = $kams[proy.kam].nombrec;
 	 					listado.convenio = contrato.convenio;
 	 					listado.cliente = cliente.publico;
 	 					listado.rs = rs.rs;
@@ -57,17 +74,23 @@
 	 					listado.proyId = obj.Proyectos[$cont].id;
 	 					listado.prioridad = proy.prioridad;
 	 					listCuerpo[$cont] = listado;
-
+	 				
+	 					
 
 	 					
 						$cont++;
 						$alt = $alt * -1;
 	 				}
+
+	 				// listCuerpo=listCuerpo.filter(function(el){
+	 				// 		return el.prioridad == 3;
+	 				// 	});
+
 	 				listCuerpo.sort(function (a, b){
 					   return (b.prioridad - a.prioridad)
 					});
 					imprimetablaproyectos(listCuerpo);
-	 				console.log(listCuerpo);
+	 				//console.log(listCuerpo);
 	 			}
 	 		});
 
@@ -77,6 +100,7 @@
 	 		});
 
 		});//Fin Document Ready
+
 	</script>
 	<style type="text/css">
 	
