@@ -9,7 +9,7 @@
 		listado = {};
 		while(listCuerpo[$cont]){
 			listado = listCuerpo[$cont];
-			$("#tblProyectos tbody").append("<tr "+listado.alt+"><td>"+listado.posicion+"</td><td>"+listado.kam+"</td><td>"+listado.convenio+"</td><td>"+listado.cliente+" / "+listado.rs+"</td><td>"+listado.fCIdeal+"</td><td>"+listado.estatus+"</td><td>"+listado.avance+"</td><td>"+listado.overtime+"</td><td>"+listado.prioridad+"</td><td><input type='hidden' value='"+listado.proyId+"'><span class='flechaProyecto boton' valor='"+listado.proyId+"'><img src='img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
+			$("#tblProyectos tbody").append("<tr "+listado.alt+"><td>"+listado.posicion+"</td><td>"+listado.kam+"</td><td>"+listado.convenio+"</td><td>"+listado.cliente+"</td><td>"+listado.fInicio+"</td><td>"+listado.fCIdeal+"</td><td>"+listado.estatus+"</td><td>"+listado.avance+"</td><td>"+listado.overtime+"</td><td>"+listado.prioridad+"</td><td><input type='hidden' value='"+listado.proyId+"'><span class='flechaProyecto boton' valor='"+listado.proyId+"'><img src='img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
 			$cont++;
 		}
 	}
@@ -68,6 +68,7 @@
 	 					listado.cliente = cliente.publico;
 	 					listado.rs = rs.rs;
 	 					listado.fCIdeal = proy.fCIdealY+"-"+proy.fCIdealM+"-"+proy.fCIdealD;
+	 					listado.fInicio = proy.fIniY+"-"+proy.fIniM+"-"+proy.fIniD;
 	 					listado.estatus = estatus.nombre;
 	 					listado.avance = estatus.avance;
 	 					listado.overtime = "<label style='font-weight: bolder;color:"+$colorOvertime+";'>"+$overtime+"</label>"
@@ -111,20 +112,21 @@
 <body>
 <?php include_once("header.htm"); ?>
 <div class="cuerpo">
-	<div class="datagrid">
-		<table id="tblProyectos" >
-			<thead>
-				<tr>
-					<th>Proyecto</th><th>KAM</th><th>Convenio</th><th>Cliente/RS</th><th>Fecha Limite</th><th>Estatus</th><th>Avance</th><th>OVERTIME</th><th></th><th></th>
-				</tr>
-			</thead>
-			<tbody></tbody>
-			<tfoot><tr><td colspan="8"></td></tr></tfoot>	
-				
-		</table>
+	<div class="contenido" style="position: relative; float: left; max-width: 80%;">
+		<div class="datagrid">
+			<table id="tblProyectos" >
+				<thead>
+					<tr>
+						<th>Proyecto</th><th>KAM</th><th>Conv.</th><th>Cliente</th><th>Fecha Inicio</th><th>Fecha Limite</th><th>Estatus</th><th>Avance</th><th>Overtime</th><th></th><th></th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+				<tfoot><tr><td colspan="8"></td></tr></tfoot>	
+					
+			</table>
+		</div>
 	</div>
-
-	<div class="recordatorios">
+	<div class="recordatorios" style="position: relative;float: right;"> 
 		<?php include_once("recordatorios/recordatorios.php"); ?>
 	</div>
 </div>

@@ -147,6 +147,7 @@
     	if($("#txtValorProyecto").val() == "") {
     		$("#txtValorProyecto").val("0");
     	}
+
     	
     	guardaDatos();
     	

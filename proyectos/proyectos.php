@@ -111,24 +111,24 @@
 		 				$("#fGarantiaM").val(datos_contrato.fGarantiaM);
 		 				$("#fGarantiaD").val(datos_contrato.fGarantiaD);
 		 				 
-		 				$("#txtValorProyecto").val(datos_facturacion.valorproyecto);
-		 				$("#txtTotalFacturado").val(datos_facturacion.totalfacturado);
-		 				$("#txtPorcFacturado").val(datos_facturacion.porcfacturado);
-		 				$("#txtXFacturar").val(datos_facturacion.xfacturar);
+		 				$("#txtValorProyecto").val(addCommas(parseFloat(datos_facturacion.valorproyecto).toFixed(2)));
+		 				$("#txtTotalFacturado").val(addCommas(parseFloat(datos_facturacion.totalfacturado.replace(/,/g, '')).toFixed(2)));
+		 				$("#txtPorcFacturado").val(parseFloat(datos_facturacion.porcfacturado).toFixed(2) + "%");
+		 				$("#txtXFacturar").val(addCommas(parseFloat(datos_facturacion.xfacturar.replace(/,/g, '')).toFixed(2)));
 		 				
 		 			try{	
 	 					$("#n1").val(datos_facturacion.lista.facno1);
-		 				$("#monto1").val(datos_facturacion.lista.monto1);
+		 				$("#monto1").val(addCommas(datos_facturacion.lista.monto1));
 		 				$("#fEnvio1").val(datos_facturacion.lista.fenvio1);
 		 				$("#fPago1").val(datos_facturacion.lista.fpago1);
 		 				
 		 				$("#n2").val(datos_facturacion.lista.facno2);
-		 				$("#monto2").val(datos_facturacion.lista.monto2);
+		 				$("#monto2").val(addCommas(datos_facturacion.lista.monto2));
 		 				$("#fEnvio2").val(datos_facturacion.lista.fenvio2);
 		 				$("#fPago2").val(datos_facturacion.lista.fpago2);
 
 		 				$("#n3").val(datos_facturacion.lista.facno3);
-		 				$("#monto3").val(datos_facturacion.lista.monto3);
+		 				$("#monto3").val(addCommas(datos_facturacion.lista.monto3));
 		 				$("#fEnvio3").val(datos_facturacion.lista.fenvio3);
 		 				$("#fPago3").val(datos_facturacion.lista.fpago3);
 		 			}catch(err){console.log(err.message);}
@@ -397,24 +397,25 @@
 		}
 
 		function calculaTotalFacturado(){
-			if (isNaN($("#txtValorProyecto").val())) {$("#txtValorProyecto").val(0);}
-			$monto1 = $("#monto1").val();
-			$monto2 = $("#monto2").val();
-			$monto3 = $("#monto3").val();
-			if (isNaN($monto1)) {alert("Debes introducir solo numeros en el campo Monto Factura 1");}
-			if (isNaN($monto2)) {alert("Debes introducir solo numeros en el campo Monto Factura 2");}
-			if (isNaN($monto3)) {alert("Debes introducir solo numeros en el campo Monto Factura 3");}
+			if (isNaN($("#txtValorProyecto").val().replace(/,/g, ''))) {$("#txtValorProyecto").val(0);}
+			$monto1 = $("#monto1").val().replace(/,/g, '');
+			$monto2 = $("#monto2").val().replace(/,/g, '');
+			$monto3 = $("#monto3").val().replace(/,/g, '');
+			if (isNaN($monto1.replace(/,/g, ''))) {alert("Debes introducir solo numeros en el campo Monto Factura 1");}
+			if (isNaN($monto2.replace(/,/g, ''))) {alert("Debes introducir solo numeros en el campo Monto Factura 2");}
+			if (isNaN($monto3.replace(/,/g, ''))) {alert("Debes introducir solo numeros en el campo Monto Factura 3");}
 
 			if ($monto1 == "") {$monto1 = 0;}
 			if ($monto2 == "") {$monto2 = 0;}
 			if ($monto3 == "") {$monto3 = 0;}
 
-			$valor = $("#txtValorProyecto").val();
-			$totalFacturado = parseFloat($monto1)+parseFloat($monto2)+parseFloat($monto3);
-			$("#txtTotalFacturado").val($totalFacturado);
-			$porcFacturado = ($totalFacturado * 100) / $valor;
+			$valor = $("#txtValorProyecto").val().replace(/,/g, '');
+			$totalFacturado = (parseFloat($monto1)+parseFloat($monto2)+parseFloat($monto3)).toFixed(2);
+			$("#txtTotalFacturado").val(addCommas($totalFacturado));
+			$porcFacturado = (($totalFacturado * 100) / $valor).toFixed(2);
 			$("#txtPorcFacturado").val($porcFacturado + " %");
-			$("#txtXFacturar").val(parseFloat($("#txtValorProyecto").val()) - $totalFacturado);
+			$("#txtXFacturar").val(addCommas((parseFloat($("#txtValorProyecto").val().replace(/,/g, '')) - $totalFacturado).toFixed(2)));
+
 
 		}
 
