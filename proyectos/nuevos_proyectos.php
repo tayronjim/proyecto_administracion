@@ -4,6 +4,7 @@
 	<?php include_once("../librerias_base.htm"); ?>
 	<script type="text/javascript">
 		$facturacion = [];
+		$contacto = [];
 		$(document).ready(function(){
 			$("li").removeClass( "current" )
 			$("#menuProyectos").addClass('current');
@@ -14,12 +15,13 @@
 	 			success: function(data){
 	 				 // alert(data);
 	 				var obj = JSON.parse(data);
-	 				console.log(obj);
 	 				$cont = 0;
 	 				
 	 				while(obj[$cont]){
 	 					//$arregloTabla[$cont] = obj.Cliente[$cont];
 	 					$facturacion[obj[$cont].id] = obj[$cont].facturacion;
+	 					$contacto[obj[$cont].id] = obj[$cont].datos_contacto;
+	 					console.log($contacto);
 	 					var cliente = JSON.parse(obj[$cont].datos_cliente);
 	 					$("#listaClientes").append("<option value='"+obj[$cont].id+"'>"+cliente.publico+"</option>");
 						$cont++;
@@ -31,12 +33,21 @@
 	 		$("#listaClientes").change(function(){
 	 			//alert($("#listaClientes").val());
 	 			$("#listaRS").html("");
+	 			$("#listaContactos").html("");
 	 			if ($("#listaClientes").val() > 0) {
 	 				var fac = JSON.parse($facturacion[$("#listaClientes").val()]);
+	 				var contacto = JSON.parse($contacto[$("#listaClientes").val()]);
+	 				console.log(contacto);
 	 				$cont = 0;
 	 				while(fac[$cont]){
 						if (fac[$cont].primario == 1) {$selected = "selected";} else {$selected = "";};
 		 				$("#listaRS").append("<option value='"+fac[$cont].idfac+"' "+$selected+">"+fac[$cont].rs+"</option>");
+		 				$cont++;
+	 				}
+	 				$cont = 0;
+	 				while(contacto[$cont]){
+		 				$("#listaContactos").append("<option value='"+contacto[$cont].idcontacto+"'>"+contacto[$cont].nombre+"</option>");
+		 				
 		 				$cont++;
 	 				}
 
@@ -59,7 +70,8 @@
 	 					//$facturacion[obj[$cont].id] = obj[$cont].facturacion;
 	 					var kamDatos = JSON.parse(obj[$cont].datos);
 	 					if (kamDatos.puesto.consultor == "1") {
-	 						$("#txtkam").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");	
+	 						$("#txtkam").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
+	 						$("#txtkam2").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
 	 					}
 
 	 					if (kamDatos.puesto.reclutador == "1") {
@@ -73,6 +85,7 @@
 						$cont++;
 	 				}
 	 				ordenarSelect('txtkam');
+	 				ordenarSelect('txtkam2');
 	 				ordenarSelect('slcRec');
 	 				ordenarSelect('slcApoyo');
 	 				
@@ -218,27 +231,36 @@
 			<td><b>WBS*:</b></td><td><input type="text" class="formProyect" id="txtwbs" name="wbs"></td>
 			<td><b>Empresa Interna:</b></td><td>
 			<select id="txtEmpInt" type="text" value="" name="empint" class="formProyect">
+				<option value="AIMS">AIMS</option>
+				<option value="DMA">Diaz Morones y Asociados</option>
 				<option value="SICSA">Servicios Industriales Contrata SA</option>
 				<option value="SCO">Servicios Contrata</option>
 				<option value="OCO">Outsourcing Contrata</option>
-				<option value="DMA">Diaz Morones y Asociados</option>
-				<option value="AIMS">AIMS</option>
 				<option value="LIASE">Liase</option>
 				<option value="STONEHC">Stone Human Capital</option>
 			</select></td>
 		</tr>
+		<tr><td>&nbsp;</td></tr>
 		<tr>
 			<td><b>KAM*:</b></td><td><select class="formProyect" id="txtkam" name="kam"><option value="-1"> - </option></select></td>
 			<td><b>Reclutador:</b></td><td><select class="formProyect" id="slcRec" name="reclutador"><option value="-1"> N/A </option></select></td>
 		</tr>
 			
 		<tr>
+			<td><b>KAM 2:</b></td><td><select class="formProyect" id="txtkam2" name="kam2"><option value="-1"> - </option></select></td>
 			<td><b>Apoyo:</b></td><td><select class="formProyect" id="slcApoyo" name="apoyo"><option value="-1"> N/A </option></select></td>
-			<td><b>Prioridad:</b></td><td><select class="formProyect" id="txtPrioridad" name="prioridad"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></td>
+			
 		</tr>
-		
+		<tr><td>&nbsp;</td></tr>
+		<tr>
+			<td><b>Prioridad:</b></td><td><select class="formProyect" id="txtPrioridad" name="prioridad"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></td><td></td>
+		</tr>
+		<tr><td>&nbsp;</td></tr>
 		<tr>
 			<td><b>Cliente*:</b></td><td><select id="listaClientes" class="formProyectCliente" name="cliente"><option value="-1">-Selecciona un cliente-</option></select></td><td><b>Razon Social</b></td><td><select id="listaRS" class="formProyectCliente" name="razonS"><option>-Seleccione un Cliente-</option></select></td>
+		</tr>
+		<tr>
+			<td><b>Contacto:</b></td><td><select id="listaContactos" class="formProyectCliente" name="contacto"><option value="-1">-Selecciona un contacto-</option></select></td>
 		</tr>
 		<tr><td>&nbsp;</td></tr>
 		<tr>

@@ -18,6 +18,16 @@
 		$resultado = queryGeneral($query);
 		return $resultado;	
 	}
+	function filtraProyecto($id){
+		$query = "SELECT * FROM `proyecto` WHERE id=".$id;
+		$resultado = queryGeneral($query);
+		return $resultado;
+	}
+	function filtraCliente($id){
+		$query = "SELECT datos_cliente FROM `clientes` WHERE id=".$id;
+		$resultado = queryGeneral($query);
+		return $resultado;
+	}
 	
 	// function buscaFechaGarantia(){
 	// 	$query = "SELECT id, datos_proyecto, contrato FROM `proyecto`";
