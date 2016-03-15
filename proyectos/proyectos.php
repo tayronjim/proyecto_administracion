@@ -121,7 +121,7 @@
 		 				$("#fGarantiaM").val(datos_contrato.fGarantiaM);
 		 				$("#fGarantiaD").val(datos_contrato.fGarantiaD);
 		 				 
-		 				$("#txtValorProyecto").val(addCommas(parseFloat(datos_facturacion.valorproyecto).toFixed(2)));
+		 				$("#txtValorProyecto").val(addCommas(parseFloat(datos_facturacion.valorproyecto.replace(/,/g, '')).toFixed(2)));
 		 				$("#txtTotalFacturado").val(addCommas(parseFloat(datos_facturacion.totalfacturado.replace(/,/g, '')).toFixed(2)));
 		 				$("#txtPorcFacturado").val(parseFloat(datos_facturacion.porcfacturado).toFixed(2) + "%");
 		 				$("#txtXFacturar").val(addCommas(parseFloat(datos_facturacion.xfacturar.replace(/,/g, '')).toFixed(2)));
