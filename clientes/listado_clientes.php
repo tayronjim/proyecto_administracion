@@ -20,7 +20,7 @@
 	 					var datos = JSON.parse(obj.Cliente[$cont].datos_cliente);
 	 					console.log(datos);
 	 					if ($alt == 1) {$claseAlt = "class='alt'";}else $claseAlt = '';
-	 					$("#tblClientes tbody").append("<tr "+$claseAlt+"><td>"+datos.codigo+"</td><td>"+datos.publico+"</td><td><span class='flechaClientes boton' valor='"+obj.Cliente[$cont].id+"'><img src='../img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
+	 					$("#tblClientes tbody").append("<tr "+$claseAlt+"><td>"+datos.publico+"</td><td><span class='flechaClientes boton' valor='"+obj.Cliente[$cont].id+"'><img src='../img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
 						$cont++;
 						$alt = $alt * -1;
 	 				}
@@ -51,7 +51,7 @@
 			<table id="tblClientes" border="1">
 				<thead>
 					<tr>
-						<th>Codigo</th><th>Nombre Comercial</th><th></th>
+						<th>Nombre Comercial</th><th></th>
 					</tr>
 				</thead>
 				<tbody></tbody>
