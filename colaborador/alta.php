@@ -32,7 +32,7 @@
 	 				var Col = JSON.parse(Col2.datos);
 	 				var puestos = Col.puesto;
 	 		 console.log(puestos);
-	 					$("#txtCodigo").val(Col.codigo);
+	 					//$("#txtCodigo").val(Col.codigo);
 	 					$("#txtNombreCorto").val(Col.nombrec);
 	 					$("#txtNombreLargo").val(Col.nombrel);
 	 					$("#idColaborador").val($colaborador);
@@ -107,9 +107,9 @@
 	<h1>Registro de Colaboradores</h1>
 	<input	type="hidden" value="0" class="dataColaborador"  name="idColaborador" id="idColaborador">
 	<table class="tblFormularios">
-		<tr>
+		<!-- <tr>
 			<td>Codigo</td>	<td><input type="text" class="dataColaborador" id="txtCodigo" name="codigo"></td>
-		</tr>
+		</tr> -->
 		<tr>
 			<td>Nombre Corto</td><td><input type="text" class="dataColaborador" id="txtNombreCorto" name="nombrec"></td>
 		</tr>

@@ -19,8 +19,10 @@
 	 				$arreglo = [100][100];
 	 				
 	 				while(obj.Seguimiento[$cont]){
-	 					
-	 					var $seguimiento = JSON.parse(obj.Seguimiento[$cont].seguimiento);
+	 					$seguimiento = JSON.parse(obj.Seguimiento[$cont].seguimiento);
+	 					$proyecto = JSON.parse(obj.Seguimiento[$cont].proyecto);
+	 					$cliente = JSON.parse(obj.Seguimiento[$cont].cliente);
+
 	 						$cont2 = 0;
 	 						while($seguimiento[$cont2]){
 	 			
@@ -29,12 +31,16 @@
 	 							fecha2 = new Date();								
 	 							var timeDiff = fecha.getTime() - fecha2.getTime();
 								var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-	 							
-	 							$("#seguimientoActividades").append("<b>Fecha: </b>"+$seguimiento[$cont2].fecha+"<br><a href='proyectos/proyectos.php?p="+obj.Seguimiento[$cont].id_proyecto+"'><b>Proyecto: </b>"+obj.Seguimiento[$cont].id_proyecto+"</a><br><b>Actividad: </b>"+$seguimiento[$cont2].act+"<br><br>")
+	 							if (diffDays <= 4) {
+									
+		 							$("#seguimientoActividades").append("<b>Fecha: </b>"+$seguimiento[$cont2].fecha+"<br><a href='proyectos/proyectos.php?p="+obj.Seguimiento[$cont].id_proyecto+"'><b>Proyecto: </b>"+$proyecto.posicion+"</a><br><b>Cliente: </b>"+$cliente.publico+"</a><br><b>Actividad: </b>"+$seguimiento[$cont2].act+"<br><br>");
+		 							$contSeguimientos ++;
+	 							}
 	 							$cont2++;
+		 							
 	 						}
 	 						//$jsonObj.push($arreglo);
-	 					$contSeguimientos = $contSeguimientos + $cont2;
+	 					//$contSeguimientos = $contSeguimientos + $cont2;
 	 					
 	 					$cont++;
 	 				}
@@ -68,7 +74,7 @@
 						var timeDiff = fecha.getTime() - hoy.getTime();
 						var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
 						if (diffDays < 31) {
-							$("#proyectosEnCierre").append("<b>Fecha: </b>"+fIdeal+"<br><a href='proyectos/proyectos.php?p="+obj.proyecto[$cont].id+"'><b>Proyecto: </b>"+obj.proyecto[$cont].id+"</a>");
+							$("#proyectosEnCierre").append("<b>Fecha: </b>"+fIdeal+"<br><a href='proyectos/proyectos.php?p="+obj.proyecto[$cont].id+"'><b>Proyecto: </b>"+$datos_proyecto.posicion+"</a>");
 							$inOvertime ++;
 							if (diffDays < 31) {
 								$("#proyectosEnCierre").append("<br><br>");
@@ -101,7 +107,7 @@
 						hoy = new Date();
 						mesActual = hoy.getMonth();
 						
-						console.log($datos_facturacion);
+						//console.log($datos_facturacion);
 						if ($datos_facturacion.lista.fpago1 != "") {
 							fecha = new Date($datos_facturacion.lista.fpago1);
 							mesFactura = fecha.getMonth();

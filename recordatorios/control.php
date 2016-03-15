@@ -17,6 +17,13 @@
 	function seguimientos(){
 		$listadoSeguimientos = buscaSeguimientos();
 		while ($row = mysqli_fetch_assoc($listadoSeguimientos)){
+		    
+		    $proyecto = filtraProyecto($row['id_proyecto']);
+		    $proy[0] = mysqli_fetch_assoc($proyecto);
+		    $row['proyecto'] = $proy[0]['datos_proyecto'];
+		    $cliente = json_decode($proy[0]['cliente']);
+		    $cli[0] = mysqli_fetch_assoc(filtraCliente($cliente->cliente));
+		    $row['cliente'] = $cli[0]['datos_cliente'];
 		    $seguimiento[] = $row;
 		}
 		$struct = array("Seguimiento" => $seguimiento);

@@ -36,7 +36,7 @@
 	 				console.log(datosCliente);
  					//$arregloTabla[$cont] = obj.Cliente[$cont];
  					//$("#listaClientes").append("<option value='"+obj.Cliente[$cont].id+"'>"+obj.Cliente[$cont].nombre_comercial+"</option>");
- 					$("#txtCodigoCliente").val(datosCliente.codigo);
+ 					//$("#txtCodigoCliente").val(datosCliente.codigo);
  					$("#txtNombrePublico").val(datosCliente.publico);
  					$("#txtFechaAlta").val(datosCliente.fecha);
  					$("#slcIndustria").val(datosCliente.industria);
@@ -62,9 +62,11 @@
 					$cont = 0;
 					while(datosContacto[$cont]){
 						$filasContacto = datosContacto[$cont].idcontacto;
-						$("#tblContacto tbody").append('<tr id="filaContacto_'+$filasContacto+'"><td><div id="btnMenosContacto_'+$filasContacto+'" class="btnMenosCont"></div><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" value="'+datosContacto[$cont].nombre+'" name="nombre" style="width:250px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" value="'+datosContacto[$cont].area+'" name="area" style="width:170px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtTelefono_'+$filasContacto+'" value="'+datosContacto[$cont].telefono+'" name="telefono" style="width:100px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;">'+datosContacto[$cont].observaciones+'</textarea></td><td></td></tr>');
+						$("#tblContacto tbody").append('<tr id="filaContacto_'+$filasContacto+'"><td><div id="btnMenosContacto_'+$filasContacto+'" class="btnMenosCont"></div><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" value="'+datosContacto[$cont].nombre+'" name="nombre" style="width:250px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" value="'+datosContacto[$cont].area+'" name="area" style="width:170px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtTelefono_'+$filasContacto+'" value="'+datosContacto[$cont].telefono+'" name="telefono" style="width:100px;"></td><td><input type="date" class="datoContacto_'+$filasContacto+'" id="txtCumpleaños_'+$filasContacto+'" value="'+datosContacto[$cont].cumpleaños+'" name="cumpleaños" style="width:130px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;">'+datosContacto[$cont].observaciones+'</textarea></td><td></td></tr>');
+
 						$cont++;
 					}
+					$filasContacto++;
 					
 	 			}
 	 		});
@@ -78,7 +80,7 @@
 		});
 
 		$("#btnMasContacto").click(function(){
-				$("#tblContacto tbody").append('<tr id="filaContacto_'+$filasContacto+'"><td><div id="btnMenosContacto_'+$filasContacto+'" class="btnMenosCont"></div><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" name="nombre" style="width:250px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" name="area" style="width:170px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtTelefono_'+$filasContacto+'" name="telefono" style="width:100px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;"></textarea></td><td></td></tr>');
+				$("#tblContacto tbody").append('<tr id="filaContacto_'+$filasContacto+'"><td><div id="btnMenosContacto_'+$filasContacto+'" class="btnMenosCont"></div><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" name="nombre" style="width:250px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" name="area" style="width:170px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtTelefono_'+$filasContacto+'" name="telefono" style="width:100px;"></td><td><input type="date" class="datoContacto_'+$filasContacto+'" id="txtCumpleaños_'+$filasContacto+'" name="cumpleaños" style="width:130px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;"></textarea></td><td></td></tr>');
 				$filasContacto++;
 		});
 
@@ -317,8 +319,8 @@
 		<input	type="hidden" value="0" name="idCliente" id="idCliente">
 		<table class="tblFormularios">
 			<tr>
-				<td>Codigo</td>	<td><input type="text" id="txtCodigoCliente" class="formClientes" name="codigo"></td>
-				<td>Nombre Comercial</td><td><input type="text" id="txtNombrePublico" class="formClientes" name="publico"></td>
+				<!-- <td>Codigo</td>	<td><input type="text" id="txtCodigoCliente" class="formClientes" name="codigo"></td> -->
+				<td>Nombre Comercial</td><td><input type="text" id="txtNombrePublico" class="formClientes" name="publico"></td><td></td>
 			</tr>
 			<tr>
 				<td>Industria</td>
@@ -366,10 +368,10 @@
 	<table id="tblContacto" border="1">
 		<thead>
 			<tr>
-				<th colspan="6" width="912px">Datos de Contacto</th>
+				<th colspan="7" width="930px">Datos de Contacto</th>
 			</tr>
 			<tr>
-				<th></th><th width="255px">Nombre</th><th width="175px">Area/Puesto</th><th width="105px">Telefono</th><th width="206px">Observaciones</th><th><div id="btnMasContacto" class="btnMas"></div></th>
+				<th></th><th width="255px">Nombre</th><th width="175px">Area/Puesto</th><th width="105px">Telefono</th><th>Cumpleaños</th><th width="206px">Observaciones</th><th><div id="btnMasContacto" class="btnMas"></div></th>
 			</tr>
 
 		</thead>

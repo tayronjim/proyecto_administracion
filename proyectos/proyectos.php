@@ -20,7 +20,9 @@
 	 			data: { "funcion" : "recuperaProyecto", "proyecto": $proyecto },
 	 			success: function(data){
 	 				var obj = JSON.parse(data);
+	 				console.log(obj);
 	 				var cliente = JSON.parse(obj.Cliente[0].datos_cliente);
+	 				var contacto = JSON.parse(obj.Cliente[0].datos_contacto);
 	 				var rs = JSON.parse(obj.Cliente[0].facturacion);
 
 	 				var datos_cliente = JSON.parse(obj.Proyecto[0].cliente);
@@ -34,11 +36,16 @@
 		 				$("#txtcta").val(datos_proyecto.cta);
 		 				$("#txtsem").val(datos_proyecto.sem);
 		 				$("#txtCliente").val(cliente.publico);
+		 				
+		 				
 		 				$("#hdnCliente").val(datos_cliente.cliente);
 		 				$.each(rs, function($key, $value){
 		 					if ($value.idfac == datos_cliente.razonS) {$("#txtRS").val($value.rs); $("#hdnRS").val(datos_cliente.razonS);}
 		 				});
-		 				
+		 				// $.each(contacto, function($key, $value){
+		 				// 	$("#listaContactos").append("<option value='"+value.idcontacto+"'>"+value.nombre+"</option>");}
+		 				// });
+		 				//$("#listaContactos").val(cliente.contacto);
 		 				$("#fIniY").val(datos_proyecto.fIniY);
 		 				$("#fIniM").val(datos_proyecto.fIniM);
 		 				$("#fIniD").val(datos_proyecto.fIniD);
@@ -68,7 +75,8 @@
 			 					//$facturacion[obj[$cont].id] = obj[$cont].facturacion;
 			 					var kamDatos = JSON.parse(obj[$cont].datos);
 			 					if (kamDatos.puesto.consultor == "1") {
-			 						$("#txtkam").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");	
+			 						$("#txtkam").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
+			 						$("#txtkam2").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
 			 					}
 
 			 					if (kamDatos.puesto.reclutador == "1") {
@@ -82,10 +90,12 @@
 								$cont++;
 			 				}
 			 				ordenarSelect('txtkam');
+			 				ordenarSelect('txtkam2');
 			 				ordenarSelect('slcRec');
 			 				ordenarSelect('slcApoyo');
 
 				 				$("#txtkam").val(datos_proyecto.kam);
+				 				$("#txtkam2").val(datos_proyecto.kam2);
 		 				
 				 			}
 				 		});
@@ -293,7 +303,10 @@
 	    	var selectToSort = jQuery('#' + id_componente);
 	    	var optionActual = selectToSort.val();
 	    	selectToSort.html(selectToSort.children('option').sort(function (a, b) {
-	    		return a.text === b.text ? 0 : a.text < b.text ? -1 : 1;
+	    		if (a.value != "-1" && b.value != "-1") {
+	    			return a.text === b.text ? 0 : a.text < b.text ? -1 : 1;	
+	    		}
+	    		
 	      	})).val(optionActual);
 	    }
 
@@ -596,12 +609,27 @@
 				<option value="stonehc">Stone Human Capital</option>
 			</select></td>
 		</tr>
+		<tr><td>&nbsp;</td></tr>
 		<tr>
-			<td><b>KAM:</b></td><td><select class="formProyect" id="txtkam" name="kam"></select></td>
-			<td><b>Prioridad: </b></td><td><select class="formProyect" id="txtPrioridad" name="prioridad"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></td>
+			<td><b>KAM*:</b></td><td><select class="formProyect" id="txtkam" name="kam"><option value="-1"> - </option></select></td>
+			<td><b>Reclutador:</b></td><td><select class="formProyect" id="slcRec" name="reclutador"><option value="-1"> N/A </option></select></td>
 		</tr>
+			
+		<tr>
+			<td><b>KAM 2:</b></td><td><select class="formProyect" id="txtkam2" name="kam2"><option value="-1"> - </option></select></td>
+			<td><b>Apoyo:</b></td><td><select class="formProyect" id="slcApoyo" name="apoyo"><option value="-1"> N/A </option></select></td>
+			
+		</tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr>
+			<td><b>Prioridad:</b></td><td><select class="formProyect" id="txtPrioridad" name="prioridad"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></td><td></td>
+		</tr>
+		<tr><td>&nbsp;</td></tr>
 		<tr>
 			<td><b>Cliente:</b> <input id="hdnCliente" type="hidden" value="" name="cliente" class="formProyectCliente"> </td><td><input id="txtCliente" type="text" disabled></td><td><b>Razon Social:</b> <input id="hdnRS" type="hidden" value="" name="razonS" class="formProyectCliente"></td><td><input id="txtRS" type="text" disabled></td>
+		</tr>
+		<tr>
+			<td><b>Contacto:</b></td><td><select id="listaContactos" class="formProyectCliente" name="contacto"><option value="-1">-Selecciona un contacto-</option></select></td>
 		</tr>
 		<tr><td>&nbsp;</td></tr>
 

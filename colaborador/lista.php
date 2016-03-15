@@ -33,7 +33,7 @@
  					if (puesto.reclutador == "1") {$puestos += $coma + "Reclutador"; $coma = ", ";}
  					if (puesto.apoyo == "1") {$puestos += $coma + "Apoyo";}
  					if ($alt == 1) {$claseAlt = "class='alt'";}else $claseAlt = '';
- 					$("#tblColaboradores tbody").append('<tr '+$claseAlt+'><td>'+dato.codigo+'</td><td>'+dato.nombrec+'</td><td>'+$puestos+'</td><td><span class="flechaColaborador boton" valor="'+col[$cont].id+'"><img src="../img/arrow-yellow.png" width="20px" height="auto"></span></td></tr>');
+ 					$("#tblColaboradores tbody").append('<tr '+$claseAlt+'><td>'+dato.nombrec+'</td><td>'+$puestos+'</td><td><span class="flechaColaborador boton" valor="'+col[$cont].id+'"><img src="../img/arrow-yellow.png" width="20px" height="auto"></span></td></tr>');
  					$cont++;
  					$alt = $alt * -1;
  				}
@@ -70,7 +70,7 @@
 			<table border="1" id="tblColaboradores">
 				<thead>
 					<tr>
-						<th width="100px">Codigo</th><th width="300px">Nombre</th><th>Puesto</th><th width="20px"></th>
+						<th width="300px">Nombre</th><th>Puesto</th><th width="20px"></th>
 					</tr>
 				</thead>
 				<tbody>
