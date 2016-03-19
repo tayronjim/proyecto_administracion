@@ -121,7 +121,7 @@
 			<td>
 				<table>
 					<tr>
-						<td>Consultor<input type="checkbox" class="dataColaboradorPuesto" id="chkPuestoConsultor" name="consultor"></td><td>Recrutador <input type="checkbox" class="dataColaboradorPuesto" id="chkPuestoRecrutador" name="recrutador"> </td>
+						<td>Consultor<input type="checkbox" class="dataColaboradorPuesto" id="chkPuestoConsultor" name="consultor"></td><td>Reclutador <input type="checkbox" class="dataColaboradorPuesto" id="chkPuestoRecrutador" name="recrutador"> </td>
 					</tr>
 					<tr><td>Apoyo<input type="checkbox" class="dataColaborador" id="chkPuestoApoyo" name="apoyo"></td></tr>
 				</table>

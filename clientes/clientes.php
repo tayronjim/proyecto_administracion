@@ -244,6 +244,7 @@
 			$("#cpyEmail").val("");
 			$("#cpyID").val("");
 		}
+		
 
 	</script>
 	<style type="text/css">

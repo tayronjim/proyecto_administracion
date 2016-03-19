@@ -55,6 +55,7 @@
 	 			data: { "funcion" : "datosProyectos"},
 	 			success: function(data){
 	 				var obj = JSON.parse(data);
+	 				console.log(obj);
 	 				$inOvertime = 0;
 	 				$contGarantia = 0;
 	 				$cont=0;
@@ -84,21 +85,21 @@
 						if ($datos_proyecto.estatus == "8") {
 							
 							$FG = $datos_contrato.fGarantiaY+"-"+$datos_contrato.fGarantiaM+"-"+$datos_contrato.fGarantiaD;
-							$fGarantia = Date.parse($FG);
-							fecha2 = new Date($fGarantia);
-							hoy2 = new Date();
-							var timeDiff2 = fecha2.getTime() - hoy2.getTime();
-							var diffDays2 = Math.ceil(timeDiff2 / (1000 * 3600 * 24));
+							//$fGarantia = Date.parse($FG);
+							//fecha2 = new Date($fGarantia);
+							//hoy2 = new Date();
+							//var timeDiff2 = fecha2.getTime() - hoy2.getTime();
+							//var diffDays2 = Math.ceil(timeDiff2 / (1000 * 3600 * 24));
 								
-							if (diffDays2 < 6) { 
-								$("#proyectosEnGarantia5").append("<b>Fecha: </b>"+$FG+"<br><a href='proyectos/proyectos.php?p="+obj.proyecto[$cont].id+"'><b>Proyecto: </b>"+obj.proyecto[$cont].id+"</a><br><br>");
+							//if (diffDays2 < 6) { 
+								$("#proyectosEnGarantia5").append("<b>Fecha: </b>"+$FG+"<br><a href='proyectos/proyectos.php?p="+obj.proyecto[$cont].id+"'><b>Proyecto: </b>"+$datos_proyecto.posicion+"</a><br><br>");
 								$contGarantia ++;
-							}else{
-								if (diffDays2 < (parseInt($datos_contrato.garantia)/2)) {
-									$("#proyectosEnGarantia50").append("<b>Fecha: </b>"+$FG+"<br><a href='proyectos/proyectos.php?p="+obj.proyecto[$cont].id+"'><b>Proyecto: </b>"+obj.proyecto[$cont].id+"</a><br><br>");
-									$contGarantia ++;
-								}
-							}
+							//}else{
+							//	if (diffDays2 < (parseInt($datos_contrato.garantia)/2)) {
+							//		$("#proyectosEnGarantia50").append("<b>Fecha: </b>"+$FG+"<br><a href='proyectos/proyectos.php?p="+obj.proyecto[$cont].id+"'><b>Proyecto: </b>"+obj.proyecto[$cont].id+"</a><br><br>");
+							//		$contGarantia ++;
+							//	}
+							//}
 						}
 
 
@@ -239,8 +240,8 @@
 	<a id='desplegarGarantias'>--Garantia--</a>
 	<label id="contGarantia" ></label>
 	<div id="proyectosEnGarantia">
-		<div id="proyectosEnGarantia5"><b>Menos de 5 dias:</b><br></div>
-		<div id="proyectosEnGarantia50"><b>Mitad de tiempo:</b><br></div>
+		<div id="proyectosEnGarantia5"></div>
+		<!-- <div id="proyectosEnGarantia50"><b>Mitad de tiempo:</b><br></div> -->
 		
 	</div>
 
