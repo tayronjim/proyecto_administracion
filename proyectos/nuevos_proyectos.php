@@ -3,6 +3,7 @@
 <head>
 	<?php include_once("../librerias_base.htm"); ?>
 	<script type="text/javascript">
+		$preWBS = "";
 		$facturacion = [];
 		$contacto = [];
 		$(document).ready(function(){
@@ -58,6 +59,22 @@
 			$.ajax({
 	 			type: "POST",
 	 			url: "control.php",
+	 			data: { "funcion" :  "buscaUltimoID" },
+	 			success: function(data){
+	 				 // alert(data);
+	 				 $fecha = new Date();
+	 				 $anio = $fecha.getYear();
+	 				 $preWBS = $anio+"-"+(parseInt(data)+1);
+	 				
+	 				
+	 			}
+	 		});
+
+			
+
+			$.ajax({
+	 			type: "POST",
+	 			url: "control.php",
 	 			data: { "funcion" :  "buscaKam" },
 	 			success: function(data){
 	 				 // alert(data);
@@ -93,6 +110,8 @@
 	 		});
 
 			$("#guardaProyecto").click(function(){
+				//$kam = $("#txtkam").text().substring(0, 2).toUpperCase();
+			    //$("#txtwbs").val( $preWBS + $kam );
 				dotosObligatorios();
 				
 			    
@@ -127,6 +146,7 @@
     		return a.text === b.text ? 0 : a.text < b.text ? -1 : 1;
       	})).val(optionActual);
     }
+
     function dotosObligatorios(){
     	if ($("#txtwbs").val() == "") {
     		alert("WBS no puede estar vacío");
@@ -161,19 +181,16 @@
     		$("#txtValorProyecto").val("0");
     	}
 
-    	
     	guardaDatos();
     	
-    	
-    	
     }
+
     function guardaDatos(){
     	general = {};
 			    cliente = {};
 			    contrato = {};
 			    facturacion = {};
-
-			    
+			   
 
 			    $(".formProyectCliente").each(function() {
 			        var name = $(this).attr("name");
@@ -209,16 +226,40 @@
 			    jsonStringFacturacion = JSON.stringify(facturacion);
 			   
 
-			    $.ajax({
-		 			type: "POST",
-		 			url: "control.php",
-		 			data: { "funcion" : "guardaProyecto", "general" : jsonStringGeneral, "cliente" : jsonStringCliente, "contrato" : jsonStringContrato, "facturacion" : jsonStringFacturacion },
-		 			success: function(data){
-		 				 console.log(data);
-		 				 window.location="proyectos.php?p="+data;
-		 			}
-		 		});
+			  //   $.ajax({
+		 		// 	type: "POST",
+		 		// 	url: "control.php",
+		 		// 	data: { "funcion" : "guardaProyecto", "general" : jsonStringGeneral, "cliente" : jsonStringCliente, "contrato" : jsonStringContrato, "facturacion" : jsonStringFacturacion },
+		 		// 	success: function(data){
+		 		// 		 console.log(data);
+		 		// 		 window.location="proyectos.php?p="+data;
+		 		// 	}
+		 		// });
+		 		
     }
+    function calculaValorProyecto(){
+    	$salarioBase = parseFloat($("#txtSalario").val().replace(/,/g, ''));
+		$bono = $salarioBase*parseFloat($("#txtBono").val());
+		$vacaciones = parseFloat($("#txtVacaciones").val());
+		$primaVacacional = parseFloat($("#txtPrimaVacacional").val())/100;
+		$aguinaldo = $salarioBase/30*parseFloat($("#txtAguinaldo").val());
+		$prima = $salarioBase/30 * $vacaciones * $primaVacacional; 
+		$("#txtValorProyecto").val(addCommas(parseFloat(($bono+$prima+$aguinaldo+($salarioBase*12))*(0.1)).toFixed(2)));
+		$("#txtSalario").val(addCommas($salarioBase));
+		 		
+    }
+
+    function addCommas(nStr){
+		nStr += '';
+		x = nStr.split('.');
+		x1 = x[0];
+		x2 = x.length > 1 ? '.' + x[1] : '';
+		var rgx = /(\d+)(\d{3})/;
+		while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+		}
+		return x1 + x2;
+	}
 
 	</script>
 	<style type="text/css"></style>
@@ -331,8 +372,36 @@
 					<option value="6">6- OTRO</option>
 				</select>
 			</td>
-			<td><b>Salario del Puesto:</b></td><td><input type="text" class="formProyect" id="txtsalario" name="salario"></td>
+			<td><b>Salario Base:</b></td><td><input type="text" class="formProyect" id="txtSalario" onchange="calculaValorProyecto()" name="salario" value="1" style="width: 80px;"></td>
 			<td><input type="hidden" class="formProyect" name="estatus" value="1"></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Aguinaldo (dias)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtAguinaldo" name="aguinaldo" value="1" style="width: 30px;"></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Vacaciones (dias)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtVacaciones" name="vacaciones" value="1" style="width: 30px;"></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Prima Vacacional</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtPrimaVacacional" name="primavacacional" value="1" style="width: 30px;"><b>%</b></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Bono (Promedio Meses)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtBono" name="bono" value="1" style="width: 30px;"></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Fondo de Ahorro</td><td><select class="formProyect" id="slcFondoAhorro" name="fondo"><option value="no">NO</option><option value="si">SI</option></select></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Bales de Despensa</td><td><select class="formProyect" id="slcBales" name="bales"><option value="no">NO</option><option value="si">SI</option></select></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Seguro de Gastos Medicos Mayores</td><td><select class="formProyect" id="slcSeguroGMM" name="sgmm"><option value="no">NO</option><option value="si">SI</option></select></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Seguro de Vida</td><td><select class="formProyect" id="slcASeguroVida" name="segvida"><option value="no">NO</option><option value="si">SI</option></select></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Otros</td><td><textarea class="formProyect" id="txtOtraPrestacion" name="otraprestacion" rows="3"></textarea></td>
+			
 		</tr>
 	</table>
 	<table class="tblFormularios">
