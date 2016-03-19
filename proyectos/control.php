@@ -17,6 +17,8 @@
 		// case 'listaSeguimientos': listaSeguimientos($_POST["proyecto"]); break;
 		case 'buscaKam': buscaKam(); break;
 		case 'buscaEstatus': buscaEstatus(); break;
+		case 'buscaUltimoID': buscaUltimoID(); break;
+		
 		
 		
 	}
@@ -48,6 +50,13 @@
 		
 		$struct = array("RS" => $row);
 		print json_encode($clienteRS);
+	}
+
+	function buscaUltimoID(){
+		$ultimoProyecto = ultimoProyecto();
+			$row = mysqli_fetch_assoc($ultimoProyecto);
+		    $proyecto[] = $row;
+		print json_encode($proyecto['lastID']);
 	}
 
 	function guardaProyecto($general,$cliente,$contrato,$facturacion){
