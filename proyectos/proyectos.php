@@ -20,7 +20,7 @@
 	 			data: { "funcion" : "recuperaProyecto", "proyecto": $proyecto },
 	 			success: function(data){
 	 				var obj = JSON.parse(data);
-	 				console.log(obj);
+	 				//console.log(obj);
 	 				var cliente = JSON.parse(obj.Cliente[0].datos_cliente);
 	 				var contacto = JSON.parse(obj.Cliente[0].datos_contacto);
 	 				var rs = JSON.parse(obj.Cliente[0].facturacion);
@@ -29,7 +29,7 @@
 	 				var datos_proyecto = JSON.parse(obj.Proyecto[0].datos_proyecto);
 	 				var datos_contrato = JSON.parse(obj.Proyecto[0].contrato);
 	 				var datos_facturacion = JSON.parse(obj.Proyecto[0].facturacion);
-	 				console.log(datos_contrato);
+	 				//console.log(datos_contrato);
 	 				
 	 					$("#txtwbs").val(datos_proyecto.wbs);
 		 				$("#txtEmpInt").val(datos_proyecto.empint);
@@ -120,6 +120,10 @@
 		 				$("#slcASeguroVida").val(datos_proyecto.segvida);
 		 				$("#txtOtraPrestacion").val(datos_proyecto.otraprestacion);
 
+		 				$("#nombreCandidato").val(datos_proyecto.nombrecandidato);
+		 				$("#cumpleCandidato").val(datos_proyecto.cumplecandidato);
+
+
 		 				$("#txtConvenio").val(datos_contrato.convenio);
 		 				$("#slcNivel").val(datos_proyecto.nivel);
 		 				$("#txtGarantia").val(datos_contrato.garantia);
@@ -204,7 +208,7 @@
 							hoy2 = new Date();
 							var timeDiff2 = fecha2.getTime() - hoy2.getTime();
 							var diffDays2 = Math.ceil(timeDiff2 / (1000 * 3600 * 24));
-							console.log(datos_contrato.fGarantiaY+"-"+datos_contrato.fGarantiaM+"-"+datos_contrato.fGarantiaD);
+							//console.log(datos_contrato.fGarantiaY+"-"+datos_contrato.fGarantiaM+"-"+datos_contrato.fGarantiaD);
 							if (diffDays2 <= 0) {
 								$("#garantiaTerminada").attr('hidden',false);
 							}
@@ -388,28 +392,28 @@
 		        var valor = $(this).val();
 		        cliente[name] = valor;
 		    }); 
-		    console.log(cliente);
+		    //console.log(cliente);
 
 		    $(".formProyect").each(function() {
 		        var name = $(this).attr("name");
 		        var valor = $(this).val();
 		        general[name] = valor;
 		    }); 
-		    console.log(general);
+		    //console.log(general);
 
 		    $(".formProyectContrato").each(function() {
 		        var name = $(this).attr("name");
 		        var valor = $(this).val();
 		        contrato[name] = valor;
 		    }); 
-		    console.log(contrato);
+		    //console.log(contrato);
 
 		    $(".formProyectFacturacion").each(function() {
 		        var name = $(this).attr("name");
 		        var valor = $(this).val();
 		        facturacion[name] = valor;
 		    }); 
-		    console.log(facturacion);
+		    //console.log(facturacion);
 
 		    jsonActividades = [];
 			jsonSeguimiento = [];
@@ -449,7 +453,7 @@
 		        listaFacturas[name] = valor;
 		    }); 
 		    facturacion['lista'] = listaFacturas;
-		    console.log(facturacion);
+		    //console.log(facturacion);
 
 		    
 		    
@@ -468,7 +472,7 @@
 	 			url: "control.php",
 	 			data: { "funcion" : "actualizaProyecto", "general" : jsonStringGeneral, "cliente" : jsonStringCliente, "contrato" : jsonStringContrato, "facturacion" : jsonStringFacturacion, "actividades":jsonStringAct , "seguimiento":jsonStringSeg, "proyecto":$proyecto},
 	 			success: function(data){
-	 				 console.log(data);
+	 				 //console.log(data);
 	 				 window.location="proyectos.php?p="+$proyecto;
 	 			}
 	 		});
@@ -546,12 +550,12 @@
 				case '4':
 				case '5':
 				case '6':
-				case '7': $(".FCR").attr('hidden',true); $(".FCG").attr('hidden',true); break;
-				case '8': $(".FCR").attr('hidden',false); $(".FCG").attr('hidden',false); calculaFechaGarantia($("#txtGarantia").val()); break;
-				case '9': $(".FCR").attr('hidden',false); $(".FCG").attr('hidden',true); break;
-				case '10': $(".FCR").attr('hidden',false); $(".FCG").attr('hidden',true); break;
-				case '11': $(".FCR").attr('hidden',false); $(".FCG").attr('hidden',true); break;
-				default: $(".FCR").attr('hidden',true); $(".FCG").attr('hidden',true); break;
+				case '7': $(".FCR").attr('hidden',true); $(".FCG").attr('hidden',true); $(".candSelec").attr('hidden',true); break;
+				case '8': $(".FCR").attr('hidden',false); $(".FCG").attr('hidden',false); $(".candSelec").attr('hidden',false); calculaFechaGarantia($("#txtGarantia").val()); break;
+				case '9': $(".FCR").attr('hidden',false); $(".FCG").attr('hidden',true); $(".candSelec").attr('hidden',false); break;
+				case '10': $(".FCR").attr('hidden',false); $(".FCG").attr('hidden',true); $(".candSelec").attr('hidden',true); break;
+				case '11': $(".FCR").attr('hidden',false); $(".FCG").attr('hidden',true); $(".candSelec").attr('hidden',true); break;
+				default: $(".FCR").attr('hidden',true); $(".FCG").attr('hidden',true); $(".candSelec").attr('hidden',true); break;
 			}
 		}
 		function calculaFechaGarantia(dias){
@@ -568,7 +572,7 @@
 		    day=fecha.getDate();
 		    month=fecha.getMonth()+1;
 		    year=fecha.getFullYear();
-			console.log(fecha);
+			//console.log(fecha);
 		    $("#fGarantiaY").val(year);
 		    $("#fGarantiaM").val(month);
 		    $("#fGarantiaD").val(day);
@@ -610,7 +614,7 @@
     	if($("#txtValorProyecto").val() == "") {
     		$("#txtValorProyecto").val("0");
     	}
-    	console.log($("#fCRealY").val()+"<-");
+    	//console.log($("#fCRealY").val()+"<-");
     	if ( $("#slcEstatus").val() == "8" || $("#slcEstatus").val() == "9" || $("#slcEstatus").val() == "10" || $("#slcEstatus").val() == "11" ) {
     		if ($("#fCRealY").val() == null || $("#fCRealM").val() == null || $("#fCRealD").val() == null) {
     			alert("La fecha de cierre real no puede estar vacía");
@@ -654,7 +658,7 @@
     	
     }
     	function agregaFilaSeguimiento($filasSeguimientos,$fecha,$actividad){
-    		console.log($fecha);
+    		//console.log($fecha);
     		$("#tblSeguimientos tbody").append('<tr id="filaSeg_'+$filasSeguimientos+'"><td><div class="btnMenosSeg" id="btnMenosSeg_'+$filasSeguimientos+'"></div><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+$filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+$filasSeguimientos+'" value="'+$fecha+'"> </td><td colspan="1"><textarea id="txtAreaSeg_'+$filasSeguimientos+'">'+$actividad+'</textarea></td><td></td><td></td><td></td></tr>');
     	}
 
@@ -918,31 +922,31 @@
 			<td><input type="hidden" class="formProyect" name="estatus" value="1"></td>
 		</tr>
 		<tr>
-			<td></td><td></td><td>Aguinaldo (dias)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtAguinaldo" name="aguinaldo" style="width: 30px;"></td>
+			<td></td><td></td><td>Aguinaldo (dias):</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtAguinaldo" name="aguinaldo" style="width: 30px;"></td>
 		</tr>
 		<tr>
-			<td></td><td></td><td>Vacaciones (dias)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtVacaciones" name="vacaciones" style="width: 30px;"></td>
+			<td></td><td></td><td>Vacaciones (dias):</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtVacaciones" name="vacaciones" style="width: 30px;"></td>
 		</tr>
 		<tr>
-			<td></td><td></td><td>Prima Vacacional</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtPrimaVacacional" name="primavacacional" style="width: 30px;"><b>%</b></td>
+			<td></td><td></td><td>Prima Vacacional:</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtPrimaVacacional" name="primavacacional" style="width: 30px;"><b>%</b></td>
 		</tr>
 		<tr>
-			<td></td><td></td><td>Bono (Promedio Meses)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtBono" name="bono" style="width: 30px;"></td>
+			<td></td><td></td><td>Bono (Promedio Meses):</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtBono" name="bono" style="width: 30px;"></td>
 		</tr>
 		<tr>
-			<td></td><td></td><td>Fondo de Ahorro</td><td><select class="formProyect" id="slcFondoAhorro" name="fondo"><option value="no">NO</option><option value="si">SI</option></select></td>
+			<td></td><td></td><td>Fondo de Ahorro:</td><td><select class="formProyect" id="slcFondoAhorro" name="fondo"><option value="no">NO</option><option value="si">SI</option></select></td>
 		</tr>
 		<tr>
-			<td></td><td></td><td>Bales de Despensa</td><td><select class="formProyect" id="slcBales" name="bales"><option value="no">NO</option><option value="si">SI</option></select></td>
+			<td></td><td></td><td>Bales de Despensa:</td><td><select class="formProyect" id="slcBales" name="bales"><option value="no">NO</option><option value="si">SI</option></select></td>
 		</tr>
 		<tr>
-			<td></td><td></td><td>Seguro de Gastos Medicos Mayores</td><td><select class="formProyect" id="slcSeguroGMM" name="sgmm"><option value="no">NO</option><option value="si">SI</option></select></td>
+			<td></td><td></td><td>Seguro de G.M.M.:</td><td><select class="formProyect" id="slcSeguroGMM" name="sgmm"><option value="no">NO</option><option value="si">SI</option></select></td>
 		</tr>
 		<tr>
-			<td></td><td></td><td>Seguro de Vida</td><td><select class="formProyect" id="slcASeguroVida" name="segvida"><option value="no">NO</option><option value="si">SI</option></select></td>
+			<td></td><td></td><td>Seguro de Vida:</td><td><select class="formProyect" id="slcASeguroVida" name="segvida"><option value="no">NO</option><option value="si">SI</option></select></td>
 		</tr>
 		<tr>
-			<td></td><td></td><td>Otros</td><td><textarea class="formProyect" id="txtOtraPrestacion" name="otraprestacion" rows="3"></textarea></td>
+			<td></td><td></td><td>Otros:</td><td><textarea class="formProyect" id="txtOtraPrestacion" name="otraprestacion" rows="3"></textarea></td>
 			
 		</tr>
 		<tr><td>&nbsp;</td></tr>
@@ -953,6 +957,10 @@
 					
 				</select>
 			</td>
+			<td class="candSelec"><b>Candidato Seleccionado: </b></td><td class="candSelec"><input type="text" placeholder="Nombre" id="nombreCandidato" name="nombrecandidato" style="width: 250px;"></td>
+		</tr>
+		<tr>
+			<td colspan="2"></td><td class="candSelec"><b>Fecha de Cumpleaños: </b></td><td class="candSelec"><input type="date" id="cumpleCandidato" name="cumplecandidato"></td>
 		</tr>	
 	</table>
 	<br><br>
