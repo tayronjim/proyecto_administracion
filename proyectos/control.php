@@ -55,8 +55,8 @@
 	function buscaUltimoID(){
 		$ultimoProyecto = ultimoProyecto();
 			$row = mysqli_fetch_assoc($ultimoProyecto);
-		    $proyecto[] = $row;
-		print json_encode($proyecto['lastID']);
+		    //$proyecto[] = $row;
+		print json_encode($row['lastID']);
 	}
 
 	function guardaProyecto($general,$cliente,$contrato,$facturacion){

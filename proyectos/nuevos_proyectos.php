@@ -61,10 +61,11 @@
 	 			url: "control.php",
 	 			data: { "funcion" :  "buscaUltimoID" },
 	 			success: function(data){
-	 				 // alert(data);
+	 				 console.log(data);
 	 				 $fecha = new Date();
-	 				 $anio = $fecha.getYear();
-	 				 $preWBS = $anio+"-"+(parseInt(data)+1);
+	 				 $anio = $fecha.getFullYear();
+	 				 $preWBS = $anio+"-"+(parseInt(data.replace(/"/g, ''))+1);
+	 				 
 	 				
 	 				
 	 			}
@@ -110,8 +111,9 @@
 	 		});
 
 			$("#guardaProyecto").click(function(){
-				//$kam = $("#txtkam").text().substring(0, 2).toUpperCase();
-			    //$("#txtwbs").val( $preWBS + $kam );
+				$kam = $("#txtkam option:selected").html().substring(0, 2).toUpperCase();
+				
+			    $("#txtwbs").val( $preWBS + $kam );
 				dotosObligatorios();
 				
 			    
@@ -148,10 +150,7 @@
     }
 
     function dotosObligatorios(){
-    	if ($("#txtwbs").val() == "") {
-    		alert("WBS no puede estar vacío");
-    		return 0;
-    	}
+    	
     	if ($("#txtkam").val() == "-1") {
     		alert("Selecciona un KAM");
     		return 0;
