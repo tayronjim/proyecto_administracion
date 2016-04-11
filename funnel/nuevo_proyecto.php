@@ -1,8 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 	<?php include_once("../librerias_base.htm"); ?>
 	<script type="text/javascript">
+		$filasActividades = 0;
 		$preWBS = "";
 		$facturacion = [];
 		$clientes = [];
@@ -180,7 +181,31 @@
 
 			
 			
+			$(".fa-angle-double-down").click(function(){
+				$("#muestraContactos").hide();
+				$("#ocultaContactos").show();
+				$("#tblContacto tbody tr").show();
+			});
+				
+			$(".fa-angle-double-up").click(function(){
+				$("#ocultaContactos").hide();
+				$("#muestraContactos").show();
+				$("#tblContacto tbody tr.noprimario").hide('fast');
+			});
 
+
+
+			$("#btnMas").click(function(){
+				$filasActividades ++;
+				$("#tblActividades tbody").append('<tr id="fila_'+$filasActividades+'"><td><div class="btnMenos" id="btnMenos_'+$filasActividades+'"></div><input type="hidden" class="registroActividades" id="numeroFila" value="'+$filasActividades+'"></td><td><input type="date" id="fecha_'+$filasActividades+'"></td><td colspan="1"> <textarea id="txtActividad_'+$filasActividades+'"></textarea></td><td></td></tr>');
+			});
+
+			$("#despliegaSalario").click(function(){
+				$("#contenidoSalario").slideToggle("slow");
+			});
+			$("#contenidoSalario").css("display","none");
+
+			$("#muestraContactos").hide();
 
 		}); // fin document ready
 
@@ -332,9 +357,11 @@
 		$filasContacto = datosContacto[$cont].idcontacto;
 		$("#tblContacto tbody").append('<tr id="filaContacto_'+$filasContacto+'" class="noprimario"><td><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" value="'+datosContacto[$cont].nombre+'" name="nombre" style="width:250px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" value="'+datosContacto[$cont].area+'" name="area" style="width:170px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtTelefono_'+$filasContacto+'" value="'+datosContacto[$cont].telefono+'" name="telefono" style="width:100px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txteMail_'+$filasContacto+'" value="'+datosContacto[$cont].email+'" name="email" style="width:100px;"></td><td><input type="date" class="datoContacto_'+$filasContacto+'" id="txtCumpleaños_'+$filasContacto+'" value="'+datosContacto[$cont].cumpleaños+'" name="cumpleaños" style="width:130px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;">'+datosContacto[$cont].observaciones+'</textarea></td><td><input type="radio" name="contacPrimario" onclick="seleccionaContacto('+$filasContacto+');"></td></tr>');
 
-		$cont++;
-	}
-	$filasContacto++;
+			$cont++;
+		}
+		$filasContacto++;
+		$("#muestraContactos").hide();
+		$("#ocultaContactos").show();
 	}
 
 	function seleccionaContacto(fila){
@@ -343,11 +370,45 @@
 		$("#filaContacto_"+fila).addClass('siprimario');
 		$("#tblContacto tbody tr.noprimario").hide('fast');
 		$("#hdnContactoSeleccionado").val(fila);
+		$("#muestraContactos").show();
+		$("#ocultaContactos").hide();
 
 	}
+	function calculaValorProyecto(){
+    	$salarioBase = parseFloat($("#txtSalario").val().replace(/,/g, ''));
+		$bono = $salarioBase*parseFloat($("#txtBono").val());
+		$vacaciones = parseFloat($("#txtVacaciones").val());
+		$primaVacacional = parseFloat($("#txtPrimaVacacional").val())/100;
+		$aguinaldo = $salarioBase/30*parseFloat($("#txtAguinaldo").val());
+		$prima = $salarioBase/30 * $vacaciones * $primaVacacional; 
+		$("#txtValorProyecto").val(addCommas(parseFloat(($bono+$prima+$aguinaldo+($salarioBase*12))*(0.1)).toFixed(2)));
+		$("#txtSalario").val(addCommas($salarioBase.toFixed(2)));
+		$("#lblSalario").text(addCommas($salarioBase.toFixed(2)));
+		 		
+    }
 
 	</script>
-	<style type="text/css"></style>
+	<style type="text/css">
+	#despliegaSalario{
+			margin-left: 0px;
+			padding: 1px 0px;
+			border:1px solid #999;
+			width: 350px;
+			position: relative;
+			
+			background-color: #fff;
+			color:black;
+		}
+		#contenidoSalario{
+			position: relative;
+			padding-left: 50px;
+			overflow: auto;
+			z-index: 999;
+			color:#fff;
+			font-weight: bold;
+
+		}
+	</style>
 </head>
 <body>
 <?php include_once("../header.htm"); ?>
@@ -407,7 +468,7 @@
 					<th colspan="9" width="1030px">Datos de Contacto</th>
 				</tr>
 				<tr>
-					<th></th><th width="255px">Nombre</th><th width="175px">Area/Puesto</th><th width="105px">Telefono</th><th width="100px">e-Mail</th><th>Cumpleaños</th><th width="206px">Observaciones</th><th><div id="btnMasContacto" class="btnMas"></div></th><th><div> up </div><div> down </div></th>
+					<th></th><th width="255px">Nombre</th><th width="175px">Area/Puesto</th><th width="105px">Telefono</th><th width="100px">e-Mail</th><th>Cumpleaños</th><th width="206px">Observaciones</th><th><div id="btnMasContacto" class="btnMas"></div></th><th><div id="ocultaContactos"> <i class="fa fa-angle-double-up fa-2x"></i> </div><div id="muestraContactos"> <b><i class="fa fa-angle-double-down fa-2x"></i></b> </div></th>
 				</tr>
 
 			</thead>
@@ -454,16 +515,52 @@
 	<h3>Facturacion</h3>
 	<table class="tblFormularios">
 		<tr>
-			<td>Sueldo de la posición</td>
-		</tr>
-		<tr>
-			<td>Prestaciones</td>
-		</tr>
-		<tr>
-			<td>Condiciones de FEE</td>
+			<td colspan="2">
+				<div id="despliegaSalario"> <b> Salario Base: </b> $<label id="lblSalario"></label></div>
+					<div id="contenidoSalario">
+					 	<table border="0" class="datosSalario">
+
+							<tr>
+								<td><b>Salario Base:</b></td><td><input type="text" class="formProyect" id="txtSalario" onchange="calculaValorProyecto()" name="salario" value="1" style="width: 80px;"></td>
+								
+							</tr>
+							<tr>
+								<td>Aguinaldo (dias)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtAguinaldo" name="aguinaldo" value="1" style="width: 30px;"></td>
+							</tr>
+							<tr>
+								<td>Vacaciones (dias)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtVacaciones" name="vacaciones" value="1" style="width: 30px;"></td>
+							</tr>
+							<tr>
+								<td>Prima Vacacional</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtPrimaVacacional" name="primavacacional" value="1" style="width: 30px;"><b>%</b></td>
+							</tr>
+							<tr>
+								<td>Bono (Promedio Meses)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtBono" name="bono" value="1" style="width: 30px;"></td>
+							</tr>
+							<tr>
+								<td>Fondo de Ahorro</td><td><select class="formProyect" id="slcFondoAhorro" name="fondo"><option value="no">NO</option><option value="si">SI</option></select></td>
+							</tr>
+							<tr>
+								<td>Bales de Despensa</td><td><select class="formProyect" id="slcBales" name="bales"><option value="no">NO</option><option value="si">SI</option></select></td>
+							</tr>
+							<tr>
+								<td>Seguro de G.M.M.:</td><td><select class="formProyect" id="slcSeguroGMM" name="sgmm"><option value="no">NO</option><option value="si">SI</option></select></td>
+							</tr>
+							<tr>
+								<td>Seguro de Vida:</td><td><select class="formProyect" id="slcASeguroVida" name="segvida"><option value="no">NO</option><option value="si">SI</option></select></td>
+							</tr>
+							<tr>
+								<td>Otros</td><td><textarea class="formProyect" id="txtOtraPrestacion" name="otraprestacion" rows="3"></textarea></td>
+							</tr>
+						
+					</table>
+			 		</div>
+			 	
+			
+			</td>
 		</tr>
 		<tr>
 			<td>Valor del Proyecto</td>
+			<td><input type="text" id="txtValorProyecto"></td>
 		</tr>
 		<tr>
 			<td>Facturación</td><td><select><option value="fac100">100%</option><option value="fac3070">30% 70%</option><option value="fac303040">30% 30% 40%</option><option value="facOtro">Otro</option></select></td>

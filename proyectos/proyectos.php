@@ -351,6 +351,11 @@
 	 			calculaFechaGarantia($("#txtGarantia").val());
 	 		});
 
+	 		$("#despliegaSalario").click(function(){
+				$("#contenidoSalario").slideToggle("slow");
+			});
+			$("#contenidoSalario").css("display","none");
+
 
 	 			
 		}); // fin document ready
@@ -670,7 +675,8 @@
 			$aguinaldo = $salarioBase/30*parseFloat($("#txtAguinaldo").val());
 			$prima = $salarioBase/30 * $vacaciones * $primaVacacional; 
 			$("#txtValorProyecto").val(addCommas(parseFloat(($bono+$prima+$aguinaldo+($salarioBase*12))*(0.1)).toFixed(2)));
-			$("#txtSalario").val(addCommas($salarioBase));
+			$("#txtSalario").val(addCommas($salarioBase.toFixed(2)));
+			$("#lblSalario").text(addCommas($salarioBase.toFixed(2)));
 			 		
 	    }
 				
@@ -753,6 +759,27 @@
 		#colAcepSeg input, #colAcepCancSeg input{
 			background-color: green;
 			border:1px solid green;
+		}
+		#despliegaSalario{
+			margin-left: 30px;
+			padding: 1px 0px;
+			border:1px solid #999;
+			
+			position: relative;
+			
+			background-color: #fff;
+			color:black;
+		}
+		#contenidoSalario{
+			position: absolute;
+			margin-left: 30px;
+			padding-left: 20px;
+			overflow: auto;
+			z-index: 999;
+			color:#fff;
+			font-weight: bold;
+			background-color: rgba(55,55,55,0.6);
+
 		}
 	</style>
 	
@@ -918,35 +945,48 @@
 					<option value="6">6- OTRO</option>
 				</select>
 			</td>
-			<td><b>Salario Base:</b></td><td><input type="text" class="formProyect" id="txtSalario" onchange="calculaValorProyecto()" name="salario" style="width: 80px;"></td>
-			<td><input type="hidden" class="formProyect" name="estatus" value="1"></td>
-		</tr>
-		<tr>
-			<td></td><td></td><td>Aguinaldo (dias):</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtAguinaldo" name="aguinaldo" style="width: 30px;"></td>
-		</tr>
-		<tr>
-			<td></td><td></td><td>Vacaciones (dias):</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtVacaciones" name="vacaciones" style="width: 30px;"></td>
-		</tr>
-		<tr>
-			<td></td><td></td><td>Prima Vacacional:</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtPrimaVacacional" name="primavacacional" style="width: 30px;"><b>%</b></td>
-		</tr>
-		<tr>
-			<td></td><td></td><td>Bono (Promedio Meses):</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtBono" name="bono" style="width: 30px;"></td>
-		</tr>
-		<tr>
-			<td></td><td></td><td>Fondo de Ahorro:</td><td><select class="formProyect" id="slcFondoAhorro" name="fondo"><option value="no">NO</option><option value="si">SI</option></select></td>
-		</tr>
-		<tr>
-			<td></td><td></td><td>Bales de Despensa:</td><td><select class="formProyect" id="slcBales" name="bales"><option value="no">NO</option><option value="si">SI</option></select></td>
-		</tr>
-		<tr>
-			<td></td><td></td><td>Seguro de G.M.M.:</td><td><select class="formProyect" id="slcSeguroGMM" name="sgmm"><option value="no">NO</option><option value="si">SI</option></select></td>
-		</tr>
-		<tr>
-			<td></td><td></td><td>Seguro de Vida:</td><td><select class="formProyect" id="slcASeguroVida" name="segvida"><option value="no">NO</option><option value="si">SI</option></select></td>
-		</tr>
-		<tr>
-			<td></td><td></td><td>Otros:</td><td><textarea class="formProyect" id="txtOtraPrestacion" name="otraprestacion" rows="3"></textarea></td>
+			<td colspan="2">
+				<div id="despliegaSalario"> <b> Salario Base: </b> $<label id="lblSalario"></label></div>
+					<div id="contenidoSalario">
+					 	<table border="0" class="datosSalario">
+
+							<tr>
+								<td><b>Salario Base:</b></td><td><input type="text" class="formProyect" id="txtSalario" onchange="calculaValorProyecto()" name="salario" value="1" style="width: 80px;"></td>
+								
+							</tr>
+							<tr>
+								<td>Aguinaldo (dias)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtAguinaldo" name="aguinaldo" value="1" style="width: 30px;"></td>
+							</tr>
+							<tr>
+								<td>Vacaciones (dias)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtVacaciones" name="vacaciones" value="1" style="width: 30px;"></td>
+							</tr>
+							<tr>
+								<td>Prima Vacacional</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtPrimaVacacional" name="primavacacional" value="1" style="width: 30px;"><b>%</b></td>
+							</tr>
+							<tr>
+								<td>Bono (Promedio Meses)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtBono" name="bono" value="1" style="width: 30px;"></td>
+							</tr>
+							<tr>
+								<td>Fondo de Ahorro</td><td><select class="formProyect" id="slcFondoAhorro" name="fondo"><option value="no">NO</option><option value="si">SI</option></select></td>
+							</tr>
+							<tr>
+								<td>Bales de Despensa</td><td><select class="formProyect" id="slcBales" name="bales"><option value="no">NO</option><option value="si">SI</option></select></td>
+							</tr>
+							<tr>
+								<td>Seguro de G.M.M.:</td><td><select class="formProyect" id="slcSeguroGMM" name="sgmm"><option value="no">NO</option><option value="si">SI</option></select></td>
+							</tr>
+							<tr>
+								<td>Seguro de Vida:</td><td><select class="formProyect" id="slcASeguroVida" name="segvida"><option value="no">NO</option><option value="si">SI</option></select></td>
+							</tr>
+							<tr>
+								<td>Otros</td><td><textarea class="formProyect" id="txtOtraPrestacion" name="otraprestacion" rows="3"></textarea></td>
+							</tr>
+						
+					</table>
+			 		</div>
+			 	
+			
+			</td>
 			
 		</tr>
 		<tr><td>&nbsp;</td></tr>
