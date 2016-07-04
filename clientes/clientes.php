@@ -9,6 +9,7 @@
 		$("#menuClientes").addClass('current');
 		$filasRS=0;
 		$filasContacto=0;
+		
 		<?php 
 			$cliente = "";
 			if(isset($_GET['c'])){
@@ -28,12 +29,12 @@
 	 			data: { "funcion" :  "buscaClientes", "cliente":$cliente },
 	 			success: function(data){
 	 				var obj = JSON.parse(data);
-	 				console.log(obj);
+	 				
 	 				var datosCliente = JSON.parse(obj.Cliente[0].datos_cliente);
 	 				var objFac = JSON.parse(obj.Cliente[0].facturacion);
 	 				var datosContacto = JSON.parse(obj.Cliente[0].datos_contacto);
 	 				
-	 				console.log(datosCliente);
+	 				
  					//$arregloTabla[$cont] = obj.Cliente[$cont];
  					//$("#listaClientes").append("<option value='"+obj.Cliente[$cont].id+"'>"+obj.Cliente[$cont].nombre_comercial+"</option>");
  					//$("#txtCodigoCliente").val(datosCliente.codigo);
@@ -43,14 +44,14 @@
  					$("#idCliente").val(obj.Cliente[0].id);
  					//$facturacion = obj.Cliente[0].facturacion;
  					$("#txtFechaAlta").attr('disabled','true');
-	 				console.log($facturacion);
+	 			
 					//var objFac = JSON.parse($facturacion);
 					
 					$cont = 0;
 					while(objFac[$cont]){
-						console.log(objFac[$cont]);
+						
 						$filasRS = objFac[$cont].idfac;
-						console.log($filasRS);
+						
 						$("#tblRS tbody").append('<tr id="filaRS_'+$filasRS+'"><td><div id="btnMenosRS_'+$filasRS+'" class="btnMenosRS"></div><input type="hidden" value="'+$filasRS+'" class="registroFacturacion"><input type="hidden" class="datoFac_'+$filasRS+'" id="idFac_'+$filasRS+'" name="idfac" value="'+$filasRS+'"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRS_'+$filasRS+'" name="rs" value="'+objFac[$cont].rs+'" style="width:270px;"></td><td><input type="text" class="datoFac_'+$filasRS+'" id="txtRFC_'+$filasRS+'" name="rfc" value="'+objFac[$cont].rfc+'" style="width:120px;"><input type="hidden" id="hdnCalle_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="calle" value="'+objFac[$cont].calle+'"><input type="hidden" id="hdnExt_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="ext" value="'+objFac[$cont].ext+'"><input type="hidden" id="hdnInt_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="nint" value="'+objFac[$cont].nint+'"><input type="hidden" id="hdnCP_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="cp" value="'+objFac[$cont].cp+'"><input type="hidden" id="hdnCiudad_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="ciudad" value="'+objFac[$cont].ciudad+'"><input type="hidden" id="hdnEstado_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="estado" value="'+objFac[$cont].estado+'"><input type="hidden" id="hdnTel_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="telefono" value="'+objFac[$cont].telefono+'"><input type="hidden" id="hdnEmail_'+$filasRS+'" class="datoFac_'+$filasRS+'" name="email" value="'+objFac[$cont].email+'"></td><td><input type="radio" class="datoFac_'+$filasRS+'" id="txtprimario_'+$filasRS+'" name="primario" value="'+objFac[$cont].primario+'" onclick="valorRadioTrue('+$filasRS+')"></td><td><div class="btnEditarRS" id="btnEditar_'+$filasRS+'"></div></td><td></td></tr>');
 						if ($("#txtprimario_"+$filasRS).val() == 1) {
 							$("#txtprimario_"+$filasRS).attr('checked',true);
@@ -62,12 +63,27 @@
 					$cont = 0;
 					while(datosContacto[$cont]){
 						$filasContacto = datosContacto[$cont].idcontacto;
-						$("#tblContacto tbody").append('<tr id="filaContacto_'+$filasContacto+'"><td><div id="btnMenosContacto_'+$filasContacto+'" class="btnMenosCont"></div><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" value="'+datosContacto[$cont].nombre+'" name="nombre" style="width:250px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" value="'+datosContacto[$cont].area+'" name="area" style="width:170px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtTelefono_'+$filasContacto+'" value="'+datosContacto[$cont].telefono+'" name="telefono" style="width:100px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txteMail_'+$filasContacto+'" value="'+datosContacto[$cont].email+'" name="email" style="width:100px;"></td><td><input type="date" class="datoContacto_'+$filasContacto+'" id="txtCumpleaños_'+$filasContacto+'" value="'+datosContacto[$cont].cumpleaños+'" name="cumpleaños" style="width:130px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;">'+datosContacto[$cont].observaciones+'</textarea></td><td></td></tr>');
+
+						$("#tblContacto > tbody").append('<tr id="filaContacto_'+$filasContacto+'" style="border-bottom:1px solid #E1EEF4"><td><div id="btnMenosContacto_'+$filasContacto+'" class="btnMenosCont"></div><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" value="'+datosContacto[$cont].nombre+'" name="nombre" style="width:250px;" placeholder="Nombre Completo"><br><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" value="'+datosContacto[$cont].area+'" name="area" style="width:170px;" placeholder="Area / Puesto"></td><td><table id="tblMedioContacto_'+$filasContacto+'" contacto="'+$filasContacto+'" ><tbody></tbody></table></td><td><input type="date" class="datoContacto_'+$filasContacto+'" id="txtCumpleaños_'+$filasContacto+'" value="'+datosContacto[$cont].cumpleaños+'" name="cumpleaños" style="width:130px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;">'+datosContacto[$cont].observaciones+'</textarea></td><td></td></tr>');
+
+						$cont2=0;
+						console.log(datosContacto[$cont].medioDeContacto[$cont2]);
+						while(datosContacto[$cont].medioDeContacto[$cont2]){
+							$idTipoContacto = datosContacto[$cont].medioDeContacto[$cont2].tipoContacto;
+							$idValorContacto = datosContacto[$cont].medioDeContacto[$cont2].valorContacto;
+							console.log($idTipoContacto + "," + $idValorContacto);
+							$('#tblMedioContacto_'+$filasContacto+' > tbody').append('<tr class="tblFilaContacto'+$filasContacto+'" fila="'+$cont2+'"><td></td><td><select id="tipoContactoFila'+$filasContacto+'_'+$cont2+'"><option value="1">Telefono Movil</option><option value="2">Telefono Trabajo</option><option value="3">e-Mail</option><option value="4">linkedin</option><option value="5">ubicacion</option></select></td><td><input id="valorTipoContactoFila'+$filasContacto+'_'+$cont2+'" type="text" class="datoContacto" name="valor" style="width:150px;"></td></tr>');
+							$('#tipoContactoFila'+$filasContacto+'_'+$cont2).val($idTipoContacto);
+							$('#valorTipoContactoFila'+$filasContacto+'_'+$cont2).val($idValorContacto);
+							$cont2++;
+						}
+
+						$('#tblMedioContacto_'+$filasContacto+' > tbody').append('<tr class="tblFilaContacto'+$filasContacto+'" fila="-1"><td><div id="btnMasMedioContacto" class="btnMas" onclick="agregaMedioContacto('+$filasContacto+','+$cont2+')"></div></td><td></td><td></td></tr>');
 
 						$cont++;
 					}
+
 					$filasContacto++;
-					
 	 			}
 	 		});
 
@@ -80,7 +96,7 @@
 		});
 
 		$("#btnMasContacto").click(function(){
-				$("#tblContacto tbody").append('<tr id="filaContacto_'+$filasContacto+'"><td><div id="btnMenosContacto_'+$filasContacto+'" class="btnMenosCont"></div><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" name="nombre" style="width:250px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" name="area" style="width:170px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtTelefono_'+$filasContacto+'" name="telefono" style="width:100px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txteMail_'+$filasContacto+'" name="email" style="width:100px;"></td><td><input type="date" class="datoContacto_'+$filasContacto+'" id="txtCumpleaños_'+$filasContacto+'" name="cumpleaños" style="width:130px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;"></textarea></td><td></td></tr>');
+				$("#tblContacto > tbody").append('<tr id="filaContacto_'+$filasContacto+'" style="border-bottom:1px solid #E1EEF4"><td><div id="btnMenosContacto_'+$filasContacto+'" class="btnMenosCont"></div><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" name="nombre" style="width:250px;" placeholder="Nombre Completo"><br><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" name="area" style="width:170px;" placeholder="Area / Puesto"></td><td><table id="tblMedioContacto_'+$filasContacto+'" contacto="'+$filasContacto+'" ><tr class="tblFilaContacto'+$filasContacto+'" fila="0"><td></td><td><select id="tipoContactoFila'+$filasContacto+'_0"><option value="1">Telefono Movil</option><option value="2">Telefono Trabajo</option><option value="3">e-Mail</option><option value="4">linkedin</option><option value="5">ubicacion</option></select></td><td><input id="valorTipoContactoFila'+$filasContacto+'_0" type="text" class="datoContacto" name="valor" style="width:150px;"></td></tr><tr class="tblFilaContacto'+$filasContacto+'" fila="-1"><td><div id="btnMasMedioContacto" class="btnMas" onclick="agregaMedioContacto('+$filasContacto+',1)"></div></td><td></td><td></td></tr></table></td><td><input type="date" class="datoContacto_'+$filasContacto+'" id="txtCumpleaños_'+$filasContacto+'" name="cumpleaños" style="width:130px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;"></textarea></td><td></td></tr>');
 				$filasContacto++;
 		});
 
@@ -120,29 +136,56 @@
 			$(".fondoEmergente").css("visibility","visible");
 			
 		});
+		$(document).on('click','#btnMasMedioContacto',function(){
+			
+		});
 
 	}); //document ready
+		function agregaMedioContacto($filasContacto,$fila){
+
+			$filaSiguiente = parseInt($fila)+1;
+
+			$(".tblFilaContacto"+$filasContacto+"[fila='-1']").html('<td></td><td><select id="tipoContactoFila'+$filasContacto+'_'+$fila+'"><option value="1">Telefono Movil</option><option value="2">Telefono Trabajo</option><option value="3">e-Mail</option><option value="4">linkedin</option><option value="5">ubicacion</option></select></td><td><input id="valorTipoContactoFila'+$filasContacto+'_'+$fila+'" type="text" class="datoContacto" name="valor" style="width:150px;"></td>');
+			$(".tblFilaContacto"+$filasContacto+"[fila='-1']").attr('fila',$fila);
+			$('#tblMedioContacto_'+$filasContacto+' > tbody').append('<tr class="tblFilaContacto'+$filasContacto+'" fila="-1"><td><div id="btnMasMedioContacto" class="btnMas" onclick="agregaMedioContacto('+$filasContacto+','+$filaSiguiente+')"></div></td><td></td><td></td></tr>');
+
+
+		}
 
 		function guardaCliente(){
 			jsonFacturacion = [];
 			jsonContacto = [];
 			jsonObj = [];
-
+			$subArreglo = "";
 			
 
 			$(".registroContactos").each(function() {
 
 		    	$arreglo = {};
 		    	$fila = $(this).val();
+		    	
 		    	$(".datoContacto_"+$fila).each(function() {
 		    		$campo = $(this).attr('name').split("_");
 		    		$arreglo[$campo[0]] = $(this).val();
 		    	});
-
+		    	$arreglo.medioDeContacto = [];
+		    	$('.tblFilaContacto'+$fila).each(function(){
+		    	
+		    		$subFila = $(this).attr('fila');
+	
+		    		if ($subFila >= 0) {
+						$subArreglo = {tipoContacto : $('#tipoContactoFila'+$fila+'_'+$subFila).val(), valorContacto : $('#valorTipoContactoFila'+$fila+'_'+$subFila).val()};
+						$arreglo.medioDeContacto.push($subArreglo);
+			    		
+		    		}
+		    			
+		    	});
+		    	
 		        jsonContacto.push($arreglo);
+		        
 		       
 		    });
-		
+
 		    $(".registroFacturacion").each(function() {
 
 		    	$arreglo = {};
@@ -321,7 +364,11 @@
 		<table class="tblFormularios">
 			<tr>
 				<!-- <td>Codigo</td>	<td><input type="text" id="txtCodigoCliente" class="formClientes" name="codigo"></td> -->
-				<td>Nombre Comercial</td><td><input type="text" id="txtNombrePublico" class="formClientes" name="publico"></td><td></td>
+				<td>Nombre Comercial</td><td><input type="text" id="txtNombrePublico" class="formClientes" name="publico"></td>
+				<td rowspan="4" style="vertical-align:top; padding-left:100px;"><textarea id="txtObservaciones" class="formClientes" name="observaciongenerales" placeholder="Observaciones Generales" rows="8" cols="70"></textarea></td>
+			</tr>
+			<tr>
+				<td>Pagina web: </td><td><input type="text" name="web" id="paginaWeb" class="formClientes"></td>
 			</tr>
 			<tr>
 				<td>Industria</td>
@@ -369,10 +416,10 @@
 	<table id="tblContacto" border="1">
 		<thead>
 			<tr>
-				<th colspan="8" width="1030px">Datos de Contacto</th>
+				<th colspan="9" width="1030px">Datos de Contacto</th>
 			</tr>
 			<tr>
-				<th></th><th width="255px">Nombre</th><th width="175px">Area/Puesto</th><th width="105px">Telefono</th><th width="100px">e-Mail</th><th>Cumpleaños</th><th width="206px">Observaciones</th><th><div id="btnMasContacto" class="btnMas"></div></th>
+				<th></th><th width="255px">Nombre</th><th width="175px">Información de Contacto</th><th>Cumpleaños</th><th width="206px">Observaciones</th><th><div id="btnMasContacto" class="btnMas"></div></th>
 			</tr>
 
 		</thead>
@@ -384,7 +431,7 @@
 </div>
 
 	<br><br>
-	<textarea id="txtObservaciones" class="formClientes" name="observaciongenerales" placeholder="Observaciones Generales" rows="5" cols="100"></textarea>
+	
 	<br><br>
 	<input type="button" value="Guardar" id="guardaCliente">
 

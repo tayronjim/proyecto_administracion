@@ -7,8 +7,6 @@
 		$enGarantia = 0;
 		$filasActividades = 0;
 		$filasSeguimientos = 0;
-		$contacto = [];
-		$clienteActivo = 0;
 		$proyecto = <?php echo $proyecto; ?>;
 		$(document).ready(function(){
 			$("li").removeClass( "current" )
@@ -24,10 +22,8 @@
 	 				var obj = JSON.parse(data);
 	 				//console.log(obj);
 	 				var cliente = JSON.parse(obj.Cliente[0].datos_cliente);
-	 				$contacto = JSON.parse(obj.Cliente[0].datos_contacto);
+	 				var contacto = JSON.parse(obj.Cliente[0].datos_contacto);
 	 				var rs = JSON.parse(obj.Cliente[0].facturacion);
-
-	 				console.log(cliente);
 
 	 				var datos_cliente = JSON.parse(obj.Proyecto[0].cliente);
 	 				var datos_proyecto = JSON.parse(obj.Proyecto[0].datos_proyecto);
@@ -39,25 +35,20 @@
 		 				$("#txtEmpInt").val(datos_proyecto.empint);
 		 				$("#txtcta").val(datos_proyecto.cta);
 		 				$("#txtsem").val(datos_proyecto.sem);
-		 				$("#lblCliente").html(cliente.publico);
+		 				$("#txtCliente").val(cliente.publico);
+		 				
 		 				
 		 				$("#hdnCliente").val(datos_cliente.cliente);
-		 				$clienteActivo = datos_cliente.cliente;
-
 		 				$.each(rs, function($key, $value){
-		 					if ($value.idfac == datos_cliente.razonS) {$("#lblDatosFiscales").html($value.rs+"<br>"+$value.rfc); $("#hdnDatoFiscal").val(datos_cliente.razonS);}
+		 					if ($value.idfac == datos_cliente.razonS) {$("#txtRS").val($value.rs); $("#hdnRS").val(datos_cliente.razonS);}
 		 				});
 		 				$cont = 0;
 		 				//while(contacto[$cont]){
 		 				//	$("#listaContactos").append("<option value='"+value.idcontacto+"'>"+value.nombre+"</option>");
 		 				//}
-		 				console.log(datos_cliente);
-		 				$("#hdnContacto").val(datos_cliente.contacto);
-		 				$.each($contacto, function($key, $value){
-		 					$("#tblContactos tbody").append("<tr id='cont_"+$value.idcontacto+"'><td>"+$value.nombre+"</td><td>"+$value.area+"</td><td>(ver mas)</td><td><input type='button' value='Principal' onclick='seleccionaContacto("+$key+")'></td></option>");
+		 				$.each(contacto, function($key, $value){
+		 					$("#listaContactos").append("<option value='"+$value.idcontacto+"'>"+$value.nombre+"</option>");
 		 				 });
-
-		 				seleccionaContacto(datos_cliente.contacto);
 		 				
 		 				if (!datos_cliente.contacto) {$("#listaContactos").val("-1");}
 		 				else{$("#listaContactos").val(datos_cliente.contacto);}
@@ -76,6 +67,7 @@
 
 		 				$("#txtPosicion").val(datos_proyecto.posicion);
 		 				$("#slcDisciplina").val(datos_proyecto.disciplina);
+		 				
 		 				$.ajax({
 				 			type: "POST",
 				 			url: "control.php",
@@ -119,7 +111,6 @@
 		 				$("#txtPrioridad").val(datos_proyecto.prioridad);
 		 				
 		 				$("#txtSalario").val(datos_proyecto.salario);
-		 				$("#lblSalario").html(datos_proyecto.salario);
 		 				$("#txtAguinaldo").val(datos_proyecto.aguinaldo);
 		 				$("#txtVacaciones").val(datos_proyecto.vacaciones);
 		 				$("#txtPrimaVacacional").val(datos_proyecto.primavacacional);
@@ -253,6 +244,8 @@
 					  $("#tblSeguimientos tbody").append('<tr id="filaSeg_'+filasSeguimientos+'"><td><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+filasSeguimientos+'" value="'+actividad.fecha+'" disabled> </td><td colspan="1"><textarea id="txtAreaSeg_'+filasSeguimientos+'" disabled>'+actividad.act+'</textarea></td><td><div class="btnAcepSeg" id="btnAcepSeg_'+filasSeguimientos+'"></div></td><td><div class="btnCancelSeg" id="btnCancelSeg_'+filasSeguimientos+'"></div></td><td></td></tr>');
 					  $filasSeguimientos = filasSeguimientos;
 					});
+					
+
 	 		
 	 			}
 	 		});
@@ -358,16 +351,6 @@
 	 		$("#txtGarantia").change(function(){
 	 			calculaFechaGarantia($("#txtGarantia").val());
 	 		});
-
-	 		$("#despliegaSalario").click(function(){
-				$("#contenidoSalario").slideToggle("slow");
-			});
-			$("#contenidoSalario").css("display","none");
-
-			$("#plecaMuestraContactos").click(function(){
-				$("#contenidoContactos").toggle("slow");
-			});
-			$("#contenidoContactos").css("display","none");
 
 
 	 			
@@ -604,7 +587,17 @@
 
 		function dotosObligatorios(){
     	
-    	
+    	if ($("#txtkam").val() == "-1") {
+    		alert("Selecciona un KAM");
+    		return 0;
+    	}
+    	if ($("#listaClientes").val() == "-1") {
+    		alert("Selecciona un Cliente");
+    		return 0;
+    	}
+    	if ($("#listaRS").val() == null) {
+    		alert("El cliente no tiene una razon social asociada");
+    	}
     	if ($("#txtTituloProyecto").val() == "") {
     		alert("La posicion no puede estar vacía");
     		return 0;
@@ -678,29 +671,9 @@
 			$aguinaldo = $salarioBase/30*parseFloat($("#txtAguinaldo").val());
 			$prima = $salarioBase/30 * $vacaciones * $primaVacacional; 
 			$("#txtValorProyecto").val(addCommas(parseFloat(($bono+$prima+$aguinaldo+($salarioBase*12))*(0.1)).toFixed(2)));
-			//console.log(addCommas(parseFloat(($bono+$prima+$aguinaldo+($salarioBase*12))*(0.1)).toFixed(2)));
-			$("#txtSalario").val(addCommas($salarioBase.toFixed(2)));
-			$("#lblSalario").text(addCommas($salarioBase.toFixed(2)));
-
-			calculaTotalFacturado();
+			$("#txtSalario").val(addCommas($salarioBase));
 			 		
 	    }
-
-	    function seleccionaContacto($key){
-			console.log($contacto);
-			if ($key > -1) {
-				$datoContacto = $contacto[$key];
-				
-				$("#lblContacto").html("");
-				$("#lblContacto").append("<table border='0' style=' border-spacing: 0px;'><tr><td style='border-right:1px solid white; text-align: right;'>Nombre</td><td style='text-align: left;'>"+$datoContacto.nombre +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>Área/Puesto</td><td style='text-align: left;'>"+$datoContacto.area +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>Teléfono</td><td style='text-align: left;'>"+ $datoContacto.telefono +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>eMail</td><td style='text-align: left;'>"+ $datoContacto.email +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>Linkedin</td><td style='text-align: left;'>"+$datoContacto.linkedin);
-				$("#hdnContacto").val($datoContacto.idcontacto);
-			}
-			else{
-				$("#lblContacto").html("");
-				$("#hdnContacto").val(-1);
-			}
-				
-		}
 				
 
 		
@@ -782,507 +755,390 @@
 			background-color: green;
 			border:1px solid green;
 		}
-		#despliegaSalario{
-			margin-left: 30px;
-			padding: 1px 0px;
-			border:1px solid #999;
-			
-			position: relative;
-			
-			background-color: #fff;
-			color:black;
-		}
-		#contenidoSalario{
-			position: relative;
-			margin-left: 30px;
-			padding-left: 20px;
-			overflow: auto;
-			z-index: 999;
-			color:#fff;
-			font-weight: bold;
-			background-color: rgba(55,55,55,0.6);
-
-		}
-		fieldset{
-			background-color: rgba(0,0,0,0.2);
-			-webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-			-moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-			box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-		}
-		fieldset legend{
-			color: #fff;
-			background-color: rgba(0,0,0,0.2);
-			border: 2px groove threedface;
-		}
-		#lblContacto table tr td{
-			 padding: 3px 9px 3px 9px; font-size: 12px;
-		}
 	</style>
 	
 </head>
 <body>
 <?php include_once("../header.htm"); ?>
 <div class="cuerpo">
-	<table style="width: 100%;">
-		<tr style="vertical-align: top;">
-			<td style="width: 800px; min-width: 50%;" >
-				<fieldset><legend>Proyecto</legend>
-					<table class="tblFormularios"> 
-						<tr>
-							<td><b>WBS:</b> </td><td><input id="txtwbs" type="text" value="" name="wbs" class="formProyect" disabled></td><td><b>Empresa Interna:</b> </td><td>
-								<select id="txtEmpInt" type="text" value="" name="empint" class="formProyect">
-									<option value="AIMS">AIMS</option>
-									<option value="DMA">Diaz Morones y Asociados</option>
-									<option value="SICSA">Servicios Industriales Contrata SA</option>
-									<option value="SCO">Servicios Contrata</option>
-									<option value="OCO">Outsourcing Contrata</option>
-									<option value="LIASE">Liase</option>
-									<option value="STONEHC">Stone Human Capital</option>
-								</select>
-							</td>
-						</tr>
-						<tr><td>&nbsp;</td></tr>
-						<tr>
-							<td><b>KAM*:</b></td><td><select class="formProyect" id="txtkam" name="kam"><option value="-1"> - </option></select></td>
-							<td><b>Reclutador:</b></td><td><select class="formProyect" id="slcRec" name="reclutador"><option value="-1"> N/A </option></select></td>
-						</tr>
-							
-						<tr>
-							<td><b>KAM 2:</b></td><td><select class="formProyect" id="txtkam2" name="kam2"><option value="-1"> - </option></select></td>
-							<td><b>Apoyo:</b></td><td><select class="formProyect" id="slcApoyo" name="apoyo"><option value="-1"> N/A </option></select></td>
-							
-						</tr>
-						<tr><td>&nbsp;</td></tr>
-						<tr>
-							<td><b>Prioridad:</b></td><td><select class="formProyect" id="txtPrioridad" name="prioridad"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></td><td></td>
-						</tr>
-					</table>
-					<table>
-						<tr><td>&nbsp;</td></tr>
-						<tr>
-							<td style="width: 125px;"><b>Fecha de Inicio</b></td>
-							<td style="width: 220px;">
-								<select class="formProyect" id="fIniY" name="fIniY" disabled><?php insertAniosActual(); ?></select>
-								<select class="formProyect" id="fIniM" name="fIniM" disabled>
-									<option value="01">Enero</option>
-									<option value="02">Febrero</option>
-									<option value="03">marzo</option>
-									<option value="04">abril</option>
-									<option value="05">Mayo</option>
-									<option value="06">Junio</option>
-									<option value="07">Julio</option>
-									<option value="08">Agosto</option>
-									<option value="09">Septiembre</option>
-									<option value="10">Octubre</option>
-									<option value="11">Noviembre</option>
-									<option value="12">Diciembre</option>
-								</select>
-								<select class="formProyect" id="fIniD" name="fIniD" disabled>
-								<?php 
-									//$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
-									$numero = 31;
-									for ($dia=1; $dia <= $numero ; $dia++) { ?>
-										<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
-								<?php	
-									}
-								 ?>
-								</select>
-							</td>
-						
-							<td style="width: 170px;"><b>Fecha de Cierre Ideal</b></td>
-							<td>
-
-							<select class="formProyect" id="fCIdealY" name="fCIdealY"><?php insertAnioMasDos(); ?></select>
-							<select class="formProyect" id="fCIdealM" name="fCIdealM">
-								<option value="01">Enero</option>
-								<option value="02">Febrero</option>
-								<option value="03">marzo</option>
-								<option value="04">abril</option>
-								<option value="05">Mayo</option>
-								<option value="06">Junio</option>
-								<option value="07">Julio</option>
-								<option value="08">Agosto</option>
-								<option value="09">Septiembre</option>
-								<option value="10">Octubre</option>
-								<option value="11">Noviembre</option>
-								<option value="12">Diciembre</option>
-							</select>
-							<select class="formProyect" id="fCIdealD" name="fCIdealD">
-							<?php 
-								//$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
-								$numero = 31;
-								for ($dia=1; $dia <= $numero ; $dia++) { ?>
-									<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
-							<?php	
-								}
-							 ?>
-							</select>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2"></td><td class="FCR"><b>Fecha de Cierre Real</b></td>
-							<td class="FCR">
-							<select class="formProyect" id="fCRealY" name="fCRealY"><?php insertAnioMasDos(); ?></select>
-							<select class="formProyect" id="fCRealM" name="fCRealM">
-								<option value="01">Enero</option>
-								<option value="02">Febrero</option>
-								<option value="03">marzo</option>
-								<option value="04">abril</option>
-								<option value="05">Mayo</option>
-								<option value="06">Junio</option>
-								<option value="07">Julio</option>
-								<option value="08">Agosto</option>
-								<option value="09">Septiembre</option>
-								<option value="10">Octubre</option>
-								<option value="11">Noviembre</option>
-								<option value="12">Diciembre</option>
-							</select>
-							<select class="formProyect" id="fCRealD" name="fCRealD">
-							<?php 
-								//$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
-								$numero = 31;
-								for ($dia=1; $dia <= $numero ; $dia++) { ?>
-									<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
-							<?php	
-								}
-							 ?>
-							</select></td>
-						</tr>
-					</table>
-					<table>
-						<tr><td>&nbsp;</td></tr>
-						<tr>
-							<td><b>Días transcurridos:</b></td><td><u><label id="diasTranscurridos"></label></u></td>
-						</tr>
-						<tr><td>&nbsp;</td></tr>
-					</table>
-					<table>
-						<tr>
-							<td><b>Estatus: </b></td>
-							<td><select class="formProyect" name="estatus" id="slcEstatus">
-									<option value="-1">-----</option>
-									
-								</select>
-							</td>
-							<td class="candSelec"><b>Candidato Seleccionado: </b></td><td class="candSelec"><input type="text" placeholder="Nombre" id="nombreCandidato" name="nombrecandidato" style="width: 250px;"></td>
-						</tr>
-						<tr>
-							<td colspan="2"></td><td class="candSelec"><b>Fecha de Cumpleaños: </b></td><td class="candSelec"><input type="date" id="cumpleCandidato" name="cumplecandidato"></td>
-						</tr>	
-					
-					
-					</table>
-					<br><br>
-					<b>Proyecto Completado al: </b><span id="avance">0%</span>
-				</fieldset>
-			</td>
-			<td>
-				<fieldset style="min-height: 200px;"><legend>Cliente</legend>
-					
-							
-					<table class="tblFormularios" >
-						<tr style="vertical-align: top;">
-							<td><b>Cliente*:</b></td><td><div id="lblCliente" style="background-color: rgba(55,55,55,0.4); width: 200px;"></div><input name="cliente" id="hdnCliente" type="hidden" value="-1" class="formProyectCliente"><!-- <select id="listaClientes" class="formProyectCliente" name="cliente"><option value="-1">-Selecciona un cliente-</option></select> --></td>
-						</tr>
-						<tr style="vertical-align: top;">
-							<td><b>Datos Fiscales:</b></td><td><div id="lblDatosFiscales" style="background-color: rgba(55,55,55,0.4); width: 200px;"></div><input name="razonS" id="hdnDatoFiscal" type="hidden" value="-1" class="formProyectCliente"><!-- <select id="listaRS" class="formProyectCliente" name="razonS"><option>-Seleccione un Cliente-</option></select> --></td>
-						</tr>
-					</table>
-					<table style="width: 90%;">
-						<tr>
-							<td colspan="2">
-								<div id="plecaMuestraContactos" style="background-color: #2d3091; width: 280px; height: 20px; padding-left: 10px; padding-right: 10px; padding-top: 5px; padding-bottom: 5px;"><b>Mostrar Contactos</b> <i class="fa fa-angle-double-right fa-2x" style="float: right; top:-5px; position: relative;"></i></div>
-								<div id="contenidoContactos" class="datagrid" hidden style="max-width: 90%;">
-									<table id="tblContactos">
-										<thead><th>Nombre</th><th>Area/Puesto</th><th></th><th></th></thead>
-										<tbody></tbody>
-									</table>
-								</div>
-							</td>
-						</tr>
-					</table>
-					<table>
-						<tr style="vertical-align: top;">
-							<td><b>Contacto:</b></td><td><div id="lblContacto" style="background-color: rgba(55,55,55,0.4); width: auto;"></div><input name="contacto" id="hdnContacto" type="hidden" value="-1" class="formProyectCliente"><!-- <select id="listaContactos" class="formProyectCliente" name="contacto"><option value="-1">-Selecciona un contacto-</option></select> --></td>
-						</tr>
-					</table>
-				</fieldset>
-			</td>
+	<table class="tblFormularios"> 
+		<tr>
+			<td><b>WBS:</b> </td><td><input id="txtwbs" type="text" value="" name="wbs" class="formProyect" disabled></td><td><b>Empresa Interna:</b> </td><td><select id="txtEmpInt" type="text" value="" name="empint" class="formProyect">
+				<option value="contrata">Contrata</option>
+				<option value="dma">Diaz Morones</option>
+				<option value="aims">AIMS</option>
+				<option value="liase">Liase</option>
+				<option value="stonehc">Stone Human Capital</option>
+			</select></td>
 		</tr>
-		<tr style="vertical-align: top;">
-			<td>
-				<fieldset><legend>Posición</legend>
-					<table class="tblFormularios"> 
-						<tr style="vertical-align: top;">
-							<td><b>Posición: </b></td><td><input type="text" id="txtPosicion" name="posicion" class="formProyect"></td><td><b>Disciplina: </b></td>
-							<td><select type="text" id="slcDisciplina" name="disciplina" class="formProyect">
-								<option value="-1">------</option>
-								<option value="1">1- CALIDAD</option>
-								<option value="2">2- DISTRIBUCIÓN-SUPPLY CHAIN</option>
-								<option value="3">3- FINANZAS</option>
-								<option value="4">4- INVESTIGACIÓN Y DESARROLLO</option>
-								<option value="5">5- IT</option>
-								<option value="6">6- MARKETING</option>
-								<option value="7">7- OPERACIONES</option>
-								<option value="8">8- RECURSOS HUMANOS</option>
-								<option value="9">9- SERVICIO AL CLIENTE</option>
-								<option value="10">10- VENTAS</option>
-								<option value="11">11- OTRO</option>
-
-							</select></td>
-						</tr>
-						<tr style="vertical-align: top;">
-							<td><b>Puestos Req.:</b> </td><td><input id="txtcta" type="text" value="" name="cta" class="formProyect"></td>
-						</tr>
-						<tr style="vertical-align: top;">
-							<td><b>Nivel: </b></td>
-							<td><select type="text" id="slcNivel" name="nivel" class="formProyect">
-									<option value="1">1- C-LEVEL</option>
-									<option value="2">2- ALTA DIRECCIÓN (SENIOR)</option>
-									<option value="3">3- GERENCIAS (MIDDLE)</option>
-									<option value="4">4- JEFATURAS (LOW)</option>
-									<option value="5">5- TECNICAS</option>
-									<option value="6">6- OTRO</option>
-								</select>
-							</td>
-							<td colspan="2">
-								<div id="despliegaSalario"> <b> Salario Base: </b> $<label id="lblSalario"></label></div>
-									<div id="contenidoSalario">
-									 	<table border="0" class="datosSalario">
-
-											<tr>
-												<td><b>Salario Base:</b></td><td><input type="text" class="formProyect" id="txtSalario" onchange="calculaValorProyecto()" name="salario" value="1" style="width: 80px;"></td>
-												
-											</tr>
-											<tr>
-												<td>Aguinaldo (dias)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtAguinaldo" name="aguinaldo" value="1" style="width: 30px;"></td>
-											</tr>
-											<tr>
-												<td>Vacaciones (dias)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtVacaciones" name="vacaciones" value="1" style="width: 30px;"></td>
-											</tr>
-											<tr>
-												<td>Prima Vacacional</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtPrimaVacacional" name="primavacacional" value="1" style="width: 30px;"><b>%</b></td>
-											</tr>
-											<tr>
-												<td>Bono (Promedio Meses)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtBono" name="bono" value="1" style="width: 30px;"></td>
-											</tr>
-											<tr>
-												<td>Fondo de Ahorro</td><td><select class="formProyect" id="slcFondoAhorro" name="fondo"><option value="no">NO</option><option value="si">SI</option></select></td>
-											</tr>
-											<tr>
-												<td>Bales de Despensa</td><td><select class="formProyect" id="slcBales" name="bales"><option value="no">NO</option><option value="si">SI</option></select></td>
-											</tr>
-											<tr>
-												<td>Seguro de G.M.M.:</td><td><select class="formProyect" id="slcSeguroGMM" name="sgmm"><option value="no">NO</option><option value="si">SI</option></select></td>
-											</tr>
-											<tr>
-												<td>Seguro de Vida:</td><td><select class="formProyect" id="slcASeguroVida" name="segvida"><option value="no">NO</option><option value="si">SI</option></select></td>
-											</tr>
-											<tr>
-												<td>Otros</td><td><textarea class="formProyect" id="txtOtraPrestacion" name="otraprestacion" rows="3"></textarea></td>
-											</tr>
-										
-									</table>
-							 		</div>
-							 	
-							
-							</td>
-							
-						</tr>
-					</table>
-				</fieldset>
-			</td>
-			<td>
-				<fieldset><legend>Contrato</legend>
-					<table>
-						<tr>
-							<td class="FCG" style="width: 240px;"><b>Fecha de Cierre en Garantia: </b></td>
-							<td class="FCG" style="width: 240px;">
-							<select class="formProyectContrato" id="fGarantiaY" name="fGarantiaY"> <?php insertAnioMasDos(); ?></select>
-							<select class="formProyectContrato" id="fGarantiaM" name="fGarantiaM">
-								<option value="1">Enero</option>
-								<option value="2">Febrero</option>
-								<option value="3">marzo</option>
-								<option value="4">abril</option>
-								<option value="5">Mayo</option>
-								<option value="6">Junio</option>
-								<option value="7">Julio</option>
-								<option value="8">Agosto</option>
-								<option value="9">Septiembre</option>
-								<option value="10">Octubre</option>
-								<option value="11">Noviembre</option>
-								<option value="12">Diciembre</option>
-							</select>
-							<select class="formProyectContrato" id="fGarantiaD" name="fGarantiaD">
-							<?php 
-								//$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
-								$numero = 31;
-								for ($dia=1; $dia <= $numero ; $dia++) { ?>
-									<option value="<?php echo $dia; ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
-							<?php	
-								}
-							 ?>
-							</select>
-							</td>
-							
-							<td style="text-align: right; width: 320px;"><label id="garantiaMitad" hidden><b>Garantia a mitad de tiempo</b></label><label id="garantia5Dias" hidden><b>Garantia a 5 dias o menos de termino</b></label><label id="garantiaTerminada" hidden><b>Garantia Terminada</b></label></td>
-						</tr>
-						
-						
-					</table>
-					<h2>Datos del Contrato</h2>
-					<table class="tblFormularios">
-						<tr>
-							<td><b>Convenio Firmado: </b> </td><td><select type="text" class="formProyectContrato" id="txtConvenio" name="convenio"><option value="si">Si</option><option value="no">No</option></select></td>
-						</tr>
-						<tr>
-							<td><b>Garantia: </b></td><td><select class="formProyectContrato" id="txtGarantia" name="garantia">
-								<option value="60">60</option>
-								<option value="90">90</option>
-								<option value="120">120</option>
-								<option value="150">150</option>
-								<option value="180">180</option>
-							</select></td>
-						</tr>
-						<tr>
-							<td><b>Honorarios: </b></td>
-							<td><select id="slcHonorarios">
-								<option value="unMesNominal">1 Mes Nominal</option>
-								<option value="unMesIntegradoNominal">1 mes integrado nominal</option>
-								<option value="10">10%</option>
-								<option value="12">12%</option>
-								<option value="15">15%</option>
-								<option value="20">20%</option>
-								<option value="25">25%</option>
-								<option value="fijo">Fijo</option>
-								<option value="otro">Otro</option>
-							</select>
-							<input type="hidden" class="formProyectContrato" id="hdnHonorarios" name="hdnhonorarios">
-							<input type="text" class="formProyectContrato" id="txtHonorarios" name="honorarios" hidden></td>
-						</tr>
-						<tr>
-							<td><b>Acuerdo de Facturacion: </b></td><td>
-							<select id="slcAcuerdo">
-								<option value="opc100">100%</option>
-								<option value="opc3_7">30% 70%</option>
-								<option value="opc3_3_4">30% 30% 40%</option>
-								<option value="otro">Otro</option>
-							</select>
-							<input id="txtAcuerdo" type="text" class="formProyectContrato" name="acuerdofacturacion" hidden></td>
-						</tr>
-					
-						
-						
-							
-					</table>
-				</fieldset>
-			</td>
+		<tr><td>&nbsp;</td></tr>
+		<tr>
+			<td><b>KAM*:</b></td><td><select class="formProyect" id="txtkam" name="kam"><option value="-1"> - </option></select></td>
+			<td><b>Reclutador:</b></td><td><select class="formProyect" id="slcRec" name="reclutador"><option value="-1"> N/A </option></select></td>
 		</tr>
-		<tr style="vertical-align: top;">
-			<td colspan="2">
-				<fieldset><legend>Actividades</legend>
-					<table width="100%">
-						<tr  style="vertical-align: top;">
-							<td style="width: 50%;">
-								<div class="datagrid">
-									<table border="1" id="tblActividades" >
-										<thead>
-											<tr><th colspan="4" style="text-align: center; width:560px;">Registro de Actividades</th></tr>
-											<tr>
-												<th colspan="2" style="text-align: center; width:175px;">Fecha</th><th style="text-align: center; width:310px;">Actividad</th><th><div id="btnMas" class="btnMas"></div></th>
-											</tr>
-										</thead>
-										<tbody>
-											<!-- <tr id="fila_0">
-												<td><span class="btnMenos" id="btnMenos_0">[-]</span></td><td> <input type="date" id="fecha_0"> </td><td colspan="2"> <textarea id="txtArea_0"></textarea> </td>
-											</tr> -->
-										</tbody>
-									</table>
-								</div>
-							</td>
-							<td style="width: 50%;">
-								<div class="datagrid">
-									<table border="1" id="tblSeguimientos" >
-										<thead>
-											<tr><th colspan="6" style="text-align: center; width:560px;">Seguimiento</th></tr>
-											<tr>
-												<th colspan="2" style="text-align: center; width:175px;">Fecha</th><th style="text-align: center; width:310px;">Actividad</th><th colspan="2" style="width:65px;"></th><th><div id="btnMasSeg" class="btnMas"></div></th>
-											</tr>
-											
-										</thead>
-										<tbody>
-											<!-- <tr id="filaSeg_0">
-												<td><span class="btnMenosSeg" id="btnMenosSeg_0">[-]</span></td><td><input type="date" id="fechaSeg_0"> </td><td colspan="2"><textarea id="txtAreaSeg_0"></textarea></td><td><span class="btnAcepSeg" id="btnAcepSeg_0">[/]</span></td><td><span class="btnCancelSeg" id="btnCancelSeg_0">[X]</span></td>
-											</tr> -->
-										</tbody>
-									</table>
-								</div>
-							</td>
-						</tr>
-					</table>
-								
-				</fieldset>
+			
+		<tr>
+			<td><b>KAM 2:</b></td><td><select class="formProyect" id="txtkam2" name="kam2"><option value="-1"> - </option></select></td>
+			<td><b>Apoyo:</b></td><td><select class="formProyect" id="slcApoyo" name="apoyo"><option value="-1"> N/A </option></select></td>
+			
+		</tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr>
+			<td><b>Prioridad:</b></td><td><select class="formProyect" id="txtPrioridad" name="prioridad"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></td><td></td>
+		</tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr>
+			<td><b>Cliente:</b> <input id="hdnCliente" type="hidden" value="" name="cliente" class="formProyectCliente"> </td><td><input id="txtCliente" type="text" disabled></td><td><b>Razon Social:</b> <input id="hdnRS" type="hidden" value="" name="razonS" class="formProyectCliente"></td><td><input id="txtRS" type="text" disabled></td>
+		</tr>
+		<tr>
+			<td><b>Contacto:</b></td><td><select id="listaContactos" class="formProyectCliente" name="contacto"><option value="-1">-Selecciona un contacto-</option></select></td>
+		</tr>
+		<tr><td>&nbsp;</td></tr>
+
+		<tr>
+			<td><b>Fecha de Inicio</b></td><td>
+			<select class="formProyect" id="fIniY" name="fIniY" disabled><?php insertAniosActual(); ?></select>
+			<select class="formProyect" id="fIniM" name="fIniM" disabled>
+				<option value="01">Enero</option>
+				<option value="02">Febrero</option>
+				<option value="03">marzo</option>
+				<option value="04">abril</option>
+				<option value="05">Mayo</option>
+				<option value="06">Junio</option>
+				<option value="07">Julio</option>
+				<option value="08">Agosto</option>
+				<option value="09">Septiembre</option>
+				<option value="10">Octubre</option>
+				<option value="11">Noviembre</option>
+				<option value="12">Diciembre</option>
+			</select>
+			<select class="formProyect" id="fIniD" name="fIniD" disabled>
+			<?php 
+				//$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+				$numero = 31;
+				for ($dia=1; $dia <= $numero ; $dia++) { ?>
+					<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
+			<?php	
+				}
+			 ?>
+			</select>
+			</td>
+		
+			<td><b>Fecha de Cierre Ideal</b></td>
+			<td>
+
+			<select class="formProyect" id="fCIdealY" name="fCIdealY"><?php insertAnioMasDos(); ?></select>
+			<select class="formProyect" id="fCIdealM" name="fCIdealM">
+				<option value="01">Enero</option>
+				<option value="02">Febrero</option>
+				<option value="03">marzo</option>
+				<option value="04">abril</option>
+				<option value="05">Mayo</option>
+				<option value="06">Junio</option>
+				<option value="07">Julio</option>
+				<option value="08">Agosto</option>
+				<option value="09">Septiembre</option>
+				<option value="10">Octubre</option>
+				<option value="11">Noviembre</option>
+				<option value="12">Diciembre</option>
+			</select>
+			<select class="formProyect" id="fCIdealD" name="fCIdealD">
+			<?php 
+				//$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+				$numero = 31;
+				for ($dia=1; $dia <= $numero ; $dia++) { ?>
+					<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
+			<?php	
+				}
+			 ?>
+			</select>
 			</td>
 		</tr>
 		<tr>
-			<td>
-				<fieldset><legend>Facturación</legend>
-					<h2>Facturacion</h2>
-					<table class="tblFormularios" class="tblFormularios">
-						<tr>
-							<td><b>Valor del Proyecto:</b></td><td><input type="text" class="formProyectFacturacion" id="txtValorProyecto" name="valorproyecto"></td>
-						</tr>
-						<tr>
-							<td><b>Total Facturado: </b></td><td><input type="text" class="formProyectFacturacion" id="txtTotalFacturado" name="totalfacturado" disabled></td>
-						</tr>
-						<tr>
-							<td><b>% Facturado: </b></td><td><input type="text" class="formProyectFacturacion" id="txtPorcFacturado" name="porcfacturado" disabled></td>
-						</tr>
-						<tr>
-							<td><b>$ por Facturar: </b></td><td> <input type="text" class="formProyectFacturacion" id="txtXFacturar" name="xfacturar" disabled></td>
-						</tr>
-					</table>
-					 
-					
-					<br>
-					<div class="datagrid">
-						<table border="1" id="tblFacturas"> <!-- Listado Pago de facturas -->
-							<thead>
-								<tr>
-									<th></th><th>No.</th><th>Monto</th><th>Fecha de Factura</th><th>Fecha Pago</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<th style="background-color:#4D80E6; color:#fff;">Factura 1</th>
-									<td><input type="text" id="n1" name="facno1" class="formProyectFacturas"></td>
-									<td><input type="text" id="monto1" name="monto1" class="formProyectFacturas"></td>
-									<td><input type="date" id="fEnvio1" name="fenvio1" class="formProyectFacturas"></td>
-									<td><input type="date" id="fPago1" name="fpago1" class="formProyectFacturas"></td>
-								</tr>
-								<tr >
-									<th style="background-color:#4D80E6; color:#fff;">Factura 2</th>
-									<td><input type="text" id="n2" name="facno2" class="formProyectFacturas"></td>
-									<td><input type="text" id="monto2" name="monto2" class="formProyectFacturas"></td>
-									<td><input type="date" id="fEnvio2" name="fenvio2" class="formProyectFacturas"></td>
-									<td><input type="date" id="fPago2" name="fpago2" class="formProyectFacturas"></td>
-								</tr>
-								<tr>
-									<th style="background-color:#4D80E6; color:#fff;">Factura 3</th>
-									<td><input type="text" id="n3" name="facno3" class="formProyectFacturas"></td>
-									<td><input type="text" id="monto3" name="monto3" class="formProyectFacturas"></td>
-									<td><input type="date" id="fEnvio3" name="fenvio3" class="formProyectFacturas"></td>
-									<td><input type="date" id="fPago3" name="fpago3" class="formProyectFacturas"></td>
-								</tr>
-							</tbody>
-								
-						</table>
-					</div>
-				</fieldset>
+			<td><b>Días transcurridos:</b></td><td><label id="diasTranscurridos"></label></td>
+		</tr>
+		<tr>
+			<td colspan="2"></td><td class="FCR"><b>Fecha de Cierre Real</b></td>
+			<td class="FCR">
+			<select class="formProyect" id="fCRealY" name="fCRealY"><?php insertAnioMasDos(); ?></select>
+			<select class="formProyect" id="fCRealM" name="fCRealM">
+				<option value="01">Enero</option>
+				<option value="02">Febrero</option>
+				<option value="03">marzo</option>
+				<option value="04">abril</option>
+				<option value="05">Mayo</option>
+				<option value="06">Junio</option>
+				<option value="07">Julio</option>
+				<option value="08">Agosto</option>
+				<option value="09">Septiembre</option>
+				<option value="10">Octubre</option>
+				<option value="11">Noviembre</option>
+				<option value="12">Diciembre</option>
+			</select>
+			<select class="formProyect" id="fCRealD" name="fCRealD">
+			<?php 
+				//$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+				$numero = 31;
+				for ($dia=1; $dia <= $numero ; $dia++) { ?>
+					<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
+			<?php	
+				}
+			 ?>
+			</select></td>
+		</tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr>
+			<td><b>Posición: </b></td><td><input type="text" id="txtPosicion" name="posicion" class="formProyect"></td><td><b>Disciplina: </b></td>
+			<td><select type="text" id="slcDisciplina" name="disciplina" class="formProyect">
+				<option value="-1">------</option>
+				<option value="1">1- CALIDAD</option>
+				<option value="2">2- DISTRIBUCIÓN-SUPPLY CHAIN</option>
+				<option value="3">3- FINANZAS</option>
+				<option value="4">4- INVESTIGACIÓN Y DESARROLLO</option>
+				<option value="5">5- IT</option>
+				<option value="6">6- MARKETING</option>
+				<option value="7">7- OPERACIONES</option>
+				<option value="8">8- RECURSOS HUMANOS</option>
+				<option value="9">9- SERVICIO AL CLIENTE</option>
+				<option value="10">10- VENTAS</option>
+				<option value="11">11- OTRO</option>
+
+			</select></td>
+		</tr>
+		<tr>
+			<td><b>Puestos Req.:</b> </td><td><input id="txtcta" type="text" value="" name="cta" class="formProyect"></td>
+		</tr>
+		<tr>
+			<td><b>Nivel: </b></td>
+			<td><select type="text" id="slcNivel" name="nivel" class="formProyect">
+					<option value="1">1- C-LEVEL</option>
+					<option value="2">2- ALTA DIRECCIÓN (SENIOR)</option>
+					<option value="3">3- GERENCIAS (MIDDLE)</option>
+					<option value="4">4- JEFATURAS (LOW)</option>
+					<option value="5">5- TECNICAS</option>
+					<option value="6">6- OTRO</option>
+				</select>
 			</td>
+			<td><b>Salario Base:</b></td><td><input type="text" class="formProyect" id="txtSalario" onchange="calculaValorProyecto()" name="salario" style="width: 80px;"></td>
+			<td><input type="hidden" class="formProyect" name="estatus" value="1"></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Aguinaldo (dias):</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtAguinaldo" name="aguinaldo" style="width: 30px;"></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Vacaciones (dias):</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtVacaciones" name="vacaciones" style="width: 30px;"></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Prima Vacacional:</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtPrimaVacacional" name="primavacacional" style="width: 30px;"><b>%</b></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Bono (Promedio Meses):</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtBono" name="bono" style="width: 30px;"></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Fondo de Ahorro:</td><td><select class="formProyect" id="slcFondoAhorro" name="fondo"><option value="no">NO</option><option value="si">SI</option></select></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Bales de Despensa:</td><td><select class="formProyect" id="slcBales" name="bales"><option value="no">NO</option><option value="si">SI</option></select></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Seguro de G.M.M.:</td><td><select class="formProyect" id="slcSeguroGMM" name="sgmm"><option value="no">NO</option><option value="si">SI</option></select></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Seguro de Vida:</td><td><select class="formProyect" id="slcASeguroVida" name="segvida"><option value="no">NO</option><option value="si">SI</option></select></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td>Otros:</td><td><textarea class="formProyect" id="txtOtraPrestacion" name="otraprestacion" rows="3"></textarea></td>
+			
+		</tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr>
+			<td><b>Estatus: </b></td>
+			<td><select class="formProyect" name="estatus" id="slcEstatus">
+					<option value="-1">-----</option>
+					
+				</select>
+			</td>
+			<td class="candSelec"><b>Candidato Seleccionado: </b></td><td class="candSelec"><input type="text" placeholder="Nombre" id="nombreCandidato" name="nombrecandidato" style="width: 250px;"></td>
+		</tr>
+		<tr>
+			<td colspan="2"></td><td class="candSelec"><b>Fecha de Cumpleaños: </b></td><td class="candSelec"><input type="date" id="cumpleCandidato" name="cumplecandidato"></td>
+		</tr>	
+	</table>
+	<br><br>
+	<b>Proyecto Completado al: </b></td><td> <span id="avance">0%</span>
+
+	<br><br>
+	<table width="805px">
+		<tr>
+			<td class="FCG" style="width: 240px;"><b>Fecha de Cierre en Garantia: </b></td>
+			<td class="FCG" style="width: 240px;">
+			<select class="formProyectContrato" id="fGarantiaY" name="fGarantiaY"> <?php insertAnioMasDos(); ?></select>
+			<select class="formProyectContrato" id="fGarantiaM" name="fGarantiaM">
+				<option value="1">Enero</option>
+				<option value="2">Febrero</option>
+				<option value="3">marzo</option>
+				<option value="4">abril</option>
+				<option value="5">Mayo</option>
+				<option value="6">Junio</option>
+				<option value="7">Julio</option>
+				<option value="8">Agosto</option>
+				<option value="9">Septiembre</option>
+				<option value="10">Octubre</option>
+				<option value="11">Noviembre</option>
+				<option value="12">Diciembre</option>
+			</select>
+			<select class="formProyectContrato" id="fGarantiaD" name="fGarantiaD">
+			<?php 
+				//$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+				$numero = 31;
+				for ($dia=1; $dia <= $numero ; $dia++) { ?>
+					<option value="<?php echo $dia; ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
+			<?php	
+				}
+			 ?>
+			</select>
+			</td>
+			
+			<td style="text-align: right; width: 320px;"><label id="garantiaMitad" hidden><b>Garantia a mitad de tiempo</b></label><label id="garantia5Dias" hidden><b>Garantia a 5 dias o menos de termino</b></label><label id="garantiaTerminada" hidden><b>Garantia Terminada</b></label></td>
+		</tr>
+		
+		
+	</table>
+	<br><br>
+	<div class="datagrid">
+		<table border="1" id="tblActividades" >
+			<thead>
+				<tr><th colspan="4" style="text-align: center; width:560px;">Registro de Actividades</th></tr>
+				<tr>
+					<th colspan="2" style="text-align: center; width:175px;">Fecha</th><th style="text-align: center; width:310px;">Actividad</th><th><div id="btnMas" class="btnMas"></div></th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- <tr id="fila_0">
+					<td><span class="btnMenos" id="btnMenos_0">[-]</span></td><td> <input type="date" id="fecha_0"> </td><td colspan="2"> <textarea id="txtArea_0"></textarea> </td>
+				</tr> -->
+			</tbody>
+		</table>
+	</div>
+	<br><br>
+	<div class="datagrid">
+		<table border="1" id="tblSeguimientos" >
+			<thead>
+				<tr><th colspan="6" style="text-align: center; width:560px;">Seguimiento</th></tr>
+				<tr>
+					<th colspan="2" style="text-align: center; width:175px;">Fecha</th><th style="text-align: center; width:310px;">Actividad</th><th colspan="2" style="width:65px;"></th><th><div id="btnMasSeg" class="btnMas"></div></th>
+				</tr>
+				
+			</thead>
+			<tbody>
+				<!-- <tr id="filaSeg_0">
+					<td><span class="btnMenosSeg" id="btnMenosSeg_0">[-]</span></td><td><input type="date" id="fechaSeg_0"> </td><td colspan="2"><textarea id="txtAreaSeg_0"></textarea></td><td><span class="btnAcepSeg" id="btnAcepSeg_0">[/]</span></td><td><span class="btnCancelSeg" id="btnCancelSeg_0">[X]</span></td>
+				</tr> -->
+			</tbody>
+		</table>
+	</div>
+	<br>
+
+
+	<h2>Datos del Contrato</h2>
+	<table class="tblFormularios">
+		<tr>
+			<td><b>Convenio Firmado: </b> </td><td><select type="text" class="formProyectContrato" id="txtConvenio" name="convenio"><option value="si">Si</option><option value="no">No</option></select></td>
+		</tr>
+		<tr>
+			<td><b>Garantia: </b></td><td><select class="formProyectContrato" id="txtGarantia" name="garantia">
+				<option value="60">60</option>
+				<option value="90">90</option>
+				<option value="120">120</option>
+				<option value="150">150</option>
+				<option value="180">180</option>
+			</select></td>
+		</tr>
+		<tr>
+			<td><b>Honorarios: </b></td>
+			<td><select id="slcHonorarios">
+				<option value="unMesNominal">1 Mes Nominal</option>
+				<option value="unMesIntegradoNominal">1 mes integrado nominal</option>
+				<option value="10">10%</option>
+				<option value="12">12%</option>
+				<option value="15">15%</option>
+				<option value="20">20%</option>
+				<option value="25">25%</option>
+				<option value="fijo">Fijo</option>
+				<option value="otro">Otro</option>
+			</select>
+			<input type="hidden" class="formProyectContrato" id="hdnHonorarios" name="hdnhonorarios">
+			<input type="text" class="formProyectContrato" id="txtHonorarios" name="honorarios" hidden></td>
+		</tr>
+		<tr>
+			<td><b>Acuerdo de Facturacion: </b></td><td>
+			<select id="slcAcuerdo">
+				<option value="opc100">100%</option>
+				<option value="opc3_7">30% 70%</option>
+				<option value="opc3_3_4">30% 30% 40%</option>
+				<option value="otro">Otro</option>
+			</select>
+			<input id="txtAcuerdo" type="text" class="formProyectContrato" name="acuerdofacturacion" hidden></td>
+		</tr>
+	
+		
+		
+			
+	</table>
+	<br>
+
+
+	<h2>Facturacion</h2>
+	<table class="tblFormularios" class="tblFormularios">
+		<tr>
+			<td><b>Valor del Proyecto:</b></td><td><input type="text" class="formProyectFacturacion" id="txtValorProyecto" name="valorproyecto"></td>
+		</tr>
+		<tr>
+			<td><b>Total Facturado: </b></td><td><input type="text" class="formProyectFacturacion" id="txtTotalFacturado" name="totalfacturado" disabled></td>
+		</tr>
+		<tr>
+			<td><b>% Facturado: </b></td><td><input type="text" class="formProyectFacturacion" id="txtPorcFacturado" name="porcfacturado" disabled></td>
+		</tr>
+		<tr>
+			<td><b>$ por Facturar: </b></td><td> <input type="text" class="formProyectFacturacion" id="txtXFacturar" name="xfacturar" disabled></td>
 		</tr>
 	</table>
+	 
 	
+	<br>
+	<div class="datagrid">
+		<table border="1" id="tblFacturas"> <!-- Listado Pago de facturas -->
+			<thead>
+				<tr>
+					<th></th><th>No.</th><th>Monto</th><th>Fecha de Factura</th><th>Fecha Pago</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th style="background-color:#4D80E6; color:#fff;">Factura 1</th>
+					<td><input type="text" id="n1" name="facno1" class="formProyectFacturas"></td>
+					<td><input type="text" id="monto1" name="monto1" class="formProyectFacturas"></td>
+					<td><input type="date" id="fEnvio1" name="fenvio1" class="formProyectFacturas"></td>
+					<td><input type="date" id="fPago1" name="fpago1" class="formProyectFacturas"></td>
+				</tr>
+				<tr >
+					<th style="background-color:#4D80E6; color:#fff;">Factura 2</th>
+					<td><input type="text" id="n2" name="facno2" class="formProyectFacturas"></td>
+					<td><input type="text" id="monto2" name="monto2" class="formProyectFacturas"></td>
+					<td><input type="date" id="fEnvio2" name="fenvio2" class="formProyectFacturas"></td>
+					<td><input type="date" id="fPago2" name="fpago2" class="formProyectFacturas"></td>
+				</tr>
+				<tr>
+					<th style="background-color:#4D80E6; color:#fff;">Factura 3</th>
+					<td><input type="text" id="n3" name="facno3" class="formProyectFacturas"></td>
+					<td><input type="text" id="monto3" name="monto3" class="formProyectFacturas"></td>
+					<td><input type="date" id="fEnvio3" name="fenvio3" class="formProyectFacturas"></td>
+					<td><input type="date" id="fPago3" name="fpago3" class="formProyectFacturas"></td>
+				</tr>
+			</tbody>
+				
+		</table>
+	</div>
 		
 	<br><br>
 	<input type="button" value="Guardar" id="guardaProyecto">

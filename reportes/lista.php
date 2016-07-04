@@ -143,6 +143,8 @@
 	<div class="cuerpo">
 	    <!--Div that will hold the pie chart-->
 	    <div id="chart_div"></div>
+	    <iframe src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showPrint=0&amp;showTz=0&amp;height=600&amp;wkst=2&amp;hl=es_419&amp;bgcolor=%23FFFFFF&amp;src=es.mexican%23holiday%40group.v.calendar.google.com&amp;color=%23125A12&amp;src=diazmorones.com.mx_651fm0i4dhmmqogs0cqgjbkk5k%40group.calendar.google.com&amp;color=%230F4B38&amp;ctz=America%2FMexico_City" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+	    <iframe src="https://docs.google.com/spreadsheets/d/1fKNsvJYjTytYOEN_ofAeSSXgfW3DN0JftrG8hjtXHUU/pubhtml?widget=true&amp;headers=false"></iframe>
     </div>
   </body>
 </html>
