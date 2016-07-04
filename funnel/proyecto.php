@@ -67,6 +67,7 @@
 
 		 				$("#txtPosicion").val(datos_proyecto.posicion);
 		 				$("#slcDisciplina").val(datos_proyecto.disciplina);
+		 				
 		 				$.ajax({
 				 			type: "POST",
 				 			url: "control.php",

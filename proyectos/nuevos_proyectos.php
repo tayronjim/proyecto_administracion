@@ -14,7 +14,7 @@
 			$.ajax({
 	 			type: "POST",
 	 			url: "control.php",
-	 			data: { "funcion" :  "buscaClientes" },
+	 			data: { "funcion" : "buscaClientes" },
 	 			success: function(data){
 	 				 // alert(data);
 	 				var obj = JSON.parse(data);
@@ -210,7 +210,7 @@
 	function seleccionaContacto($key){
 		$datoContacto = $contacto[$clienteActivo][$key];
 		console.log($datoContacto);
-		$("#lblContacto").html();
+		$("#lblContacto").html("");
 		$("#lblContacto").append("<table border='0' style=' border-spacing: 0px;'><tr><td style='border-right:1px solid white; text-align: right;'>Nombre</td><td style='text-align: left;'>"+$datoContacto.nombre +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>Área/Puesto</td><td style='text-align: left;'>"+$datoContacto.area +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>Teléfono</td><td style='text-align: left;'>"+ $datoContacto.telefono +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>eMail</td><td style='text-align: left;'>"+ $datoContacto.email +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>Linkedin</td><td style='text-align: left;'>"+$datoContacto.linkedin);
 		$("#hdnContacto").val($datoContacto.idcontacto);
 	}
@@ -401,23 +401,26 @@
 <body>
 <?php include_once("../header.htm"); ?>
 <div class="cuerpo">
-<table >
+<table style="width: 100%;">
 	<tr style="vertical-align: top;">
-		<td>
+		<td style="width: 800px; min-width: 50%;">
 			<fieldset><legend>Proyecto</legend>
 				<table class="tblFormularios">
 					<tr>
-						<td><b>WBS*:</b></td><td><input type="text" class="formProyect" id="txtwbs" name="wbs"></td>
-						<td><b>Empresa Interna:</b></td><td>
-						<select id="txtEmpInt" type="text" value="" name="empint" class="formProyect">
-							<option value="AIMS">AIMS</option>
-							<option value="DMA">Diaz Morones y Asociados</option>
-							<option value="SICSA">Servicios Industriales Contrata SA</option>
-							<option value="SCO">Servicios Contrata</option>
-							<option value="OCO">Outsourcing Contrata</option>
-							<option value="LIASE">Liase</option>
-							<option value="STONEHC">Stone Human Capital</option>
-						</select></td>
+						<!--<td><b>WBS*:</b></td><td><input type="text" class="formProyect" id="txtwbs" name="wbs"></td>-->
+						<td><b>Empresa Interna:</b></td>
+						<td>
+							<select id="txtEmpInt" type="text" value="" name="empint" class="formProyect">
+								<option value="AIMS">AIMS</option>
+								<option value="DMA">Diaz Morones y Asociados</option>
+								<option value="SICSA">Servicios Industriales Contrata SA</option>
+								<option value="SCO">Servicios Contrata</option>
+								<option value="OCO">Outsourcing Contrata</option>
+								<option value="LIASE">Liase</option>
+								<option value="STONEHC">Stone Human Capital</option>
+							</select>
+						</td>
+						<td><input type="hidden" class="formProyect" id="txtwbs" name="wbs"></td>
 					</tr>
 					<tr><td>&nbsp;</td></tr>
 					<tr>
@@ -480,8 +483,8 @@
 					<div id="contenidoBusquedaCliente" hidden>
 						<input type="text" id="filtroCliente" placeholder="Nombre Comercial" onkeyup="filtraTabla()"><input type="text" id="filtroRS" placeholder="Razon Social" onkeyup="filtraTabla()">
 						<br><br>
-						<div class="datagrid" style="max-height: 200px; width: 300px; overflow: auto;">
-							<table id="tblClientes" border="1">
+						<div class="datagrid" style="max-height: 200px; max-width: 90%; overflow: auto;">
+							<table id="tblClientes" border="1" style="">
 								<thead>
 									<tr>
 										<th>Nombre Comercial</th><th>Razon Social</th>
@@ -500,10 +503,12 @@
 					<tr>
 						<td><b>Datos Fiscales:</b></td><td><div id="lblDatosFiscales" style="background-color: rgba(55,55,55,0.4); width: 200px;"></div><input name="razonS" id="hdnDatoFiscal" type="hidden" value="-1" class="formProyectCliente"><!-- <select id="listaRS" class="formProyectCliente" name="razonS"><option>-Seleccione un Cliente-</option></select> --></td>
 					</tr>
+				</table>
+				<table style="width: 90%;">
 					<tr>
 						<td colspan="2">
 							<div id="plecaMuestraContactos" style="background-color: #2d3091; width: 280px; height: 20px; padding-left: 10px; padding-right: 10px; padding-top: 5px; padding-bottom: 5px;"><b>Mostrar Contactos</b> <i class="fa fa-angle-double-right fa-2x" style="float: right; top:-5px; position: relative;"></i></div>
-							<div id="contenidoContactos" class="datagrid" hidden>
+							<div id="contenidoContactos" class="datagrid" hidden style="max-width: 90%;">
 								<table id="tblContactos">
 									<thead><th>Nombre</th><th>Area/Puesto</th><th></th><th></th></thead>
 									<tbody></tbody>
@@ -514,7 +519,7 @@
 				</table>
 				<table>
 					<tr style="vertical-align: top;">
-						<td><b>Contacto:</b></td><td><div id="lblContacto" style="background-color: rgba(55,55,55,0.4); width: auto;"></div><input name="contacto" id="hdnContacto" type="hidden" value="-1"><!-- <select id="listaContactos" class="formProyectCliente" name="contacto"><option value="-1">-Selecciona un contacto-</option></select> --></td>
+						<td><b>Contacto:</b></td><td><div id="lblContacto" style="background-color: rgba(55,55,55,0.4); width: auto;"></div><input name="contacto" id="hdnContacto" type="hidden" value="-1" class="formProyectCliente"><!-- <select id="listaContactos" class="formProyectCliente" name="contacto"><option value="-1">-Selecciona un contacto-</option></select> --></td>
 					</tr>
 				</table>
 			</fieldset>
@@ -522,7 +527,7 @@
 	</tr>
 	<tr style="vertical-align: top;">
 		<td>
-			<fieldset><legend>Posicion</legend>
+			<fieldset><legend>Posición</legend>
 				<table class="tblFormularios">
 			
 					<tr>

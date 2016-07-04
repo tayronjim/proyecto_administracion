@@ -55,7 +55,7 @@
 	 			data: { "funcion" : "datosProyectos"},
 	 			success: function(data){
 	 				var obj = JSON.parse(data);
-	 				console.log(obj);
+	 				//console.log(obj);
 	 				$inOvertime = 0;
 	 				$contGarantia = 0;
 	 				$cont=0;
