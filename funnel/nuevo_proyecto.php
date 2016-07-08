@@ -13,6 +13,7 @@
 		$cliente = [];
 		$clientes = [];
 		$filasContacto = 0;
+		$listadoKam="";
 		$proyecto = <?php echo $proyecto; ?>;
 		$(document).ready(function(){
 			$("li").removeClass( "current" )
@@ -300,7 +301,7 @@
 	 			data: { "funcion" :  "buscaKam" },
 	 			success: function(data){
 	 				 // alert(data);
-	 				var obj = JSON.parse(data);
+	 				$listadoKam = JSON.parse(data);
 	 				
 	 				$cont = 0;
 	 				
@@ -322,6 +323,30 @@
 	 				
 	 			}
 	 		});
+
+	 		$("#slcEstatus").change(function(){
+	 			switch($(this).val()){
+	 				case '1':
+	 				case '2':
+	 				case '3':
+	 				case '4':
+	 				case '5':
+	 				case '6': 
+	 				case '8': $("#guardaProyecto").html("Guardar"); 
+	 				          $("#guardaProyecto").css('height','50px'); 
+	 				          $("#guardaProyecto").removeClass('mandaproyecto'); break;
+	 				case '7': $("#guardaProyecto").html("Guardar y<br>Enviar a Proyectos"); 
+	 						  $("#guardaProyecto").css('height','62px'); 
+	 						  $("#guardaProyecto").addClass('mandaproyecto'); break;
+	 				case '9':
+	 				case '10': $("#guardaProyecto").html("Guardar y<br>Terminar"); 
+	 				           $("#guardaProyecto").css('height','50px'); break;
+	 				default: $("#guardaProyecto").html("Guardar"); 
+	 				         $("#guardaProyecto").css('height','50px'); break;
+
+	 			}
+	 		});
+
 
 
 
@@ -582,14 +607,18 @@
 		    // }); 
 
 
+		   
 		    jsonStringGeneral = JSON.stringify(general);
 		    jsonStringCliente = JSON.stringify(cliente);
 		    jsonStringContrato = JSON.stringify(contrato);
 		    jsonActividades = JSON.stringify(jsActividades);
 		    jsonSeguimiento = JSON.stringify(jsSeguimiento);
-		  //  jsonStringFacturacion = JSON.stringify(facturacion);
+		  
+				    
+
 		   
-		    console.log(jsonSeguimiento);
+		  
+
 
 		    $.ajax({
 	 			type: "POST",
@@ -597,6 +626,47 @@
 	 			data: { "funcion" : "guardaProyecto", "general" : jsonStringGeneral, "cliente" : jsonStringCliente, "contrato" : jsonStringContrato, "actividades" : jsonActividades, "seguimiento" : jsonSeguimiento, "proyecto" : $proyecto },
 	 			success: function(data){
 	 				 console.log(data);
+	 				 $nextID = "";
+	 				 $.ajax({
+			 			type: "POST",
+			 			url: "control.php",
+			 			data: { "funcion" :  "buscaUltimoID" },
+			 			success: function(data){
+			 				 $fecha = new Date();
+			 				 $anio = $fecha.getFullYear();
+			 				 $nextID = parseInt(data.replace(/"/g, ''))+1;
+			 				 $preWBS = $anio+"-"+(parseInt(data.replace(/"/g, ''))+1);
+			 			}
+			 		});
+
+
+	 				 $(".mandaproyecto").each(function($key, $value){
+				    	alert("manda");
+				    	$kamPrincipal = $("#kamProyecto").val();
+				    	$fechaHoy = new Date();
+				    	$anioHoy = $fechaHoy.getFullYear();
+				    	$mesHoy = $fechaHoy.getMonth();
+				    	$diaHoy = $fechaHoy.getDate();
+				    	$datosProyectoPlus = {"wbs":$preWBS+"-"+$listadoKam[kamPrincipal],"kam":$kamPrincipal,"reclutador":"-1","kam2":"-1","apoyo":"-1","prioridad":"1","fIniY":$anioHoy,"fIniM":$mesHoy,"fIniD":$diaHoy,"estatus":"1","posicion":"","disciplina":"-1","cta":"1","nivel":"1","salario":"0"};
+				    	$.each($datosProyectoPlus, function($key, $value){
+				    		general[$key] = $value;
+				    	});
+
+				    	$datosFacturacionPlus = {"valorproyecto":contrato.valorProyecto,"totalfacturado":"","porcfacturado":"","xfacturar":"","lista":{"facno1":"","monto1":"","fenvio1":"","fpago1":"","facno2":"","monto2":"","fenvio2":"","fpago2":"","facno3":"","monto3":"","fenvio3":"","fpago3":""}};
+				    	
+				    	jsonStringFacturacion = JSON.stringify($datosFacturacionPlus);
+				    	jsonStringGeneral = JSON.stringify(general);
+
+				    	 $.ajax({
+				 			type: "POST",
+				 			url: "control.php",
+				 			data: { "funcion" : "pasaAProyecto", "general" : jsonStringGeneral, "cliente" : jsonStringCliente, "contrato" : jsonStringContrato, "proyecto" : $proyecto, "facturacion":jsonStringFacturacion },
+				 			success: function(data){
+				 				window.location="../proyectos/proyectos.php?p="+$nextID;
+				 			});
+				    });
+
+
 	 				 window.location="listado_proyectos.php";
 	 			}
 	 		});
@@ -676,7 +746,7 @@
 			$("#filaContacto_"+fila).removeClass('noprimario');
 			$("#filaContacto_"+fila).addClass('siprimario');
 			$("#tblContacto tbody tr.noprimario").hide('fast');
-			$("#hdnContactoSeleccionado").val(fila);
+			$("#hdnContacto").val(fila);
 			$("#muestraContactos").show();
 			$("#ocultaContactos").hide();
 
@@ -1036,7 +1106,8 @@
 			
 			<fieldset><legend>Contactos</legend>
 				<div class="datagrid">
-					<input type="hidden" id="hdnContactoSeleccionado" name="contactoseleccionado" value="0">
+					
+					<input name="contacto" id="hdnContacto" type="hidden" value="-1" class="formProyectCliente">
 					<table id="tblContacto" border="1">
 						<thead>
 							<tr>
@@ -1053,6 +1124,7 @@
 							
 					</table>
 				</div>
+				<input name="contacto" id="hdnContacto" type="hidden" value="-1" class="formProyectCliente">
 			</fieldset>
 			</td>
 		</td>
@@ -1228,7 +1300,10 @@
 		</table>
 	</fieldset>
 	<br>
-	<input type="button" value="Guardar" id="guardaProyecto">
+	<input type="text" name="kamProyecto" id="kamProyecto" value="3">
+	<br>
+	<button value="Guardar" id="guardaProyecto"> Guardar </button>
+	
 		
 	
 

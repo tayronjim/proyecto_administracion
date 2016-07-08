@@ -7,6 +7,8 @@
 		$facturacion = [];
 		$contacto = [];
 		$cliente = [];
+		$metodosDeContacto = JSON.parse('{"1":"Telefono Movil", "2":"Telefono Trabajo", "3":"e-Mail", "4":"linkedin", "5":"ubicacion"}');
+		
 		$clienteActivo = 0;
 		$(document).ready(function(){
 			$("li").removeClass( "current" )
@@ -18,6 +20,7 @@
 	 			success: function(data){
 	 				 // alert(data);
 	 				var obj = JSON.parse(data);
+	 				console.log(obj);
 	 				$cont = 0;
 	 				$alt = -1;
 	 				while(obj[$cont]){
@@ -97,7 +100,7 @@
 	 			success: function(data){
 	 				 // alert(data);
 	 				var obj = JSON.parse(data);
-	 				console.log(obj);
+	 				
 	 				$cont = 0;
 	 				
 	 				while(obj[$cont]){
@@ -211,7 +214,16 @@
 		$datoContacto = $contacto[$clienteActivo][$key];
 		console.log($datoContacto);
 		$("#lblContacto").html("");
-		$("#lblContacto").append("<table border='0' style=' border-spacing: 0px;'><tr><td style='border-right:1px solid white; text-align: right;'>Nombre</td><td style='text-align: left;'>"+$datoContacto.nombre +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>Área/Puesto</td><td style='text-align: left;'>"+$datoContacto.area +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>Teléfono</td><td style='text-align: left;'>"+ $datoContacto.telefono +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>eMail</td><td style='text-align: left;'>"+ $datoContacto.email +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>Linkedin</td><td style='text-align: left;'>"+$datoContacto.linkedin);
+		$("#lblContacto").append("<table border='0' style=' border-spacing: 0px;'><tr><td style='border-right:1px solid white; text-align: right;'>Nombre</td><td style='text-align: left;'>"+$datoContacto.nombre +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>Área/Puesto</td><td style='text-align: left;'>"+$datoContacto.area +"</td></tr>");
+
+		$.each($datoContacto.medioDeContacto, function($key, $value){
+			$("#lblContacto").append("<tr><td style='border-right:1px solid white; text-align: right;'>"+$metodosDeContacto[$value.tipoContacto]+"</td><td style='text-align: left;'>"+ $value.valorContacto +"</td></tr>");
+		});
+		$("#lblContacto").append("</table>");
+		
+
+
+			
 		$("#hdnContacto").val($datoContacto.idcontacto);
 	}
 

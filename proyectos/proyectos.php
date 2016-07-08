@@ -9,6 +9,7 @@
 		$filasSeguimientos = 0;
 		$contacto = [];
 		$clienteActivo = 0;
+		$metodosDeContacto = JSON.parse('{"1":"Telefono Movil", "2":"Telefono Trabajo", "3":"e-Mail", "4":"linkedin", "5":"ubicacion"}');
 		$proyecto = <?php echo $proyecto; ?>;
 		$(document).ready(function(){
 			$("li").removeClass( "current" )
@@ -55,12 +56,12 @@
 		 				$("#hdnContacto").val(datos_cliente.contacto);
 		 				$.each($contacto, function($key, $value){
 		 					$("#tblContactos tbody").append("<tr id='cont_"+$value.idcontacto+"'><td>"+$value.nombre+"</td><td>"+$value.area+"</td><td>(ver mas)</td><td><input type='button' value='Principal' onclick='seleccionaContacto("+$key+")'></td></option>");
+		 					if ($value.idcontacto == datos_cliente.contacto) {seleccionaContacto($key);}
 		 				 });
 
-		 				seleccionaContacto(datos_cliente.contacto);
 		 				
-		 				if (!datos_cliente.contacto) {$("#listaContactos").val("-1");}
-		 				else{$("#listaContactos").val(datos_cliente.contacto);}
+		 				
+		 				
 		 				
 		 				$("#fIniY").val(datos_proyecto.fIniY);
 		 				$("#fIniM").val(datos_proyecto.fIniM);
@@ -692,7 +693,12 @@
 				$datoContacto = $contacto[$key];
 				
 				$("#lblContacto").html("");
-				$("#lblContacto").append("<table border='0' style=' border-spacing: 0px;'><tr><td style='border-right:1px solid white; text-align: right;'>Nombre</td><td style='text-align: left;'>"+$datoContacto.nombre +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>Área/Puesto</td><td style='text-align: left;'>"+$datoContacto.area +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>Teléfono</td><td style='text-align: left;'>"+ $datoContacto.telefono +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>eMail</td><td style='text-align: left;'>"+ $datoContacto.email +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>Linkedin</td><td style='text-align: left;'>"+$datoContacto.linkedin);
+				$("#lblContacto").append("<table border='0' style=' border-spacing: 0px;'><tr><td style='border-right:1px solid white; text-align: right;'>Nombre</td><td style='text-align: left;'>"+$datoContacto.nombre +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>Área/Puesto</td><td style='text-align: left;'>"+$datoContacto.area +"</td></tr>");
+
+				$.each($datoContacto.medioDeContacto, function($key, $value){
+					$("#lblContacto > table").append("<tr><td style='border-right:1px solid white; text-align: right;'>"+$metodosDeContacto[$value.tipoContacto]+"</td><td style='text-align: left;'>"+ $value.valorContacto +"</td></tr>");
+				});
+				$("#lblContacto").append("</table>");
 				$("#hdnContacto").val($datoContacto.idcontacto);
 			}
 			else{
@@ -1169,6 +1175,13 @@
 								<option value="otro">Otro</option>
 							</select>
 							<input id="txtAcuerdo" type="text" class="formProyectContrato" name="acuerdofacturacion" hidden></td>
+						</tr>
+						<tr><td>
+								<b>Observaciones del Contrato: </b>
+							</td>
+							<td>
+								<textarea class="datosContrato" name="obsContrato" id="obsContrato" cols="30" rows="7"></textarea>
+							</td>
 						</tr>
 					
 						
