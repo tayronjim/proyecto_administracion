@@ -663,7 +663,8 @@
 				 			data: { "funcion" : "pasaAProyecto", "general" : jsonStringGeneral, "cliente" : jsonStringCliente, "contrato" : jsonStringContrato, "proyecto" : $proyecto, "facturacion":jsonStringFacturacion },
 				 			success: function(data){
 				 				window.location="../proyectos/proyectos.php?p="+$nextID;
-				 			});
+				 			}
+				 		});
 				    });
 
 
