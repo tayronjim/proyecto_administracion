@@ -93,7 +93,7 @@
 		$resultado = queryGeneral($query);
 		return $resultado;
 	}
-	function actualizaActividades($idFunnel,$idProyecto){
+	function heredaActividades($idFunnel,$idProyecto){
 		$query = "UPDATE actividades SET id_proyecto = '".$idProyecto."' WHERE id_funnel = ".$idFunnel;
 		$resultado = queryGeneral($query);
 		return $resultado;

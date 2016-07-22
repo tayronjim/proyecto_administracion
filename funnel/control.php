@@ -137,12 +137,12 @@
 		}
 		print json_encode($estatus);
 	}
-	function pasaAProyecto($general,$cliente,$contrato,$proyecto,$facturacion){
+	function pasaAProyecto($general,$cliente,$contrato,$idFunnel,$facturacion){
 		
 		 	$proyectoGuardado = insertaProyecto($general,$cliente,$contrato,$facturacion);
 		 	$ultimoProyecto = ultimoProyecto();
 		 	$lastId = mysqli_fetch_assoc($ultimoProyecto);
-		 	$actividadSeg = actualizaActividades($proyecto,$lastId['lastID']);
+		 	$actividadSeg = heredaActividades($idFunnel,$lastId['lastID']);
 		// 	echo $actividadSeg;
 		
 		

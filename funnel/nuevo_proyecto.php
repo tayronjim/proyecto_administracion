@@ -16,7 +16,7 @@
 		$listadoKam="";
 		$proyecto = <?php echo $proyecto; ?>;
 		$(document).ready(function(){
-			$("li").removeClass( "current" )
+			$("li").removeClass( "current" );
 			$("#menuFunnel").addClass('current');
 
 			$.ajax({
