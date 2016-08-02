@@ -14,10 +14,40 @@
 		$clientes = [];
 		$filasContacto = 0;
 		$listadoKam="";
+		$terminaFunnel = 0;
 		$proyecto = <?php echo $proyecto; ?>;
 		$(document).ready(function(){
 			$("li").removeClass( "current" );
 			$("#menuFunnel").addClass('current');
+
+			$.ajax({
+	 			type: "POST",
+	 			url: "control.php",
+	 			data: { "funcion" :  "buscaKam" },
+	 			success: function(data){
+	 				 // alert(data);
+	 				$listadoKam = JSON.parse(data);
+	 				
+	 				$cont = 0;
+	 				
+	 				while($listadoKam[$cont]){
+	 					//$arregloTabla[$cont] = obj.Cliente[$cont];
+	 					//$facturacion[obj[$cont].id] = obj[$cont].facturacion;
+	 					var kamDatos = JSON.parse($listadoKam[$cont].datos);
+	 					if (kamDatos.puesto.consultor == "1") {
+	 						$("#kam").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
+	 						$("#kam2").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
+	 						
+	 					}
+	 					
+						$cont++;
+	 				}
+	 				ordenarSelect('kam');
+	 				ordenarSelect('kam2');
+	 				
+	 				
+	 			}
+	 		});
 
 			$.ajax({
 	 			type: "POST",
@@ -120,7 +150,7 @@
 		 				
 		 					//$("#txtwbs").val(datos_proyecto.wbs);
 
-			 				$("#empresa").val(datos_proyecto.empresa);
+			 				$("#empresa").val(datos_proyecto.empint);
 			 				$("#kam").val(datos_proyecto.kam);
 			 				$("#kam2").val(datos_proyecto.kam2);
 			 				$("#puestoRequerido").val(datos_proyecto.puestoRequerido);
@@ -135,6 +165,7 @@
 
 			 				$cont = 0;
 							while(contacto[$cont]){
+								console.log(datos_cliente);
 								$filasContacto = contacto[$cont].idcontacto;
 
 								$("#tblContacto > tbody").append('<tr id="filaContacto_'+$filasContacto+'" class="noprimario" style="border-bottom:1px solid #E1EEF4"><td><!-- <div id="btnMenosContacto_'+$filasContacto+'" class="btnMenosCont"></div> --><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" value="'+contacto[$cont].nombre+'" name="nombre" style="width:250px;" placeholder="Nombre Completo"><br><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" value="'+contacto[$cont].area+'" name="area" style="width:170px;" placeholder="Area / Puesto"></td><td><table id="tblMedioContacto_'+$filasContacto+'" contacto="'+$filasContacto+'" ><tbody></tbody></table></td><td><input type="date" class="datoContacto_'+$filasContacto+'" id="txtCumpleaños_'+$filasContacto+'" value="'+contacto[$cont].cumpleaños+'" name="cumpleaños" style="width:130px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;">'+contacto[$cont].observaciones+'</textarea></td><td><input type="radio" name="contacPrimario" onclick="seleccionaContacto('+$filasContacto+');"></td></tr>');
@@ -155,6 +186,8 @@
 
 								$cont++;
 							}
+							$('#filaContacto_'+datos_cliente.contacto+' input:radio').attr('checked',true);
+							seleccionaContacto(datos_cliente.contacto);
 
 							$filasContacto++;
 			 				
@@ -179,7 +212,7 @@
 			 				else{$("#txtAcuerdo").attr("hidden",true);}
 
 
-			 				$("#obsContrato").val(datos_contrato.obsContrato);
+			 				$("#obsContrato").val(datos_contrato.obscontrato);
 
 			 				 
 			 				$("#txtValorProyecto").val(addCommas(parseFloat(datos_contrato.valorProyecto.replace(/,/g, '')).toFixed(2)));
@@ -295,34 +328,7 @@
 
 			
 
-			$.ajax({
-	 			type: "POST",
-	 			url: "control.php",
-	 			data: { "funcion" :  "buscaKam" },
-	 			success: function(data){
-	 				 // alert(data);
-	 				$listadoKam = JSON.parse(data);
-	 				
-	 				$cont = 0;
-	 				
-	 				while(obj[$cont]){
-	 					//$arregloTabla[$cont] = obj.Cliente[$cont];
-	 					//$facturacion[obj[$cont].id] = obj[$cont].facturacion;
-	 					var kamDatos = JSON.parse(obj[$cont].datos);
-	 					if (kamDatos.puesto.consultor == "1") {
-	 						$("#kam").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
-	 						$("#kam2").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
-	 						
-	 					}
-	 					
-						$cont++;
-	 				}
-	 				ordenarSelect('kam');
-	 				ordenarSelect('kam2');
-	 				
-	 				
-	 			}
-	 		});
+			
 
 	 		$("#slcEstatus").change(function(){
 	 			switch($(this).val()){
@@ -334,10 +340,12 @@
 	 				case '6': 
 	 				case '8': $("#guardaProyecto").html("Guardar"); 
 	 				          $("#guardaProyecto").css('height','50px'); 
-	 				          $("#guardaProyecto").removeClass('mandaproyecto'); break;
+	 				          $("#guardaProyecto").removeClass('mandaproyecto'); 
+	 				          $terminaFunnel = 0; break;
 	 				case '7': $("#guardaProyecto").html("Guardar y<br>Enviar a Proyectos"); 
 	 						  $("#guardaProyecto").css('height','62px'); 
-	 						  $("#guardaProyecto").addClass('mandaproyecto'); break;
+	 						  $("#guardaProyecto").addClass('mandaproyecto'); 
+	 						  $terminaFunnel = 1; break;
 	 				case '9':
 	 				case '10': $("#guardaProyecto").html("Guardar y<br>Terminar"); 
 	 				           $("#guardaProyecto").css('height','50px'); break;
@@ -618,57 +626,71 @@
 
 		   
 		  
-
+		    $nextID = "";
 
 		    $.ajax({
 	 			type: "POST",
 	 			url: "control.php",
 	 			data: { "funcion" : "guardaProyecto", "general" : jsonStringGeneral, "cliente" : jsonStringCliente, "contrato" : jsonStringContrato, "actividades" : jsonActividades, "seguimiento" : jsonSeguimiento, "proyecto" : $proyecto },
 	 			success: function(data){
-	 				 console.log(data);
-	 				 $nextID = "";
-	 				 $.ajax({
-			 			type: "POST",
-			 			url: "control.php",
-			 			data: { "funcion" :  "buscaUltimoID" },
-			 			success: function(data){
-			 				 $fecha = new Date();
-			 				 $anio = $fecha.getFullYear();
-			 				 $nextID = parseInt(data.replace(/"/g, ''))+1;
-			 				 $preWBS = $anio+"-"+(parseInt(data.replace(/"/g, ''))+1);
-			 			}
-			 		});
-
-
-	 				 $(".mandaproyecto").each(function($key, $value){
-				    	alert("manda");
-				    	$kamPrincipal = $("#kamProyecto").val();
-				    	$fechaHoy = new Date();
-				    	$anioHoy = $fechaHoy.getFullYear();
-				    	$mesHoy = $fechaHoy.getMonth();
-				    	$diaHoy = $fechaHoy.getDate();
-				    	$datosProyectoPlus = {"wbs":$preWBS+"-"+$listadoKam[kamPrincipal],"kam":$kamPrincipal,"reclutador":"-1","kam2":"-1","apoyo":"-1","prioridad":"1","fIniY":$anioHoy,"fIniM":$mesHoy,"fIniD":$diaHoy,"estatus":"1","posicion":"","disciplina":"-1","cta":"1","nivel":"1","salario":"0"};
-				    	$.each($datosProyectoPlus, function($key, $value){
-				    		general[$key] = $value;
-				    	});
-
-				    	$datosFacturacionPlus = {"valorproyecto":contrato.valorProyecto,"totalfacturado":"","porcfacturado":"","xfacturar":"","lista":{"facno1":"","monto1":"","fenvio1":"","fpago1":"","facno2":"","monto2":"","fenvio2":"","fpago2":"","facno3":"","monto3":"","fenvio3":"","fpago3":""}};
-				    	
-				    	jsonStringFacturacion = JSON.stringify($datosFacturacionPlus);
-				    	jsonStringGeneral = JSON.stringify(general);
-
-				    	 $.ajax({
+	 				if ($terminaFunnel == 1) {
+	 					$.ajax({
 				 			type: "POST",
 				 			url: "control.php",
-				 			data: { "funcion" : "pasaAProyecto", "general" : jsonStringGeneral, "cliente" : jsonStringCliente, "contrato" : jsonStringContrato, "proyecto" : $proyecto, "facturacion":jsonStringFacturacion },
+				 			data: { "funcion" :  "buscaUltimoID" },
 				 			success: function(data){
-				 				window.location="../proyectos/proyectos.php?p="+$nextID;
+
+				 				 $fecha = new Date();
+				 				 $anio = $fecha.getFullYear();
+				 				 $nextID = parseInt(data.replace(/"/g, ''))+1;
+				 				 $preWBS = $anio+"-"+(parseInt(data.replace(/"/g, ''))+1);
+
+				 				 $(".mandaproyecto").each(function($key, $value){
+							    	alert("manda");
+							    	$kamPrincipal = $("#kamProyecto").val();
+							    	$fechaHoy = new Date();
+							    	$anioHoy = $fechaHoy.getFullYear();
+							    	$mesHoy = $fechaHoy.getMonth()+1;
+							    	$diaHoy = $fechaHoy.getDate();
+							    	if (parseInt($diaHoy) < 10) {$diaHoy = "0"+$diaHoy;}
+							    	if (parseInt($mesHoy) < 10) {$mesHoy = "0"+$mesHoy;}
+							    	console.log($listadoKam);
+							    	$datosProyectoPlus = {"wbs":$preWBS+"-"+$kamPrincipal,"kam":$kamPrincipal,"reclutador":"-1","kam2":"-1","apoyo":"-1","prioridad":"1","fIniY":$anioHoy,"fIniM":$mesHoy,"fIniD":$diaHoy,"estatus":"1","posicion":"","disciplina":"-1","cta":"1","nivel":"1","salario":"0"};
+							    	console.log($datosProyectoPlus);
+							    	$.each($datosProyectoPlus, function($key, $value){
+							    		general[$key] = $value;
+							    	});
+
+							    	$datosFacturacionPlus = {"valorproyecto":contrato.valorProyecto,"totalfacturado":"0.00","porcfacturado":"0.00%","xfacturar":contrato.valorProyecto,"lista":{"facno1":"","monto1":"0","fenvio1":"","fpago1":"","facno2":"","monto2":"0","fenvio2":"","fpago2":"","facno3":"","monto3":"0","fenvio3":"","fpago3":""}};
+							    	
+							    	jsonStringFacturacion = JSON.stringify($datosFacturacionPlus);
+							    	jsonStringGeneral2 = JSON.stringify(general);
+							    	console.log(jsonStringGeneral2);
+							    	
+							    	mandaAProyectos(jsonStringGeneral2,jsonStringCliente,jsonStringContrato,$proyecto,jsonStringFacturacion);
+							   //  	 $.ajax({
+							 		// 	type: "POST",
+							 		// 	url: "control.php",
+							 		// 	data: { "funcion" : "pasaAProyecto", "general" : jsonStringGeneral2, "cliente" : jsonStringCliente, "contrato" : jsonStringContrato, "proyecto" : $proyecto, "facturacion":jsonStringFacturacion },
+							 		// 	success: function(data){ 
+							 		// 		alert(data + "nos vamos?");
+							 		// 		if (data == "1") { alert("nos vamos a proyectos");
+							 		// 			window.location="../proyectos/proyectos.php?p="+$nextID;
+							 		// 		}
+							 		// 		else{alert("Ocurrio un error al heredar los datos");}
+							 				
+							 		// 	}
+							 		// });
+							    });
 				 			}
 				 		});
-				    });
+	 				}
+	 				 else{
+	 				 	 window.location="listado_proyectos.php";
+	 				 }
+		 				
 
-
-	 				 window.location="listado_proyectos.php";
+	 				
 	 			}
 	 		});
 			 		
@@ -684,6 +706,20 @@
 		// $("#txtSalario").val(addCommas($salarioBase));
 		 		
   //   }
+  		function mandaAProyectos(jsonStringGeneral2,jsonStringCliente,jsonStringContrato,proyecto,jsonStringFacturacion){
+  			$.ajax({
+	 			type: "POST",
+	 			url: "control.php",
+	 			data: { "funcion" : "pasaAProyecto", "general" : jsonStringGeneral2, "cliente" : jsonStringCliente, "contrato" : jsonStringContrato, "proyecto" : $proyecto, "facturacion":jsonStringFacturacion },
+	 			success: function(data){ 
+	 				if (data == "1") { alert("nos vamos a proyectos");
+	 					window.location="../proyectos/proyectos.php?p="+$nextID;
+	 				}
+	 				else{alert("Ocurrio un error al heredar los datos");}
+	 				
+	 			}
+	 		});
+  		}
 
 	    function addCommas(nStr){
 			nStr += '';
@@ -750,7 +786,7 @@
 			$("#hdnContacto").val(fila);
 			$("#muestraContactos").show();
 			$("#ocultaContactos").hide();
-
+			$("#hdnContactoSeleccionado").val(fila);
 		}
 
 		function calculaValorProyecto(){
@@ -963,7 +999,7 @@
 					<table class="tblFormularios proyecto">
 						<tr>
 							<td>Empresa Interna</td>
-							<td><select id="empresa" name="empresa" class="datosProyecto">
+							<td><select id="empresa" name="empint" class="datosProyecto">
 									<option value="-1"> - Selecciona - </option>
 									<option value="AIMS">AIMS</option>
 									<option value="DMA">Diaz Morones y Asociados</option>
@@ -1125,7 +1161,7 @@
 							
 					</table>
 				</div>
-				<input name="contacto" id="hdnContacto" type="hidden" value="-1" class="formProyectCliente">
+				<input name="contacto" id="hdnContactoSeleccionado" type="hidden" value="-1" class="formProyectCliente">
 			</fieldset>
 			</td>
 		</td>
@@ -1279,7 +1315,7 @@
 				<!-- <input type="hidden" class="formProyectContrato" id="hdnHonorarios" name="honorarios" > -->
 				<input type="text" class="datosContrato" id="txtHonorarios" name="txthonorarios" hidden></td>
 				<td colspan="2" rowspan="4">
-					<textarea class="datosContrato" name="obsContrato" id="obsContrato" cols="30" rows="7"></textarea>
+					<textarea class="datosContrato" name="obscontrato" id="obsContrato" cols="30" rows="7"></textarea>
 				</td>
 			</tr>
 			<tr>
@@ -1293,7 +1329,7 @@
 					<input id="txtAcuerdo" type="text" class="datosContrato" name="txtacuerdo" hidden></td></td>
 			</tr>
 			<tr>
-				<td><b>Garantia</b></td><td><select class="datosContrato" name="garantia" id="slcGarantia"><option value="dias30">30 Días</option><option value="dias60">60 Días</option><option value="dias90">90 Días</option><option value="dias180">180 Días</option><option value="anio1">1 Año</option></select></td>
+				<td><b>Garantia</b></td><td><select class="datosContrato" name="garantia" id="slcGarantia"><option value="dias30">30 Días</option><option value="dias60">60 Días</option><option value="dias90">90 Días</option><option value="dias180">180 Días</option><option value="anios1">1 Año</option></select></td>
 			</tr>
 			<tr>
 				<td><b>Exclusividad</b></td><td><select class="datosContrato" name="exclusividad"><option value="permanente">1- PERMANENTE</option><option value="temporal">2- TEMPORAL</option><option value="contingencia">3- CONTINGENCIA</option><option value="otro">4- OTRO</option></select></td>

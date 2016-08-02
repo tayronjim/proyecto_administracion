@@ -645,11 +645,11 @@
 					</tr>
 					<tr><td><b>Garantia:</b></td>
 						<td><select class="formProyectContrato" id="txtGarantia" name="garantia">
-							<option value="60">60</option>
-							<option value="90">90</option>
-							<option value="120">120</option>
-							<option value="150">150</option>
-							<option value="180">180</option>
+							<option value="dias30">30 Días</option>
+							<option value="dias60">60 Días</option>
+							<option value="dias90">90 Días</option>
+							<option value="dias180">180 Días</option>
+							<option value="anios1">1 Año</option>
 						</select>
 						</td>
 					</tr>
@@ -669,12 +669,13 @@
 						</td>
 					</tr>
 					<tr><td><b>Acuerdo de Facturacion:</b></td>
-					<td><select id="slcAcuerdo">
-							<option value="opc3_7">30% 70%</option>
-							<option value="opc3_3_4">30% 30% 40%</option>
-							<option value="otro">Otro</option>
+					<td><select id="slcAcuerdo" name="acuerdo">
+							<option value="fac100">100%</option>
+							<option value="fac3070">30% 70%</option>
+							<option value="fac303040">30% 30% 40%</option>
+							<option value="facOtro">Otro</option>
 						</select>
-						<input id="txtAcuerdo" type="text" class="formProyectContrato" name="acuerdofacturacion" hidden></td></tr>
+						<input id="txtAcuerdo" type="text" class="formProyectContrato" name="txtacuerdo" hidden></td></tr>
 					<tr><td>
 						<input type="hidden" class="formProyectContrato" name="fGarantiaY" value="0000">
 						<input type="hidden" class="formProyectContrato" name="fGarantiaM" value="00">

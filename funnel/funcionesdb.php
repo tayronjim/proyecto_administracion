@@ -89,7 +89,7 @@
 		return $resultado;
 	}
 	function insertaProyecto($general,$cliente,$contrato,$facturacion){
-		$query="INSERT INTO proyecto (cliente, datos_proyecto, facturacion, contrato) values (".$cliente.",".$general.",".$facturacion.",".$contrato.")";
+		$query="INSERT INTO proyecto (cliente, datos_proyecto, facturacion, contrato) values ('".$cliente."','".$general."','".$facturacion."','".$contrato."')";
 		$resultado = queryGeneral($query);
 		return $resultado;
 	}

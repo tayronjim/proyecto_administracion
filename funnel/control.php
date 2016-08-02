@@ -138,18 +138,19 @@
 		print json_encode($estatus);
 	}
 	function pasaAProyecto($general,$cliente,$contrato,$idFunnel,$facturacion){
-		
-		 	$proyectoGuardado = insertaProyecto($general,$cliente,$contrato,$facturacion);
-		 	$ultimoProyecto = ultimoProyecto();
-		 	$lastId = mysqli_fetch_assoc($ultimoProyecto);
-		 	$actividadSeg = heredaActividades($idFunnel,$lastId['lastID']);
-		// 	echo $actividadSeg;
-		
+			$actividadHeredada = "0";
+		 	
+		 	if ($proyectoGuardado = insertaProyecto($general,$cliente,$contrato,$facturacion)) {
+		 		$lastId = mysqli_fetch_assoc(ultimoProyecto());
+			 	// $nextID = $lastId['lastID']+1;
+			 	$actividadSeg = heredaActividades($idFunnel,$lastId['lastID']);
+			 	$actividadHeredada = "1";
+		 	}
+			
+		 	echo $actividadHeredada;
 		
 		// 	$proyectoGuardado = actualizaProy($general,$cliente,$contrato,$proyecto);
 		// 	$actividadSeg = actualizaActividades($actividades,$seguimiento,$proyecto);
 		
-
-
 	}
  ?>
