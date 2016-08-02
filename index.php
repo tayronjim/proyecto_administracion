@@ -41,7 +41,7 @@
 	 				var listCuerpo = [];
 	 				
 	 				var obj = JSON.parse(data);
-	 				//console.log(obj);
+	 				console.log(obj);
 	 				$cont = 0;
 	 				$alt = -1;
 	 				while(obj.Proyectos[$cont]){
@@ -127,7 +127,7 @@
 		</div>
 	</div>
 	<div class="recordatorios" style="position: relative;float: right;"> 
-		<?php include_once("recordatorios/recordatorios.php"); ?>
+		<?php //include_once("recordatorios/recordatorios.php"); ?>
 	</div>
 </div>
 

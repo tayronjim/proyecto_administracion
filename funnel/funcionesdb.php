@@ -10,7 +10,7 @@
 	}
 
 	function ultimoProyecto(){
-		$query = "SELECT MAX(id) as lastID FROM `funnel`";
+		$query = "SELECT MAX(id) as lastID FROM `proyecto`";
 		$resultado = queryGeneral($query);
 		return $resultado;	
 	}
@@ -33,12 +33,10 @@
 	// 	return $resultado;	
 	// }
 
-	function nuevoProyecto($general,$cliente,$contrato){
-		
+	function nuevoFunnel($general,$cliente,$contrato){
 		$dato_cliente = json_decode($cliente);
 		$query = "INSERT into funnel (cliente, datos_proyecto, contrato) values ('".$cliente."','".$general."','".$contrato."');";
 		$resultado = queryGeneral($query);
-
 		return $resultado;	
 	}
 
@@ -57,7 +55,6 @@
 	function actualizaActividades($actividad, $seguimiento, $proyecto){
 
 		$query = "UPDATE actividades SET actividad='".$actividad."', seguimiento='".$seguimiento."' where id_funnel=".$proyecto;
-		//echo $query;
 		$resultado = queryGeneral($query);
 		return $resultado;
 	}
@@ -88,6 +85,16 @@
 
 	function recuperaEstatus(){
 		$query = "SELECT * FROM estatus_funnel";
+		$resultado = queryGeneral($query);
+		return $resultado;
+	}
+	function insertaProyecto($general,$cliente,$contrato,$facturacion){
+		$query="INSERT INTO proyecto (cliente, datos_proyecto, facturacion, contrato) values ('".$cliente."','".$general."','".$facturacion."','".$contrato."')";
+		$resultado = queryGeneral($query);
+		return $resultado;
+	}
+	function heredaActividades($idFunnel,$idProyecto){
+		$query = "UPDATE actividades SET id_proyecto = '".$idProyecto."' WHERE id_funnel = ".$idFunnel;
 		$resultado = queryGeneral($query);
 		return $resultado;
 	}
