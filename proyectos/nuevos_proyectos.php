@@ -18,19 +18,19 @@
 	 			url: "control.php",
 	 			data: { "funcion" : "buscaClientes" },
 	 			success: function(data){
-	 				 // alert(data);
+	 				
 	 				var obj = JSON.parse(data);
 	 				console.log(obj);
 	 				$cont = 0;
 	 				$alt = -1;
 	 				while(obj[$cont]){
-	 					//$arregloTabla[$cont] = obj.Cliente[$cont];
+	 					
 	 					$facturacion[obj[$cont].id] = JSON.parse(obj[$cont].facturacion);
 	 					$contacto[obj[$cont].id] = JSON.parse(obj[$cont].datos_contacto);
 	 					
 	 					$cliente[obj[$cont].id] = JSON.parse(obj[$cont].datos_cliente);
 	 					$datosCliente = JSON.parse(obj[$cont].datos_cliente);
-	 					//$("#listaClientes").append("<option value='"+obj[$cont].id+"'>"+$datosCliente.publico+"</option>");
+	 					
 	 					$fac = $facturacion[obj[$cont].id];
 	 					if($fac.length === 0){
 	 						if ($alt == 1) {$claseAlt = "class='alt'";}else $claseAlt = '';
@@ -50,33 +50,6 @@
 	 			}
 	 		});
 
-	 		
-
-	 	// 	$("#listaClientes").change(function(){
-	 	// 		//alert($("#listaClientes").val());
-	 	// 		$("#listaRS").html("");
-	 	// 		$("#listaContactos").html("");
-	 	// 		if ($("#listaClientes").val() > 0) {
-	 	// 			var fac = JSON.parse($facturacion[$("#listaClientes").val()]);
-	 	// 			var contacto = JSON.parse($contacto[$("#listaClientes").val()]);
-	 				
-	 	// 			$cont = 0;
-	 	// 			while(fac[$cont]){
-			// 			if (fac[$cont].primario == 1) {$selected = "selected";} else {$selected = "";};
-		 // 				$("#listaRS").append("<option value='"+fac[$cont].idfac+"' "+$selected+">"+fac[$cont].rs+"</option>");
-		 // 				$cont++;
-	 	// 			}
-	 	// 			$cont = 0;
-	 	// 			while(contacto[$cont]){
-		 // 				$("#listaContactos").append("<option value='"+contacto[$cont].idcontacto+"'>"+contacto[$cont].nombre+"</option>");
-		 				
-		 // 				$cont++;
-	 	// 			}
-
-	 	// 		};
-					
-			// });
-
 			$.ajax({
 	 			type: "POST",
 	 			url: "control.php",
@@ -86,26 +59,21 @@
 	 				 $anio = $fecha.getFullYear();
 	 				 $preWBS = $anio+"-"+(parseInt(data.replace(/"/g, ''))+1);
 	 				 
-	 				
-	 				
 	 			}
 	 		});
-
-			
 
 			$.ajax({
 	 			type: "POST",
 	 			url: "control.php",
 	 			data: { "funcion" :  "buscaKam" },
 	 			success: function(data){
-	 				 // alert(data);
+	 				
 	 				var obj = JSON.parse(data);
 	 				
 	 				$cont = 0;
 	 				
 	 				while(obj[$cont]){
-	 					//$arregloTabla[$cont] = obj.Cliente[$cont];
-	 					//$facturacion[obj[$cont].id] = obj[$cont].facturacion;
+	 					
 	 					var kamDatos = JSON.parse(obj[$cont].datos);
 	 					if (kamDatos.puesto.consultor == "1") {
 	 						$("#txtkam").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
@@ -207,7 +175,6 @@
 		$.each($datoContacto, function($key, $value){
 			$("#tblContactos").append("<tr id='"+$value.idcontacto+"'><td>"+$value.nombre+"</td><td>"+$value.area+"</td><td>(ver mas)</td><td><input type='button' value='Principal' onclick='seleccionaContacto("+$key+")'></td></tr>");
 		});
-			
 		
 	}
 	function seleccionaContacto($key){
@@ -221,9 +188,6 @@
 		});
 		$("#lblContacto").append("</table>");
 		
-
-
-			
 		$("#hdnContacto").val($datoContacto.idcontacto);
 	}
 
@@ -419,7 +383,7 @@
 			<fieldset><legend>Proyecto</legend>
 				<table class="tblFormularios">
 					<tr>
-						<!--<td><b>WBS*:</b></td><td><input type="text" class="formProyect" id="txtwbs" name="wbs"></td>-->
+						
 						<td><b>Empresa Interna:</b></td>
 						<td>
 							<select id="txtEmpInt" type="text" value="" name="empint" class="formProyect">
@@ -510,10 +474,10 @@
 						
 				<table class="tblFormularios">
 					<tr>
-						<td><b>Cliente*:</b></td><td><div id="lblCliente" style="background-color: rgba(55,55,55,0.4); width: 200px;"></div><input name="cliente" id="hdnCliente" type="hidden" value="-1" class="formProyectCliente"><!-- <select id="listaClientes" class="formProyectCliente" name="cliente"><option value="-1">-Selecciona un cliente-</option></select> --></td>
+						<td><b>Cliente*:</b></td><td><div id="lblCliente" style="background-color: rgba(55,55,55,0.4); width: 200px;"></div><input name="cliente" id="hdnCliente" type="hidden" value="-1" class="formProyectCliente"></td>
 					</tr>
 					<tr>
-						<td><b>Datos Fiscales:</b></td><td><div id="lblDatosFiscales" style="background-color: rgba(55,55,55,0.4); width: 200px;"></div><input name="razonS" id="hdnDatoFiscal" type="hidden" value="-1" class="formProyectCliente"><!-- <select id="listaRS" class="formProyectCliente" name="razonS"><option>-Seleccione un Cliente-</option></select> --></td>
+						<td><b>Datos Fiscales:</b></td><td><div id="lblDatosFiscales" style="background-color: rgba(55,55,55,0.4); width: 200px;"></div><input name="razonS" id="hdnDatoFiscal" type="hidden" value="-1" class="formProyectCliente"></td>
 					</tr>
 				</table>
 				<table style="width: 90%;">
@@ -531,7 +495,7 @@
 				</table>
 				<table>
 					<tr style="vertical-align: top;">
-						<td><b>Contacto:</b></td><td><div id="lblContacto" style="background-color: rgba(55,55,55,0.4); width: auto;"></div><input name="contacto" id="hdnContacto" type="hidden" value="-1" class="formProyectCliente"><!-- <select id="listaContactos" class="formProyectCliente" name="contacto"><option value="-1">-Selecciona un contacto-</option></select> --></td>
+						<td><b>Contacto:</b></td><td><div id="lblContacto" style="background-color: rgba(55,55,55,0.4); width: auto;"></div><input name="contacto" id="hdnContacto" type="hidden" value="-1" class="formProyectCliente"></td>
 					</tr>
 				</table>
 			</fieldset>

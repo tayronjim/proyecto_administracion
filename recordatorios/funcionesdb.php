@@ -8,18 +8,25 @@
 		return $resultado;
 	}
 
-	function buscaSeguimientos(){
-		$query = "SELECT id_proyecto, seguimiento FROM `actividades`";
+	function buscaSeguimientos($columna){
+		
+		$query = "SELECT ".$columna.", seguimiento FROM `actividades` WHERE ".$columna." != 0";
 		$resultado = queryGeneral($query);
 		return $resultado;	
 	}
-	function buscaDatosProyectos(){
-		$query = "SELECT id, datos_proyecto, contrato, facturacion FROM `proyecto`";
+	function buscaDatosProyectos($area){
+		if ($area == "funnel") {
+			$query = "SELECT id, datos_proyecto, contrato FROM `funnel`";	
+		}
+		if ($area == "proyecto") {
+			$query = "SELECT id, datos_proyecto, contrato, facturacion FROM `proyecto`";
+		}
+		
 		$resultado = queryGeneral($query);
 		return $resultado;	
 	}
-	function filtraProyecto($id){
-		$query = "SELECT * FROM `proyecto` WHERE id=".$id;
+	function filtraProyecto($id,$area){
+		$query = "SELECT * FROM `".$area."` WHERE id=".$id;
 		$resultado = queryGeneral($query);
 		return $resultado;
 	}

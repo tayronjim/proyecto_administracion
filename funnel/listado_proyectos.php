@@ -104,7 +104,6 @@
 	<style type="text/css">
 	.datagrid{
 		
-
 	}
 
 	
@@ -133,13 +132,9 @@
 	</div>
 		
 	<div class="recordatorios" style="position: relative;float: right;">
-		<?php // include_once("../recordatorios/recordatorios.php"); ?>
+		<?php  include_once("../recordatorios/recordatorios_funnel.php"); ?>
 	</div>
 </div>
-	
-
-	
-
 
 </body>
 </html>

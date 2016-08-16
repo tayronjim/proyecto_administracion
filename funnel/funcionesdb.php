@@ -26,12 +26,6 @@
 		$resultado = queryGeneral($query);
 		return $resultado;
 	}
-	
-	// function recuperaRS($id_cliente){
-	// 	$query = "SELECT facturacion as fac FROM clientes where id=".$id_cliente;
-	// 	$resultado = queryGeneral($query);
-	// 	return $resultado;	
-	// }
 
 	function nuevoFunnel($general,$cliente,$contrato){
 		$dato_cliente = json_decode($cliente);
