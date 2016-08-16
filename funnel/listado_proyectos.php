@@ -53,7 +53,15 @@
 	 					$overtime='IN TIME';
 	 					$colorOvertime="green";
 	 					if(diffDays < 60){$overtime='OVERTIME'; $colorOvertime="red";}
-	 					$("#tblProyectos tbody").append("<tr "+$claseAlt+"><td class='colProy'>"+obj.Proyectos[$cont].id+"</td><td class='colCliente'>"+cliente.publico+" / "+rs.rs+"</td><td>"+proy.fechainicio+"</td><td class='colEstatus'>"+estatus.nombre+"</td><td style='font-weight: bolder;color:"+$colorOvertime+";' class='colOvertime'>"+$overtime+"</td><td><input type='hidden' value='"+obj.Proyectos[$cont].id+"'><span class='flechaProyecto boton' valor='"+obj.Proyectos[$cont].id+"'><img src='../img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
+	 					switch(proy.proyectoRequerido){
+	 						case "1": $nombre_proyecto = "Contrata"; break;
+	 						case "2": $nombre_proyecto = "Busqueda de Talento"; break;
+	 						case "3": $nombre_proyecto = "Mapeo de Talento"; break;
+	 						case "4": $nombre_proyecto = "Talent Management"; break;
+	 						default: $nombre_proyecto = ""; break;
+	 					}
+	 					
+	 					$("#tblProyectos tbody").append("<tr "+$claseAlt+"><td class='colProy'>"+$nombre_proyecto+"</td><td class='colCliente'>"+cliente.publico+" / "+rs.rs+"</td><td>"+proy.fechainicio+"</td><td class='colEstatus'>"+estatus.nombre+"</td><td><input type='hidden' value='"+obj.Proyectos[$cont].id+"'><span class='flechaProyecto boton' valor='"+obj.Proyectos[$cont].id+"'><img src='../img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
 						$cont++;
 						$alt = $alt * -1;
 	 				}
@@ -64,18 +72,13 @@
 	 			window.location="nuevo_proyecto.php?p="+$(this).attr('valor');
 	 		});
 
-	 		// Filtros Listado
-	 		$("#filtroProyecto, #filtroCliente, #filtroEstatus").on('keyup',function(){
-	 			
- 			
-			
-			  });
+	 		
 
 		});//Fin Document Ready
 		function filtraTabla(){
 			$("#tblProyectos tbody > tr").show();
-			if( $("#filtroProyecto").val() != ""){
-				$("#tblProyectos tbody > tr:visible > td.colProy:not(:contains-ci('" + $("#filtroProyecto").val() + "'))").parent("tr").hide();
+			if( $("#filtroProyecto").val() != "0"){
+				$("#tblProyectos tbody > tr:visible > td.colProy:not(:contains-ci('" + $("#filtroProyecto option:selected").text() + "'))").parent("tr").hide();
 			}
  			if( $("#filtroCliente").val() != ""){
 				$("#tblProyectos tbody > tr:visible > td.colCliente:not(:contains-ci('" + $("#filtroCliente").val() + "'))").parent("tr").hide();
@@ -83,9 +86,7 @@
 			if( $("#filtroEstatus").val() != "-1"){
 				$("#tblProyectos tbody > tr:visible > td.colEstatus:not(:contains-ci('" + $("#filtroEstatus").val() + "'))").parent("tr").hide();
 			}
-			if( $("#filtroOvertime").val() != "-1"){
-				$("#tblProyectos tbody > tr:visible > td.colOvertime:not(:contains-ci('" + $("#filtroOvertime").val() + "'))").parent("tr").hide();
-			}
+			
 			
 		}
 		
@@ -105,7 +106,9 @@
 	.datagrid{
 		
 	}
-
+	.txtmini{
+		font-size: 10px;
+	}
 	
 	</style>
 
@@ -114,14 +117,39 @@
 <?php include_once("../header.htm"); ?>
 <div class="cuerpo">
 	<div class="contenido" style="position: relative; float: left; max-width: 75%;">
-		Filtros
-		<input type="text" id="filtroProyecto" placeholder="Proyecto" onkeyup="filtraTabla()"><input type="text" id="filtroCliente" placeholder="Cliente" onkeyup="filtraTabla()"><select id="filtroEstatus" onchange="filtraTabla()"><option value="-1"> - Estatus - </option></select><select type="text" id="filtroOvertime" onchange="filtraTabla()"><option value="-1"> - Overtime - </option><option value="OVERTIME">EN OVERTIME</option><option value="IN TIME">EN TIEMPO</option></select>
+		<table>
+			<tr>
+				
+				<td>
+					<label class="txtmini">Proyecto:</label><br>
+					<select type="text" id="filtroProyecto" onchange="filtraTabla()">
+						<option value="0">Todos</option>
+						<option value="1">Contrata</option>
+						<option value="2">Busqueda de Talento</option>
+						<option value="3">Mapeo de Talento</option>
+						<option value="4">Talent Management</option>
+					</select>
+				</td>
+				<td>
+					<label class="txtmini">Cliente:</label><br>
+					<input type="text" id="filtroCliente" onkeyup="filtraTabla()">
+				</td>
+				<td>
+					<label class="txtmini">Estatus:</label><br>
+					<select id="filtroEstatus" onchange="filtraTabla()"><option value="-1"> - Todos - </option></select>
+				</td>
+			</tr>
+		</table>
+		
+			
+		
+		
 		<br><br>
 		<div class="datagrid">
 			<table id="tblProyectos">
 				<thead>
 					<tr>
-						<th>Proyecto</th><th>Cliente/RS</th><th>Fecha Inicio</th><th>Estatus</th><th>OVERTIME</th><th></th>
+						<th>Proyecto</th><th>Cliente/RS</th><th>Fecha Inicio</th><th>Estatus</th><th></th>
 					</tr>
 				</thead>
 				<tbody></tbody>
