@@ -25,14 +25,13 @@
 	 			url: "control.php",
 	 			data: { "funcion" :  "buscaKam" },
 	 			success: function(data){
-	 				 // alert(data);
+	 				
 	 				$listadoKam = JSON.parse(data);
 	 				
 	 				$cont = 0;
 	 				
 	 				while($listadoKam[$cont]){
-	 					//$arregloTabla[$cont] = obj.Cliente[$cont];
-	 					//$facturacion[obj[$cont].id] = obj[$cont].facturacion;
+	 					
 	 					var kamDatos = JSON.parse($listadoKam[$cont].datos);
 	 					if (kamDatos.puesto.consultor == "1") {
 	 						$("#kam").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
@@ -89,27 +88,6 @@
 	 				
 	 		});
 
-	 		$.ajax({  // Carga registro Actividades / Seguimiento
-	 			type: "POST",
-	 			url: "control.php",
-	 			data: { "funcion" : "listaActividades", "proyecto": $proyecto },
-	 			success: function(data){
-	 				/*console.log("1");
-	 			 	var obj = JSON.parse(data);
-	 			 	console.log("2");
-	 			 	$.each( obj.actividad, function( filasActividades, actividad ) {
-					  $("#tblActividades tbody").append('<tr><td><input type="hidden" class="registroActividades" id="numeroFila" value="'+filasActividades+'"></td><td><input type="date" value="'+actividad.fecha+'" id="fecha_'+filasActividades+'" disabled></td><td colspan="1"> <textarea id="txtActividad_'+filasActividades+'" disabled>'+actividad.act+'</textarea></td><td></td></tr>');
-					  $filasActividades = filasActividades;
-					});
- 					
-					$.each( obj.seguimiento, function( filasSeguimientos, actividad ) {
-					  $("#tblSeguimientos tbody").append('<tr id="filaSeg_'+filasSeguimientos+'"><td><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+filasSeguimientos+'" value="'+actividad.fecha+'" disabled> </td><td colspan="1"><textarea id="txtAreaSeg_'+filasSeguimientos+'" disabled>'+actividad.act+'</textarea></td><td><div class="btnAcepSeg" id="btnAcepSeg_'+filasSeguimientos+'"></div></td><td><div class="btnCancelSeg" id="btnCancelSeg_'+filasSeguimientos+'"></div></td><td></td></tr>');
-					  $filasSeguimientos = filasSeguimientos;
-					});*/
-	 		
-	 			}
-	 		});
-
 			$.ajax({
 	 			type: "POST",
 	 			url: "control.php",
@@ -144,11 +122,7 @@
 		 				var cliente = JSON.parse(obj.Cliente[0].datos_cliente);
 		 				var contacto = JSON.parse(obj.Cliente[0].datos_contacto);
 		 				
-		 				
 		 				var datos_contrato = JSON.parse(obj.Proyecto[0].contrato);
-		 				//var datos_facturacion = JSON.parse(obj.Proyecto[0].facturacion);
-		 				
-		 					//$("#txtwbs").val(datos_proyecto.wbs);
 
 			 				$("#empresa").val(datos_proyecto.empint);
 			 				$("#kam").val(datos_proyecto.kam);
@@ -171,11 +145,11 @@
 								$("#tblContacto > tbody").append('<tr id="filaContacto_'+$filasContacto+'" class="noprimario" style="border-bottom:1px solid #E1EEF4"><td><!-- <div id="btnMenosContacto_'+$filasContacto+'" class="btnMenosCont"></div> --><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" value="'+contacto[$cont].nombre+'" name="nombre" style="width:250px;" placeholder="Nombre Completo"><br><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" value="'+contacto[$cont].area+'" name="area" style="width:170px;" placeholder="Area / Puesto"></td><td><table id="tblMedioContacto_'+$filasContacto+'" contacto="'+$filasContacto+'" ><tbody></tbody></table></td><td><input type="date" class="datoContacto_'+$filasContacto+'" id="txtCumpleaños_'+$filasContacto+'" value="'+contacto[$cont].cumpleaños+'" name="cumpleaños" style="width:130px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;">'+contacto[$cont].observaciones+'</textarea></td><td><input type="radio" name="contacPrimario" onclick="seleccionaContacto('+$filasContacto+');"></td></tr>');
 
 								$cont2=0;
-								//console.log(contacto[$cont].medioDeContacto[$cont2]);
+								
 								while(contacto[$cont].medioDeContacto[$cont2]){
 									$idTipoContacto = contacto[$cont].medioDeContacto[$cont2].tipoContacto;
 									$idValorContacto = contacto[$cont].medioDeContacto[$cont2].valorContacto;
-									//console.log($idTipoContacto + "," + $idValorContacto);
+									
 									$('#tblMedioContacto_'+$filasContacto+' > tbody').append('<tr class="tblFilaContacto'+$filasContacto+'" fila="'+$cont2+'"><td></td><td><select id="tipoContactoFila'+$filasContacto+'_'+$cont2+'"><option value="1">Telefono Movil</option><option value="2">Telefono Trabajo</option><option value="3">e-Mail</option><option value="4">linkedin</option><option value="5">ubicacion</option></select></td><td><input id="valorTipoContactoFila'+$filasContacto+'_'+$cont2+'" type="text" class="datoContacto" name="valor" style="width:150px;"></td></tr>');
 									$('#tipoContactoFila'+$filasContacto+'_'+$cont2).val($idTipoContacto);
 									$('#valorTipoContactoFila'+$filasContacto+'_'+$cont2).val($idValorContacto);
@@ -191,11 +165,8 @@
 
 							$filasContacto++;
 			 				
-			 				
-
-
 			 				$("#slcConvenio").val(datos_contrato.convenio);
-			 				//$("#slcNivel").val(datos_proyecto.nivel);
+			 				
 			 				$("#slcGarantia").val(datos_contrato.garantia);
 			 				$("#slcHonorarios").val(datos_contrato.honorarios);
 			 				if (datos_contrato.honorarios == "fijo" || datos_contrato.honorarios == "otro" ) {
@@ -247,7 +218,6 @@
 		 		});
 			}
 		 		
-
 	 		$(document).on('click','.btnMenosSeg',function(){
 				$elemento = this.id;
 				$elementoSeparado = $elemento.split("_");
@@ -284,52 +254,7 @@
 				$(".fondoEmergente").css("visibility","visible");
 				$("#hideCancelaSegimiento").css("visibility","visible");
 			});
-
-
-	 	// 	$("#listaClientes").change(function(){
-	 	// 		//alert($("#listaClientes").val());
-	 	// 		$("#listaRS").html("");
-	 	// 		$("#listaContactos").html("");
-	 	// 		if ($("#listaClientes").val() > 0) {
-	 	// 			var fac = JSON.parse($facturacion[$("#listaClientes").val()]);
-	 	// 			var contacto = JSON.parse($contacto[$("#listaClientes").val()]);
-	 	// 			console.log(contacto);
-	 	// 			$cont = 0;
-	 	// 			while(fac[$cont]){
-			// 			if (fac[$cont].primario == 1) {$selected = "selected";} else {$selected = "";};
-		 // 				$("#listaRS").append("<option value='"+fac[$cont].idfac+"' "+$selected+">"+fac[$cont].rs+"</option>");
-		 // 				$cont++;
-	 	// 			}
-	 	// 			$cont = 0;
-	 	// 			while(contacto[$cont]){
-		 // 				$("#listaContactos").append("<option value='"+contacto[$cont].idcontacto+"'>"+contacto[$cont].nombre+"</option>");
-		 				
-		 // 				$cont++;
-	 	// 			}
-
-	 	// 		};
-					
-			// });
-
-			// $.ajax({
-	 	// 		type: "POST",
-	 	// 		url: "control.php",
-	 	// 		data: { "funcion" :  "buscaUltimoID" },
-	 	// 		success: function(data){
-	 	// 			 console.log(data);
-	 	// 			 $fecha = new Date();
-	 	// 			 $anio = $fecha.getFullYear();
-	 	// 			 $preWBS = $anio+"-"+(parseInt(data.replace(/"/g, ''))+1);
-	 				 
-	 				
-	 				
-	 	// 		}
-	 	// 	});
-
 			
-
-			
-
 	 		$("#slcEstatus").change(function(){
 	 			switch($(this).val()){
 	 				case '1':
@@ -355,35 +280,10 @@
 	 			}
 	 		});
 
-
-
-
 			$("#guardaProyecto").click(function(){
-				//$kam = $("#txtkam option:selected").html().substring(0, 2).toUpperCase();
-			    //$("#txtwbs").val( $preWBS + $kam );
 				dotosObligatorios();
 			});
-			// $("#slcAcuerdo").change(function(){
-	 	// 		if ($("#slcAcuerdo").val() != "otro") {
-	 	// 			$("#txtAcuerdo").attr("hidden",true);
-			// 		$("#txtAcuerdo").val($("#slcAcuerdo").val());
-	 	// 		}
-	 	// 		else{
-	 	// 			$("#txtAcuerdo").val("");
-	 	// 			$("#txtAcuerdo").attr("hidden",false);
-	 	// 		}
-	 	// 	});
-
-	 	// 	$("#slcHonorarios").change(function(){
-	 	// 		if ($("#slcHonorarios").val() != "otro" && $("#slcHonorarios").val() != "fijo" ) {
-	 	// 			$("#txtHonorarios").attr("hidden",true);
-			// 		$("#txtHonorarios").val($("#slcHonorarios").val());
-	 	// 		}
-	 	// 		else{
-	 	// 			$("#txtHonorarios").val("");
-	 	// 			$("#txtHonorarios").attr("hidden",false);
-	 	// 		}
-	 	// 	});
+			
 	 		$("#nombreCliente").on('keyup',function(){
 	 			if ($("#nombreCliente").val() != "") {
 	 				$("#listaClientes").show();
@@ -393,15 +293,12 @@
 	 		});
 	 		$("#listaClientes").hide();
 
-
 	 		$("#btnMasContacto").click(function(){
 				$("#tblContacto > tbody").append('<tr id="filaContacto_'+$filasContacto+'" class="noprimario" style="border-bottom:1px solid #E1EEF4"><td><div id="btnMenosContacto_'+$filasContacto+'" class="btnMenosCont"></div><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" name="nombre" style="width:250px;" placeholder="Nombre Completo"><br><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" name="area" style="width:170px;" placeholder="Area / Puesto"></td><td><table id="tblMedioContacto_'+$filasContacto+'" contacto="'+$filasContacto+'" ><tr class="tblFilaContacto'+$filasContacto+'" fila="0"><td></td><td><select id="tipoContactoFila'+$filasContacto+'_0"><option value="1">Telefono Movil</option><option value="2">Telefono Trabajo</option><option value="3">e-Mail</option><option value="4">linkedin</option><option value="5">ubicacion</option></select></td><td><input id="valorTipoContactoFila'+$filasContacto+'_0" type="text" class="datoContacto" name="valor" style="width:150px;"></td></tr><tr class="tblFilaContacto'+$filasContacto+'" fila="-1"><td><div id="btnMasMedioContacto" class="btnMas" onclick="agregaMedioContacto('+$filasContacto+',1)"></div></td><td></td><td></td></tr></table></td><td><input type="date" class="datoContacto_'+$filasContacto+'" id="txtCumpleaños_'+$filasContacto+'" name="cumpleaños" style="width:130px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;"></textarea></td><td><input type="radio" name="contacPrimario" onclick="seleccionaContacto('+$filasContacto+');"></td></tr>');
 
 				$filasContacto++;
 			});
 
-			
-			
 			$(".fa-angle-double-down").click(function(){
 				$("#muestraContactos").hide();
 				$("#ocultaContactos").show();
@@ -413,8 +310,6 @@
 				$("#muestraContactos").show();
 				$("#tblContacto tbody tr.noprimario").hide('fast');
 			});
-
-
 
 			$("#btnMas").click(function(){
 				$filasActividades ++;
@@ -445,23 +340,13 @@
 			$("#tipoFunner").change(function(){
 				if ($("#tipoFunner").val() == 1) {
 					showBuscaCliente();
-					/*$("#tituloProspecto").html("Prospecto Cliente");
-					$("fieldset").css('visibility','visible');
-					$(".prospecto").css('display','block');
-					$(".proyecto").css('display','none');*/
 					
 				}
 				if ($("#tipoFunner").val() == 2) {
-					/*$("#tituloProspecto").html("Prospecto Proyecto");
-					$("fieldset").css('visibility','visible');
-					$(".proyecto").css('display','block');
-					$(".prospecto").css('display','none');*/
 					
 				}
 				if ($("#tipoFunner").val() == -1) {
-					/*$(".proyecto").css('visibility','hidden');
-					$(".prospecto").css('display','block');
-					$("fieldset").css('display','none');*/
+				
 				}
 			});
 
@@ -508,35 +393,6 @@
 		});
 
     function dotosObligatorios(){
-    	
-    	// if ($("#txtkam").val() == "-1") {
-    	// 	alert("Selecciona un KAM");
-    	// 	return 0;
-    	// }
-    	// if ($("#listaClientes").val() == "-1") {
-    	// 	alert("Selecciona un Cliente");
-    	// 	return 0;
-    	// }
-    	// if ($("#listaRS").val() == null) {
-    	// 	alert("El cliente no tiene una razon social asociada");
-    	// }
-    	// if ($("#txtTituloProyecto").val() == "") {
-    	// 	alert("La posicion no puede estar vacía");
-    	// 	return 0;
-    	// }
-    	// if ($("#txtcta").val() == "") {
-    	// 	alert("No. de puestos no puede estar vacío");
-    	// 	return 0;
-    	// }
-    	// $nuevoValor = $("#txtValorProyecto").val().replace(/,/g, '');
-    	
-    	// if (isNaN($nuevoValor)){
-    	// 	alert("Coloque un numero valido en Valor de Proyecto");
-    	// 	return 0;
-    	// } 
-    	// if($("#txtValorProyecto").val() == "") {
-    	// 	$("#txtValorProyecto").val("0");
-    	// }
 
     	guardaDatos();
     	
@@ -553,15 +409,13 @@
 		        var valor = $(this).val();
 		        cliente[name] = valor;
 		    }); 
-		  //  console.log(cliente);
-
+		 
 		    $(".datosProyecto").each(function() {
 		        var name = $(this).attr("name");
 		        var valor = $(this).val();
 		        general[name] = valor;
 		    }); 
-		  //  console.log(general);
-		  
+		 
 		  	jsActividades = [];
 			jsSeguimiento = [];
 		
@@ -579,8 +433,7 @@
 
 		        jsActividades.push(item);
 		    });
-		    //console.log(jsonActividades);
-		    
+		   
 		    $(".registroSeguimientos").each(function() {
 
 		    	$filaS = $(this).val();
@@ -596,35 +449,17 @@
 		    });
 		    console.log(jsSeguimiento);
 
-
-		    //$("#txtHonorarios").val($("#slcHonorarios").val());
-		    //$("#txtAcuerdo").val($("#slcAcuerdo").val());
-
 		    $(".datosContrato").each(function(){
 		    	var name = $(this).attr("name");
 		        var valor = $(this).val();
 		        contrato[name] = valor;
 		    });
-		   // console.log(contrato);
-		    
-		    // $("#txtXFacturar").val($("#txtValorProyecto").val());
-		    // $(".formProyectFacturacion").each(function() {
-		    //     var name = $(this).attr("name");
-		    //     var valor = $(this).val();
-		    //     facturacion[name] = valor;
-		    // }); 
-
-
-		   
+		  
 		    jsonStringGeneral = JSON.stringify(general);
 		    jsonStringCliente = JSON.stringify(cliente);
 		    jsonStringContrato = JSON.stringify(contrato);
 		    jsonActividades = JSON.stringify(jsActividades);
 		    jsonSeguimiento = JSON.stringify(jsSeguimiento);
-		  
-				    
-
-		   
 		  
 		    $nextID = "";
 
@@ -668,19 +503,7 @@
 							    	console.log(jsonStringGeneral2);
 							    	
 							    	mandaAProyectos(jsonStringGeneral2,jsonStringCliente,jsonStringContrato,$proyecto,jsonStringFacturacion);
-							   //  	 $.ajax({
-							 		// 	type: "POST",
-							 		// 	url: "control.php",
-							 		// 	data: { "funcion" : "pasaAProyecto", "general" : jsonStringGeneral2, "cliente" : jsonStringCliente, "contrato" : jsonStringContrato, "proyecto" : $proyecto, "facturacion":jsonStringFacturacion },
-							 		// 	success: function(data){ 
-							 		// 		alert(data + "nos vamos?");
-							 		// 		if (data == "1") { alert("nos vamos a proyectos");
-							 		// 			window.location="../proyectos/proyectos.php?p="+$nextID;
-							 		// 		}
-							 		// 		else{alert("Ocurrio un error al heredar los datos");}
-							 				
-							 		// 	}
-							 		// });
+							
 							    });
 				 			}
 				 		});
@@ -689,23 +512,11 @@
 	 				 	 window.location="listado_proyectos.php";
 	 				 }
 		 				
-
-	 				
 	 			}
 	 		});
 			 		
 	    }
-  //   function calculaValorProyecto(){
-  //   	$salarioBase = parseFloat($("#txtSalario").val().replace(/,/g, ''));
-		// $bono = $salarioBase*parseFloat($("#txtBono").val());
-		// $vacaciones = parseFloat($("#txtVacaciones").val());
-		// $primaVacacional = parseFloat($("#txtPrimaVacacional").val())/100;
-		// $aguinaldo = $salarioBase/30*parseFloat($("#txtAguinaldo").val());
-		// $prima = $salarioBase/30 * $vacaciones * $primaVacacional; 
-		// $("#txtValorProyecto").val(addCommas(parseFloat(($bono+$prima+$aguinaldo+($salarioBase*12))*(0.1)).toFixed(2)));
-		// $("#txtSalario").val(addCommas($salarioBase));
-		 		
-  //   }
+ 
   		function mandaAProyectos(jsonStringGeneral2,jsonStringCliente,jsonStringContrato,proyecto,jsonStringFacturacion){
   			$.ajax({
 	 			type: "POST",
@@ -741,12 +552,6 @@
 			$("#idCliente").val(idcliente);
 			$("#listaClientes").hide();
 
-			// while(datosContacto[$cont]){
-			// 	$filasContacto = datosContacto[$cont].idcontacto;
-			// 	$("#tblContacto tbody").append('<tr id="filaContacto_'+$filasContacto+'" class="noprimario"><td><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" value="'+datosContacto[$cont].nombre+'" name="nombre" style="width:250px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" value="'+datosContacto[$cont].area+'" name="area" style="width:170px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtTelefono_'+$filasContacto+'" value="'+datosContacto[$cont].telefono+'" name="telefono" style="width:100px;"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txteMail_'+$filasContacto+'" value="'+datosContacto[$cont].email+'" name="email" style="width:100px;"></td><td><input type="date" class="datoContacto_'+$filasContacto+'" id="txtCumpleaños_'+$filasContacto+'" value="'+datosContacto[$cont].cumpleaños+'" name="cumpleaños" style="width:130px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;">'+datosContacto[$cont].observaciones+'</textarea></td><td><input type="radio" name="contacPrimario" onclick="seleccionaContacto('+$filasContacto+');"></td></tr>');
-
-			// 	$cont++;
-			// }
 			$("#tblContacto > tbody").html("");
 			while(datosContacto[$cont]){
 				$filasContacto = datosContacto[$cont].idcontacto;
@@ -770,13 +575,11 @@
 				$cont++;
 			}
 
-
 			$filasContacto++;
 			$("#muestraContactos").hide();
 			$("#ocultaContactos").show();
 			$("#hdnBuscaClientes").hide();
 		}
-
 
 		function seleccionaContacto(fila){
 			$("#tblContacto tbody tr.siprimario").removeClass('siprimario').addClass('noprimario');
@@ -804,13 +607,11 @@
 
 	    function selectCliente($idCliente,$idFac){
 			
-		
 			$clienteActivo = $idCliente;
 
 			$datoFac = $facturacion[$idCliente][$idFac];
 			$datoContacto = $contacto[$idCliente];
 			$datoCliente = $cliente[$idCliente];
-
 
 			$("#lblCliente").html($datoCliente.publico);
 
@@ -830,7 +631,6 @@
 				$("#tblContactos").append("<tr id='"+$value.idcontacto+"'><td>"+$value.nombre+"</td><td>"+$value.area+"</td><td>(ver mas)</td><td><input type='button' value='Principal' onclick='seleccionaContacto("+$key+")'></td></tr>");
 			});
 				
-			
 		}
 
 		function agregaSeguimientoTerminado(){
@@ -846,7 +646,6 @@
 			$(".fondoEmergente").css("visibility","hidden");
 			$("#hideAceptaSegimiento").css("visibility","hidden");
 					
-	 		//guardaProyecto();
 		}
 
 		function eliminaSeguimientoCancelado(){
@@ -858,7 +657,7 @@
 		}
 
 		function agregaFilaSeguimiento($filasSeguimientos,$fecha,$actividad){
-    		//console.log($fecha);
+    		
     		$("#tblSeguimientos tbody").append('<tr id="filaSeg_'+$filasSeguimientos+'"><td><div class="btnMenosSeg" id="btnMenosSeg_'+$filasSeguimientos+'"></div><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+$filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+$filasSeguimientos+'" value="'+$fecha+'"> </td><td colspan="1"><textarea id="txtAreaSeg_'+$filasSeguimientos+'">'+$actividad+'</textarea></td><td></td><td></td><td></td></tr>');
     	}
 
@@ -892,7 +691,7 @@
 			-webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
 			-moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
 			box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-			/*visibility: hidden;*/
+			
 		}
 		fieldset legend{
 			color: #fff;
@@ -952,43 +751,7 @@
 <?php include_once("../header.htm"); ?>
 <div class="cuerpo">
 	Tipo de Funnel: <select id="tipoFunner" name="tipofunner"><option value="-1">-</option><option value="1">Prospecto de Cliente</option><option value="2" selected>Prospecto de Proyecto</option></select>
-	<!-- <div id="hdnBuscaClientes" class="datagrid" style="color:#000;">
-		<table>
-			<thead>
-				<tr>
-					<td>
-						Seleccion de Cliente
-					</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>
-						<input type="text" id="filtroCliente" placeholder="Nombre Comercial" onkeyup="filtraTabla()"><input type="text" id="filtroRS" placeholder="Razon Social" onkeyup="filtraTabla()">
-					</td>
-					<td>
-						<input type="button" value="Nuevo">
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<div class="datagrid" style="max-height: 200px; max-width: 90%; overflow: auto;">
-							<table id="tblClientes" border="1" style="">
-								<thead>
-									<tr>
-										<th>Nombre Comercial</th><th>Razon Social</th>
-									</tr>
-								</thead>
-								<tbody></tbody>
-								<tfoot></tfoot>	
-							</table>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-				
-		</table>
-	</div> -->
+	
 	<br><br>
 
 	<input type="hidden" id="txtFolio" name="folio">
@@ -1033,24 +796,6 @@
 				<td>Fecha de Inicio</td><td><input type="date" name="fechainicio" id="fechaInicio" class="datosProyecto"></td><td>Dias Transcurridos: <label id="diasTranscurridos"></label></td>
 			</tr>
 		
-			<!-- <tr class="proyecto">
-				<td>Fecha Estimada de Cierre</td><td><input type="date" id="fechaEstimadaCierre" name="fechaestimada"></td><td></td>
-			</tr>
-		
-			<tr>
-				<td>Fecha de Contacto</td><td><input type="date" id="fechaContacto" name="fechacontacto"></td>
-			</tr>
-			<tr>
-				<td>Fecha de Cotizacion /<br>Prosentación de Servicios</td><td><input type="date" id="fechaCotizacion" name="fechacotizacion"></td>
-			</tr> -->
-			
-			<!-- <tr>
-				<td>Dias Para Cierre: </td><label></label>
-			</tr>
-			<tr>
-				<td>OVERTIME</td><label></label>
-			</tr> -->
-		
 			<tr><td colspan="3">&nbsp;</td></tr>
 			<tr>
 				<td>Estatus</td><td><select id="slcEstatus" name="estatus" class="datosProyecto"></select></td><td></td>
@@ -1079,63 +824,16 @@
 								</table>
 							</div>
 						</div>
-			<!-- Es recomendado?<select><option value="no">NO</option><option value="si">SI</option></select>
-			
-		
-					<table class="prospecto">
-						<tr>
-							<td>
-								<div class="datagrid">
-									<table id="tblRecomiendo" border="1">
-										<thead>
-											
-											<tr>
-												<th>Empresa</th><th>Nombre</th><th>Area/Puesto</th><th>Telefono</th><th>e-Mail</th><th>Observaciones</th>
-											</tr>
-
-										</thead>
-										<tbody>
-											<tr>
-												<td><input type="text" name="empresarecomienda"></td><td><input type="text" name="nombrerecomienda"></td><td><input type="text" name="arearecomienda"></td><td><input type="text" name="telefonorecomienda"></td><td><input type="text" name="emailrecomienda"></td><td><textarea name="observrecomienda"></textarea></td>
-											</tr>
-										</tbody>
-											
-									</table>
-								</div>
-							</td>
-						</tr>
-					</table> -->				
+						
 					<table class="tblFormularios">
 						<tr>
-							<td><b>Cliente*:</b></td><td><div id="txtNombreComercial" style="background-color: rgba(55,55,55,0.4); width: 200px;"><label id="lblCliente"></label></div><input name="cliente" id="idCliente" type="hidden" value="-1" class="formProyectCliente"><!-- <select id="listaClientes" class="formProyectCliente" name="cliente"><option value="-1">-Selecciona un cliente-</option></select> --></td>
+							<td><b>Cliente*:</b></td><td><div id="txtNombreComercial" style="background-color: rgba(55,55,55,0.4); width: 200px;"><label id="lblCliente"></label></div><input name="cliente" id="idCliente" type="hidden" value="-1" class="formProyectCliente"></td>
 						</tr>
 						<tr>
-							<td><b>Datos Fiscales:</b></td><td><div id="lblDatosFiscales" style="background-color: rgba(55,55,55,0.4); width: 200px;"><table><tr><td>Razon Social</td><td><label id="rsClienteResumen"></label></td></tr><tr><td>RFC</td><td><label id="rfcClienteResumen"></label></td></tr></table></div><input name="razonS" id="hdnDatoFiscal" type="hidden" value="-1" class="formProyectCliente"><!-- <select id="listaRS" class="formProyectCliente" name="razonS"><option>-Seleccione un Cliente-</option></select> --></td>
+							<td><b>Datos Fiscales:</b></td><td><div id="lblDatosFiscales" style="background-color: rgba(55,55,55,0.4); width: 200px;"><table><tr><td>Razon Social</td><td><label id="rsClienteResumen"></label></td></tr><tr><td>RFC</td><td><label id="rfcClienteResumen"></label></td></tr></table></div><input name="razonS" id="hdnDatoFiscal" type="hidden" value="-1" class="formProyectCliente"></td>
 						</tr>
 					</table>
 					
-					
-
-
-
-					<!-- <table style="width: 90%;">
-						<tr>
-							<td colspan="2">
-								<div id="plecaMuestraContactos" style="background-color: #2d3091; width: 280px; height: 20px; padding-left: 10px; padding-right: 10px; padding-top: 5px; padding-bottom: 5px;"><b>Mostrar Contactos</b> <i class="fa fa-angle-double-right fa-2x" style="float: right; top:-5px; position: relative;"></i></div>
-								<div id="contenidoContactos" class="datagrid" hidden style="max-width: 90%;">
-									<table id="tblContactos">
-										<thead><th>Nombre</th><th>Area/Puesto</th><th></th><th></th></thead>
-										<tbody></tbody>
-									</table>
-								</div>
-							</td>
-						</tr>
-					</table> -->
-					<!-- <table>
-						<tr style="vertical-align: top;">
-							<td><b>Contacto:</b></td><td><div id="lblContacto" style="background-color: rgba(55,55,55,0.4); width: auto;"></div><input name="contacto" id="hdnContacto" type="hidden" value="-1" class="formProyectCliente"></td>
-						</tr>
-					</table> -->
 				</fieldset>
 			</td>
 		</tr>
@@ -1167,40 +865,6 @@
 		</td>
 	</table>
 	
-		
-		
-			
-		
-		<!--  -->
-		
-			<!-- <tr>
-				
-				<td><input type="text" placeholder="Cliente" id="nombreCliente" name="nombrecliente"><input type="hidden" id="idCliente" name="idcliente" value="0"></td>
-				<td><div class="datagrid"><table border="1" id="listaClientes"><thead><tr><th>Nombre Publico</th></tr></thead><tbody></tbody></table></div></td>
-			</tr> -->
-			<!-- <tr>
-				<td colspan="2">
-					Cliente: 
-				</td>
-			</tr>
-			
-			<tr>
-				<td rowspan="2">
-					<div onclick="showBuscaCliente()">[Edit]</div>
-				</td>
-				<td>
-					Nombre Comercial: </td><td><div id="txtNombreComercial" style="background-color: rgba(55,55,55,0.4); width: 200px;"> <input type="hidden" id="hdnCliente"></div></td>
-					
-			</tr>
-			<tr>
-				<td>Razón Social:</td><td> <div id="txtRazonSocial" style="background-color: rgba(55,55,55,0.4); width: 200px;"> <input type="hidden" id="hdnRazonSocial"></div></td>
-			</tr>
-			</table>
-			Es recomendado?</td><td><select><option value="no">NO</option><option value="si">SI</option></select> -->
-			
-		
-		
-	
 	
 	<br>
 	<fieldset><legend>Actividades</legend>
@@ -1216,9 +880,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<!-- <tr id="fila_0">
-									<td><span class="btnMenos" id="btnMenos_0">[-]</span></td><td> <input type="date" id="fecha_0"> </td><td colspan="2"> <textarea id="txtArea_0"></textarea> </td>
-								</tr> -->
+								
 							</tbody>
 						</table>
 					</div>
@@ -1234,9 +896,7 @@
 								
 							</thead>
 							<tbody>
-								<!-- <tr id="filaSeg_0">
-									<td><span class="btnMenosSeg" id="btnMenosSeg_0">[-]</span></td><td><input type="date" id="fechaSeg_0"> </td><td colspan="2"><textarea id="txtAreaSeg_0"></textarea></td><td><span class="btnAcepSeg" id="btnAcepSeg_0">[/]</span></td><td><span class="btnCancelSeg" id="btnCancelSeg_0">[X]</span></td>
-								</tr> -->
+								
 							</tbody>
 						</table>
 					</div>
@@ -1251,48 +911,7 @@
 	<fieldset class="proyecto"><legend>Contrato</legend>
 		<h3>Datos del Contrato</h3>
 		<table class="tblFormularios">
-			<!-- <tr>
-				<td colspan="2">
-					<div id="despliegaSalario"> <b> Salario Base: </b> $<label id="lblSalario"></label></div>
-						<div id="contenidoSalario">
-						 	<table border="0" class="datosSalario">
-
-								<tr>
-									<td><b>Salario Base:</b></td><td><input type="text" class="formProyect" id="txtSalario" onchange="calculaValorProyecto()" name="salario" value="1" style="width: 80px;"></td>
-									
-								</tr>
-								<tr>
-									<td>Aguinaldo (dias)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtAguinaldo" name="aguinaldo" value="1" style="width: 30px;"></td>
-								</tr>
-								<tr>
-									<td>Vacaciones (dias)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtVacaciones" name="vacaciones" value="1" style="width: 30px;"></td>
-								</tr>
-								<tr>
-									<td>Prima Vacacional</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtPrimaVacacional" name="primavacacional" value="1" style="width: 30px;"><b>%</b></td>
-								</tr>
-								<tr>
-									<td>Bono (Promedio Meses)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtBono" name="bono" value="1" style="width: 30px;"></td>
-								</tr>
-								<tr>
-									<td>Fondo de Ahorro</td><td><select class="formProyect" id="slcFondoAhorro" name="fondo"><option value="no">NO</option><option value="si">SI</option></select></td>
-								</tr>
-								<tr>
-									<td>Bales de Despensa</td><td><select class="formProyect" id="slcBales" name="bales"><option value="no">NO</option><option value="si">SI</option></select></td>
-								</tr>
-								<tr>
-									<td>Seguro de G.M.M.:</td><td><select class="formProyect" id="slcSeguroGMM" name="sgmm"><option value="no">NO</option><option value="si">SI</option></select></td>
-								</tr>
-								<tr>
-									<td>Seguro de Vida:</td><td><select class="formProyect" id="slcASeguroVida" name="segvida"><option value="no">NO</option><option value="si">SI</option></select></td>
-								</tr>
-								<tr>
-									<td>Otros</td><td><textarea class="formProyect" id="txtOtraPrestacion" name="otraprestacion" rows="3"></textarea></td>
-								</tr>
-							
-						</table>
-				 	</div>
-				</td>
-			</tr> -->
+			
 			<tr>
 				<td><b>Valor del Proyecto</b></td>
 				<td><input type="text" id="txtValorProyecto" class="datosContrato" name="valorProyecto"></td>
@@ -1312,7 +931,7 @@
 					<option value="fijo">Fijo</option>
 					<option value="otro">Otro</option>
 				</select>
-				<!-- <input type="hidden" class="formProyectContrato" id="hdnHonorarios" name="honorarios" > -->
+				
 				<input type="text" class="datosContrato" id="txtHonorarios" name="txthonorarios" hidden></td>
 				<td colspan="2" rowspan="4">
 					<textarea class="datosContrato" name="obscontrato" id="obsContrato" cols="30" rows="7"></textarea>
@@ -1342,11 +961,6 @@
 	<button value="Guardar" id="guardaProyecto"> Guardar </button>
 	
 		
-	
-
-	
-
-
 </div>
 
 <div class="fondoEmergente"></div>
@@ -1355,7 +969,6 @@
 		<h2>Seguimiento Completado</h2>
 		<table id="tblSegAceptado">
 			<thead>
-				
 				<tr>
 					<th width="170px">Fecha</th><th>Actividad</th>
 				</tr>

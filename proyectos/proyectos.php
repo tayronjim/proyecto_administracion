@@ -23,7 +23,7 @@
 	 			data: { "funcion" : "recuperaProyecto", "proyecto": $proyecto },
 	 			success: function(data){
 	 				var obj = JSON.parse(data);
-	 				//console.log(obj);
+	 				
 	 				var cliente = JSON.parse(obj.Cliente[0].datos_cliente);
 	 				$contacto = JSON.parse(obj.Cliente[0].datos_contacto);
 	 				var rs = JSON.parse(obj.Cliente[0].facturacion);
@@ -34,7 +34,7 @@
 	 				var datos_proyecto = JSON.parse(obj.Proyecto[0].datos_proyecto);
 	 				var datos_contrato = JSON.parse(obj.Proyecto[0].contrato);
 	 				var datos_facturacion = JSON.parse(obj.Proyecto[0].facturacion);
-	 				//console.log(datos_contrato);
+	 				
 	 				
 	 					$("#txtwbs").val(datos_proyecto.wbs);
 		 				$("#txtEmpInt").val(datos_proyecto.empint);
@@ -49,19 +49,13 @@
 		 					if ($value.idfac == datos_cliente.razonS) {$("#lblDatosFiscales").html($value.rs+"<br>"+$value.rfc); $("#hdnDatoFiscal").val(datos_cliente.razonS);}
 		 				});
 		 				$cont = 0;
-		 				//while(contacto[$cont]){
-		 				//	$("#listaContactos").append("<option value='"+value.idcontacto+"'>"+value.nombre+"</option>");
-		 				//}
+		 				
 		 				console.log(datos_cliente);
 		 				$("#hdnContacto").val(datos_cliente.contacto);
 		 				$.each($contacto, function($key, $value){
 		 					$("#tblContactos tbody").append("<tr id='cont_"+$value.idcontacto+"'><td>"+$value.nombre+"</td><td>"+$value.area+"</td><td>(ver mas)</td><td><input type='button' value='Principal' onclick='seleccionaContacto("+$key+")'></td></option>");
 		 					if ($value.idcontacto == datos_cliente.contacto) {seleccionaContacto($key);}
 		 				 });
-
-		 				
-		 				
-		 				
 		 				
 		 				$("#fIniY").val(datos_proyecto.fIniY);
 		 				$("#fIniM").val(datos_proyecto.fIniM);
@@ -82,14 +76,12 @@
 				 			url: "control.php",
 				 			data: { "funcion" :  "buscaKam" },
 				 			success: function(data){
-				 				 // alert(data);
+				 				
 				 				var obj = JSON.parse(data);
-				 			
 				 				$cont = 0;
 				 				
 				 				while(obj[$cont]){
-			 					//$arregloTabla[$cont] = obj.Cliente[$cont];
-			 					//$facturacion[obj[$cont].id] = obj[$cont].facturacion;
+			 					
 			 					var kamDatos = JSON.parse(obj[$cont].datos);
 			 					if (kamDatos.puesto.consultor == "1") {
 			 						$("#txtkam").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
@@ -118,7 +110,6 @@
 				 		});
 		 				
 		 				$("#txtPrioridad").val(datos_proyecto.prioridad);
-		 				
 		 				$("#txtSalario").val(datos_proyecto.salario);
 		 				$("#lblSalario").html(datos_proyecto.salario);
 		 				$("#txtAguinaldo").val(datos_proyecto.aguinaldo);
@@ -130,6 +121,9 @@
 		 				$("#slcSeguroGMM").val(datos_proyecto.sgmm);
 		 				$("#slcASeguroVida").val(datos_proyecto.segvida);
 		 				$("#txtOtraPrestacion").val(datos_proyecto.otraprestacion);
+		 				$("#chkAhorro").prop('checked',datos_proyecto.chkahorro);
+		 				$("#chkBono").prop('checked',datos_proyecto.chkbono);
+		 				$("#chkVales").prop('checked',datos_proyecto.chkvales);
 
 		 				$("#nombreCandidato").val(datos_proyecto.nombrecandidato);
 		 				$("#cumpleCandidato").val(datos_proyecto.cumplecandidato);
@@ -153,12 +147,7 @@
 
 		 				$("#obsContrato").val(datos_contrato.obscontrato);
 
-		 				// $("#txtAcuerdo").val(datos_contrato.acuerdofacturacion);
-		 				// if ($("#txtAcuerdo").val() == "fac100" || $("#txtAcuerdo").val() == "fac3070" || $("#txtAcuerdo").val() == "fac303040" ) {
-		 				// 	$("#slcAcuerdo").val($("#txtAcuerdo").val());
-		 				// 	$("#txtAcuerdo").attr("hidden",true);
-		 				// }
-		 				// else{$("#slcAcuerdo").val("otro");$("#txtAcuerdo").attr("hidden",false);}
+		 			
 		 				$("#fGarantiaY").val(datos_contrato.fGarantiaY);
 		 				$("#fGarantiaM").val(datos_contrato.fGarantiaM);
 		 				$("#fGarantiaD").val(datos_contrato.fGarantiaD);
@@ -228,7 +217,7 @@
 							hoy2 = new Date();
 							var timeDiff2 = fecha2.getTime() - hoy2.getTime();
 							var diffDays2 = Math.ceil(timeDiff2 / (1000 * 3600 * 24));
-							//console.log(datos_contrato.fGarantiaY+"-"+datos_contrato.fGarantiaM+"-"+datos_contrato.fGarantiaD);
+							
 							if (diffDays2 <= 0) {
 								$("#garantiaTerminada").attr('hidden',false);
 							}
@@ -369,7 +358,7 @@
 	 			calculaFechaGarantia($("#txtGarantia").val());
 	 		});
 
-	 		$("#despliegaSalario").click(function(){
+	 		$(".despliegaSalario").click(function(){
 				$("#contenidoSalario").slideToggle("slow");
 			});
 			$("#contenidoSalario").css("display","none");
@@ -378,6 +367,23 @@
 				$("#contenidoContactos").toggle("slow");
 			});
 			$("#contenidoContactos").css("display","none");
+
+			$(".chkConcepto").click(function(){
+				
+				if ($(this).is(':checked')) {
+					$("#" + $(this).attr('PAR')).prop( "disabled", false );
+					
+				}
+				else{$("#" + $(this).attr('PAR')).prop( "disabled", true );}
+		 		$(this).val($(this).prop('checked'));
+				calculaValorProyecto();
+			});
+
+			$(".chkConcepto").each(function(){
+				
+		 		$(this).val($(this).prop('checked'));
+				
+			});
 
 
 	 			
@@ -420,28 +426,28 @@
 		        var valor = $(this).val();
 		        cliente[name] = valor;
 		    }); 
-		    //console.log(cliente);
+		   
 
 		    $(".formProyect").each(function() {
 		        var name = $(this).attr("name");
 		        var valor = $(this).val();
 		        general[name] = valor;
 		    }); 
-		    //console.log(general);
+		   
 
 		    $(".formProyectContrato").each(function() {
 		        var name = $(this).attr("name");
 		        var valor = $(this).val();
 		        contrato[name] = valor;
 		    }); 
-		    //console.log(contrato);
+		   
 
 		    $(".formProyectFacturacion").each(function() {
 		        var name = $(this).attr("name");
 		        var valor = $(this).val();
 		        facturacion[name] = valor;
 		    }); 
-		    //console.log(facturacion);
+		   
 
 		    jsonActividades = [];
 			jsonSeguimiento = [];
@@ -481,9 +487,7 @@
 		        listaFacturas[name] = valor;
 		    }); 
 		    facturacion['lista'] = listaFacturas;
-		    //console.log(facturacion);
-
-		    
+		   
 		    
 		    jsonStringAct = JSON.stringify(jsonActividades);
 		    jsonStringSeg = JSON.stringify(jsonSeguimiento);
@@ -493,14 +497,13 @@
 		    jsonStringContrato = JSON.stringify(contrato);
 		    jsonStringFacturacion = JSON.stringify(facturacion);
 		    
-		   
 
 		    $.ajax({
 	 			type: "POST",
 	 			url: "control.php",
 	 			data: { "funcion" : "actualizaProyecto", "general" : jsonStringGeneral, "cliente" : jsonStringCliente, "contrato" : jsonStringContrato, "facturacion" : jsonStringFacturacion, "actividades":jsonStringAct , "seguimiento":jsonStringSeg, "proyecto":$proyecto},
 	 			success: function(data){
-	 				 //console.log(data);
+	 				
 	 				 window.location="proyectos.php?p="+$proyecto;
 	 			}
 	 		});
@@ -543,7 +546,7 @@
 			$(".fondoEmergente").css("visibility","hidden");
 			$("#hideAceptaSegimiento").css("visibility","hidden");
 					
-	 		//guardaProyecto();
+	 		
 		}
 
 		function eliminaSeguimientoCancelado(){
@@ -560,7 +563,6 @@
 			$("#filaSeguimientoTerminado").val("");
 			$(".fondoEmergente").css("visibility","hidden");
 			$("#hideAceptaSegimiento").css("visibility","hidden");
-
 		}
 
 		function cancelaSeguimientoCancelado(){
@@ -570,6 +572,7 @@
 			$(".fondoEmergente").css("visibility","hidden");
 			$("#hideCancelaSegimiento").css("visibility","hidden");
 		}
+
 		function muestraFechasXEstatus(estatus){
 			switch(estatus){
 				case '1':
@@ -586,6 +589,7 @@
 				default: $(".FCR").attr('hidden',true); $(".FCG").attr('hidden',true); $(".candSelec").attr('hidden',true); break;
 			}
 		}
+
 		function calculaFechaGarantia(dias){
 			
 	 		$FCR = Date.parse($("#fCRealY").val()+"-"+$("#fCRealM").val()+"-"+$("#fCRealD").val());
@@ -605,6 +609,7 @@
 		    $("#fGarantiaM").val(month);
 		    $("#fGarantiaD").val(day);
 		}
+
 		function commaSeparateNumber(val){
 			while (/(\d+)(\d{3})/.test(val.toString())){
 			  val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
@@ -613,82 +618,90 @@
 		}
 
 		function dotosObligatorios(){
-    	
-    	
-    	if ($("#txtTituloProyecto").val() == "") {
-    		alert("La posicion no puede estar vacía");
-    		return 0;
-    	}
-    	if ($("#txtcta").val() == "") {
-    		alert("No. de puestos no puede estar vacío");
-    		return 0;
-    	}
-    	$nuevoValor = $("#txtValorProyecto").val().replace(/,/g, '');
-    	
-    	if (isNaN($nuevoValor)){
-    		alert("Coloque un numero valido en Valor de Proyecto");
-    		return 0;
-    	} 
-    	if($("#txtValorProyecto").val() == "") {
-    		$("#txtValorProyecto").val("0");
-    	}
-    	//console.log($("#fCRealY").val()+"<-");
-    	if ( $("#slcEstatus").val() == "8" || $("#slcEstatus").val() == "9" || $("#slcEstatus").val() == "10" || $("#slcEstatus").val() == "11" ) {
-    		if ($("#fCRealY").val() == null || $("#fCRealM").val() == null || $("#fCRealD").val() == null) {
-    			alert("La fecha de cierre real no puede estar vacía");
-    			return 0;
-    		}
-    	}
+	    	if ($("#txtTituloProyecto").val() == "") {
+	    		alert("La posicion no puede estar vacía");
+	    		return 0;
+	    	}
+	    	if ($("#txtcta").val() == "") {
+	    		alert("No. de puestos no puede estar vacío");
+	    		return 0;
+	    	}
+	    	$nuevoValor = $("#txtValorProyecto").val().replace(/,/g, '');
+	    	
+	    	if (isNaN($nuevoValor)){
+	    		alert("Coloque un numero valido en Valor de Proyecto");
+	    		return 0;
+	    	} 
+	    	if($("#txtValorProyecto").val() == "") {
+	    		$("#txtValorProyecto").val("0");
+	    	}
+	    	
+	    	if ( $("#slcEstatus").val() == "8" || $("#slcEstatus").val() == "9" || $("#slcEstatus").val() == "10" || $("#slcEstatus").val() == "11" ) {
+	    		if ($("#fCRealY").val() == null || $("#fCRealM").val() == null || $("#fCRealD").val() == null) {
+	    			alert("La fecha de cierre real no puede estar vacía");
+	    			return 0;
+	    		}
+	    	}
 
-    	if ($enGarantia == 0 && $("#slcEstatus").val() == "8") {
-				var dias = $("#txtGarantia").val();
-				$FCR = Date.parse($("#fCRealY").val()+"-"+$("#fCRealM").val()+"-"+$("#fCRealD").val());
-		 		fecha = new Date($FCR);
-		 			
-		 		tiempo = fecha.getTime();
+	    	if ($enGarantia == 0 && $("#slcEstatus").val() == "8") {
+					var dias = $("#txtGarantia").val();
+					$FCR = Date.parse($("#fCRealY").val()+"-"+$("#fCRealM").val()+"-"+$("#fCRealD").val());
+			 		fecha = new Date($FCR);
+			 			
+			 		tiempo = fecha.getTime();
 
-			 //    milisegundos=parseInt(dias*24*60*60*1000);
-			 //    total=fecha.setTime(tiempo+milisegundos);
-				// $fechaFin = fecha;
+					milisegundos=parseInt((dias/2)*24*60*60*1000);
+				    total=fecha.setTime(tiempo+milisegundos);
+					$fechaMitad = fecha;
 
-				milisegundos=parseInt((dias/2)*24*60*60*1000);
-			    total=fecha.setTime(tiempo+milisegundos);
-				$fechaMitad = fecha;
+					milisegundos=parseInt((dias-5)*24*60*60*1000);
+				    total=fecha.setTime(tiempo+milisegundos);
+					$fechaA5Dias = fecha;
 
-				milisegundos=parseInt((dias-5)*24*60*60*1000);
-			    total=fecha.setTime(tiempo+milisegundos);
-				$fechaA5Dias = fecha;
+				    	
+					$filasSeguimientos ++;
+					agregaFilaSeguimiento($filasSeguimientos,$fechaMitad.getFullYear() + "-" + ("0" + ($fechaMitad.getMonth() + 1)).slice(-2) + "-" + ("0" + ($fechaMitad.getDate() + 1)).slice(-2),"Realizar actividades de mitad de tiempo de garantia");
 
-			    	
-				$filasSeguimientos ++;
-				agregaFilaSeguimiento($filasSeguimientos,$fechaMitad.getFullYear() + "-" + ("0" + ($fechaMitad.getMonth() + 1)).slice(-2) + "-" + ("0" + ($fechaMitad.getDate() + 1)).slice(-2),"Realizar actividades de mitad de tiempo de garantia");
+					$filasSeguimientos ++;
+					agregaFilaSeguimiento($filasSeguimientos,$fechaA5Dias.getFullYear() + "-" + ("0" + ($fechaMitad.getMonth() + 1)).slice(-2) + "-" + ("0" + ($fechaMitad.getDate() + 1)).slice(-2),"Realizar actividades de cinco dias para termino de garantia");
 
-				$filasSeguimientos ++;
-				agregaFilaSeguimiento($filasSeguimientos,$fechaA5Dias.getFullYear() + "-" + ("0" + ($fechaMitad.getMonth() + 1)).slice(-2) + "-" + ("0" + ($fechaMitad.getDate() + 1)).slice(-2),"Realizar actividades de cinco dias para termino de garantia");
-
-				guardaProyecto();
-			}
-			else{
-				guardaProyecto();
-			}
-
-    	
-    	
-    }
+					guardaProyecto();
+				}
+				else{
+					guardaProyecto();
+				}
+	    }
     	function agregaFilaSeguimiento($filasSeguimientos,$fecha,$actividad){
-    		//console.log($fecha);
+    		
     		$("#tblSeguimientos tbody").append('<tr id="filaSeg_'+$filasSeguimientos+'"><td><div class="btnMenosSeg" id="btnMenosSeg_'+$filasSeguimientos+'"></div><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+$filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+$filasSeguimientos+'" value="'+$fecha+'"> </td><td colspan="1"><textarea id="txtAreaSeg_'+$filasSeguimientos+'">'+$actividad+'</textarea></td><td></td><td></td><td></td></tr>');
     	}
 
     	function calculaValorProyecto(){
 	    	$salarioBase = parseFloat($("#txtSalario").val().replace(/,/g, ''));
-			$bono = $salarioBase*parseFloat($("#txtBono").val());
+
+	    	if ($("#chkVales").is(':checked')) { $vales = ($salarioBase*parseFloat($("#txtVales").val()))/100; }
+	    	else{$vales = 0;}
+	    	if ($("#chkAhorro").is(':checked')) { $ahorro = ($salarioBase*parseFloat($("#txtAhorro").val()))/100; }
+	    	else{$ahorro = 0;}
+	    	if ($("#chkBono").is(':checked')) { $bono = parseFloat($("#txtBono").val().replace(/,/g, '')); }
+	    	else{$bono = 0;}
+			
+			$aguinaldo = ($salarioBase/30*parseFloat($("#txtAguinaldo").val()))/12;
 			$vacaciones = parseFloat($("#txtVacaciones").val());
 			$primaVacacional = parseFloat($("#txtPrimaVacacional").val())/100;
-			$aguinaldo = $salarioBase/30*parseFloat($("#txtAguinaldo").val());
-			$prima = $salarioBase/30 * $vacaciones * $primaVacacional; 
-			$("#txtValorProyecto").val(addCommas(parseFloat(($bono+$prima+$aguinaldo+($salarioBase*12))*(0.1)).toFixed(2)));
-			//console.log(addCommas(parseFloat(($bono+$prima+$aguinaldo+($salarioBase*12))*(0.1)).toFixed(2)));
+			$prima = ($salarioBase/30 * $vacaciones * $primaVacacional)/12; 
+			$honorarios = parseFloat($("#slcHonorarios").val())/100;
+			$mensual = $salarioBase + $vales + $ahorro + $aguinaldo + $prima + $bono;
+			console.log($vales +" "+ $ahorro +" "+ $aguinaldo +" "+ $prima +" "+ $bono);
+			$anual = $mensual*12;
+
+			$subtotal = $anual * $honorarios;
+			$total = $subtotal*1.16;
+
+			
+			
+			$("#lblProyAprox").text(addCommas($total.toFixed(2)));
+			
 			$("#txtSalario").val(addCommas($salarioBase.toFixed(2)));
 			$("#lblSalario").text(addCommas($salarioBase.toFixed(2)));
 
@@ -797,7 +810,7 @@
 			background-color: green;
 			border:1px solid green;
 		}
-		#despliegaSalario{
+		.despliegaSalario{
 			margin-left: 30px;
 			padding: 1px 0px;
 			border:1px solid #999;
@@ -894,7 +907,7 @@
 								</select>
 								<select class="formProyect" id="fIniD" name="fIniD" disabled>
 								<?php 
-									//$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+								
 									$numero = 31;
 									for ($dia=1; $dia <= $numero ; $dia++) { ?>
 										<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
@@ -924,7 +937,7 @@
 							</select>
 							<select class="formProyect" id="fCIdealD" name="fCIdealD">
 							<?php 
-								//$numero = cal_days_in_month(CAL_GREGORIAN, 11, 2015); // 31
+								
 								$numero = 31;
 								for ($dia=1; $dia <= $numero ; $dia++) { ?>
 									<option value="<?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?>"><?php echo str_pad($dia, 2, "0", STR_PAD_LEFT); ?></option>
@@ -997,10 +1010,10 @@
 							
 					<table class="tblFormularios" >
 						<tr style="vertical-align: top;">
-							<td><b>Cliente*:</b></td><td><div id="lblCliente" style="background-color: rgba(55,55,55,0.4); width: 200px;"></div><input name="cliente" id="hdnCliente" type="hidden" value="-1" class="formProyectCliente"><!-- <select id="listaClientes" class="formProyectCliente" name="cliente"><option value="-1">-Selecciona un cliente-</option></select> --></td>
+							<td><b>Cliente*:</b></td><td><div id="lblCliente" style="background-color: rgba(55,55,55,0.4); width: 200px;"></div><input name="cliente" id="hdnCliente" type="hidden" value="-1" class="formProyectCliente"></td>
 						</tr>
 						<tr style="vertical-align: top;">
-							<td><b>Datos Fiscales:</b></td><td><div id="lblDatosFiscales" style="background-color: rgba(55,55,55,0.4); width: 200px;"></div><input name="razonS" id="hdnDatoFiscal" type="hidden" value="-1" class="formProyectCliente"><!-- <select id="listaRS" class="formProyectCliente" name="razonS"><option>-Seleccione un Cliente-</option></select> --></td>
+							<td><b>Datos Fiscales:</b></td><td><div id="lblDatosFiscales" style="background-color: rgba(55,55,55,0.4); width: 200px;"></div><input name="razonS" id="hdnDatoFiscal" type="hidden" value="-1" class="formProyectCliente"></td>
 						</tr>
 					</table>
 					<table style="width: 90%;">
@@ -1018,7 +1031,7 @@
 					</table>
 					<table>
 						<tr style="vertical-align: top;">
-							<td><b>Contacto:</b></td><td><div id="lblContacto" style="background-color: rgba(55,55,55,0.4); width: auto;"></div><input name="contacto" id="hdnContacto" type="hidden" value="-1" class="formProyectCliente"><!-- <select id="listaContactos" class="formProyectCliente" name="contacto"><option value="-1">-Selecciona un contacto-</option></select> --></td>
+							<td><b>Contacto:</b></td><td><div id="lblContacto" style="background-color: rgba(55,55,55,0.4); width: auto;"></div><input name="contacto" id="hdnContacto" type="hidden" value="-1" class="formProyectCliente"></td>
 						</tr>
 					</table>
 				</fieldset>
@@ -1061,48 +1074,47 @@
 								</select>
 							</td>
 							<td colspan="2">
-								<div id="despliegaSalario"> <b> Salario Base: </b> $<label id="lblSalario"></label></div>
+								<div class="despliegaSalario"> <b> Salario Base: </b> $<label id="lblSalario"></label></div>
 									<div id="contenidoSalario">
 									 	<table border="0" class="datosSalario">
 
 											<tr>
-												<td><b>Salario Base:</b></td><td><input type="text" class="formProyect" id="txtSalario" onchange="calculaValorProyecto()" name="salario" value="1" style="width: 80px;"></td>
+												<td></td><td><b>Salario Base:<div style="float:right;">$</div></b></td><td><input type="text" class="formProyect" id="txtSalario" onchange="calculaValorProyecto()" name="salario" value="1" style="width: 80px;"></td>
 												
 											</tr>
 											<tr>
-												<td>Aguinaldo (dias)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtAguinaldo" name="aguinaldo" value="1" style="width: 30px;"></td>
+												<td></td><td>Aguinaldo</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtAguinaldo" name="aguinaldo" value="1" style="width: 30px;"> dias</td>
 											</tr>
 											<tr>
-												<td>Vacaciones (dias)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtVacaciones" name="vacaciones" value="1" style="width: 30px;"></td>
+												<td></td><td>Vacaciones</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtVacaciones" name="vacaciones" value="1" style="width: 30px;"> dias</td>
 											</tr>
 											<tr>
-												<td>Prima Vacacional</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtPrimaVacacional" name="primavacacional" value="1" style="width: 30px;"><b>%</b></td>
+												<td></td><td>Prima Vacacional</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtPrimaVacacional" name="primavacacional" value="1" style="width: 30px;"><b>%</b></td>
 											</tr>
 											<tr>
-												<td>Bono (Promedio Meses)</td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtBono" name="bono" value="1" style="width: 30px;"></td>
+												<td><input type="checkbox" checked id="chkVales" PAR="txtVales" name="chkvales" class="chkConcepto formProyect"></td><td>Vales de Despensa</td><td><input type="text" class="formProyect" id="txtVales" onchange="calculaValorProyecto()" name="vales" value="1" style="width: 30px;">%</td>
 											</tr>
 											<tr>
-												<td>Fondo de Ahorro</td><td><select class="formProyect" id="slcFondoAhorro" name="fondo"><option value="no">NO</option><option value="si">SI</option></select></td>
+												<td><input type="checkbox" checked id="chkAhorro" PAR="txtAhorro" name="chkahorro" class="chkConcepto formProyect"></td><td>Fondo de Ahorro</td><td><input type="text" class="formProyect" id="txtAhorro" onchange="calculaValorProyecto()" name="ahorro" value="1" style="width: 30px;">%</td>
 											</tr>
 											<tr>
-												<td>Bales de Despensa</td><td><select class="formProyect" id="slcBales" name="bales"><option value="no">NO</option><option value="si">SI</option></select></td>
+												<td><input type="checkbox" checked id="chkBono" PAR="txtBono" name="chkbono" class="chkConcepto formProyect"></td><td>Bono<div style="float:right;">$</div></td><td><input type="text" class="formProyect" onchange="calculaValorProyecto()" id="txtBono" name="bono" value="1" style="width: 80px;"></td>
 											</tr>
 											<tr>
-												<td>Seguro de G.M.M.:</td><td><select class="formProyect" id="slcSeguroGMM" name="sgmm"><option value="no">NO</option><option value="si">SI</option></select></td>
+												<td></td><td>Seguro de G.M.M.:</td><td><select class="formProyect" id="slcSeguroGMM" name="sgmm"><option value="no">NO</option><option value="si">SI</option></select></td>
 											</tr>
 											<tr>
-												<td>Seguro de Vida:</td><td><select class="formProyect" id="slcASeguroVida" name="segvida"><option value="no">NO</option><option value="si">SI</option></select></td>
+												<td></td><td>Seguro de Vida:</td><td><select class="formProyect" id="slcASeguroVida" name="segvida"><option value="no">NO</option><option value="si">SI</option></select></td>
 											</tr>
 											<tr>
-												<td>Otros</td><td><textarea class="formProyect" id="txtOtraPrestacion" name="otraprestacion" rows="3"></textarea></td>
+												<td></td><td>Otros</td><td><textarea class="formProyect" id="txtOtraPrestacion" name="otraprestacion" rows="3"></textarea></td>
 											</tr>
 										
-									</table>
-							 		</div>
-							 	
-							
+										</table>
+									</div>
+							 	</div>
+							 	<div class="despliegaSalario"><b>Valor Aprox. de Proyecto: </b>$<label id="lblProyAprox"></label></div>
 							</td>
-							
 						</tr>
 					</table>
 				</fieldset>
@@ -1161,7 +1173,7 @@
 						</tr>
 						<tr>
 							<td><b>Honorarios: </b></td>
-							<td><select id="slcHonorarios">
+							<td><select id="slcHonorarios" onchange="calculaValorProyecto()">
 								<option value="unMesNominal">1 Mes Nominal</option>
 								<option value="unMesIntegradoNominal">1 mes integrado nominal</option>
 								<option value="10">10%</option>
@@ -1192,10 +1204,6 @@
 								<textarea class="datosContrato" name="obscontrato" id="obsContrato" cols="30" rows="7"></textarea>
 							</td>
 						</tr>
-					
-						
-						
-							
 					</table>
 				</fieldset>
 			</td>
@@ -1215,9 +1223,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<!-- <tr id="fila_0">
-												<td><span class="btnMenos" id="btnMenos_0">[-]</span></td><td> <input type="date" id="fecha_0"> </td><td colspan="2"> <textarea id="txtArea_0"></textarea> </td>
-											</tr> -->
+											
 										</tbody>
 									</table>
 								</div>
@@ -1233,9 +1239,7 @@
 											
 										</thead>
 										<tbody>
-											<!-- <tr id="filaSeg_0">
-												<td><span class="btnMenosSeg" id="btnMenosSeg_0">[-]</span></td><td><input type="date" id="fechaSeg_0"> </td><td colspan="2"><textarea id="txtAreaSeg_0"></textarea></td><td><span class="btnAcepSeg" id="btnAcepSeg_0">[/]</span></td><td><span class="btnCancelSeg" id="btnCancelSeg_0">[X]</span></td>
-											</tr> -->
+											
 										</tbody>
 									</table>
 								</div>
@@ -1315,24 +1319,24 @@
 <div class="fondoEmergente"></div>
 
 <div id="hideAceptaSegimiento" >
-		<h2>Seguimiento Completado</h2>
-		<table id="tblSegAceptado">
-			<thead>
-				
-				<tr>
-					<th width="170px">Fecha</th><th>Actividad</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><input type="date" id="fechaSeguimientoTerminado" placeholder="aaaa-mm-dd"></td><td><textarea id="actividadSeguimientoTerminado"></textarea></td>
-				</tr>
-				<tr>
-					<td class="filaBotones" id="colCancSeg"><input type="hidden" id="filaSeguimientoTerminado"><input type="button" value="Cancelar" onclick="cancelaSeguimientoTerminado();"></td><td class="filaBotones" id="colAcepSeg"><input type="button" value="Aceptar" class="agregaSeguimientoTerminado" onclick="agregaSeguimientoTerminado();"></td>
-				</tr>
-			</tbody>
-				
-		</table>
+	<h2>Seguimiento Completado</h2>
+	<table id="tblSegAceptado">
+		<thead>
+			
+			<tr>
+				<th width="170px">Fecha</th><th>Actividad</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><input type="date" id="fechaSeguimientoTerminado" placeholder="aaaa-mm-dd"></td><td><textarea id="actividadSeguimientoTerminado"></textarea></td>
+			</tr>
+			<tr>
+				<td class="filaBotones" id="colCancSeg"><input type="hidden" id="filaSeguimientoTerminado"><input type="button" value="Cancelar" onclick="cancelaSeguimientoTerminado();"></td><td class="filaBotones" id="colAcepSeg"><input type="button" value="Aceptar" class="agregaSeguimientoTerminado" onclick="agregaSeguimientoTerminado();"></td>
+			</tr>
+		</tbody>
+			
+	</table>
 	
 </div>
 <div id="hideCancelaSegimiento" >

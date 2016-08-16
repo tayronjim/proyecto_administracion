@@ -4,8 +4,8 @@
 	$funcion = $_POST['funcion'];
 
 	switch ($funcion) {
-		case 'seguimientos': seguimientos(); break;
-		case 'datosProyectos': datosProyectos(); break;
+		case 'seguimientos': seguimientos($_POST['area']); break;
+		case 'datosProyectos': datosProyectos($_POST['area']); break;
 		
 		
 		
@@ -14,11 +14,17 @@
 			break;
 	}
 
-	function seguimientos(){
-		$listadoSeguimientos = buscaSeguimientos();
+	function seguimientos($area){
+		if ($area == "funnel") {
+			$columna = "id_funnel";
+		}
+		if ($area == "proyecto") {
+			$columna = "id_proyecto";
+		}
+		$listadoSeguimientos = buscaSeguimientos($columna);
 		while ($row = mysqli_fetch_assoc($listadoSeguimientos)){
 		    
-		    $proyecto = filtraProyecto($row['id_proyecto']);
+		    $proyecto = filtraProyecto($row[$columna],$area);
 		    $proy[0] = mysqli_fetch_assoc($proyecto);
 		    $row['proyecto'] = $proy[0]['datos_proyecto'];
 		    $cliente = json_decode($proy[0]['cliente']);
@@ -30,7 +36,7 @@
 		print json_encode($struct);
 		
 	}
-	function datosProyectos(){
+	function datosProyectos($area){
 		$listadoCierres = buscaDatosProyectos();
 		while ($row = mysqli_fetch_assoc($listadoCierres)){
 		    $cierre[] = $row;
