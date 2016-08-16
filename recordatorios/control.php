@@ -28,7 +28,9 @@
 		    $proy[0] = mysqli_fetch_assoc($proyecto);
 		    $row['proyecto'] = $proy[0]['datos_proyecto'];
 		    $cliente = json_decode($proy[0]['cliente']);
+		   // print_r($cliente);
 		    $cli[0] = mysqli_fetch_assoc(filtraCliente($cliente->cliente));
+		    //print_r($cli[0]);
 		    $row['cliente'] = $cli[0]['datos_cliente'];
 		    $seguimiento[] = $row;
 		}

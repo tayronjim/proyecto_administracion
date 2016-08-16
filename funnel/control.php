@@ -35,7 +35,7 @@
 	}
 
 	function buscaUltimoID(){
-		$ultimoProyecto = ultimoProyecto();
+		$ultimoProyecto = ultimoFunnel();
 			$row = mysqli_fetch_assoc($ultimoProyecto);
 		print json_encode($row['lastID']);
 	}
@@ -43,7 +43,7 @@
 	function guardaProyecto($general,$cliente,$contrato,$actividades,$seguimiento,$proyecto){
 		if ($proyecto == 0) {
 			$proyectoGuardado = nuevoFunnel($general,$cliente,$contrato);
-			$ultimoProyecto = ultimoProyecto();
+			$ultimoProyecto = ultimoFunnel();
 			$lastId = mysqli_fetch_assoc($ultimoProyecto);
 			$actividadSeg = nuevasActividades($actividades,$seguimiento,$lastId['lastID']);
 			echo $actividadSeg;

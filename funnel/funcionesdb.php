@@ -9,6 +9,12 @@
 		return $resultado;
 	}
 
+	function ultimoFunnel(){
+		$query = "SELECT MAX(id) as lastID FROM `funnel`";
+		$resultado = queryGeneral($query);
+		return $resultado;	
+	}
+
 	function ultimoProyecto(){
 		$query = "SELECT MAX(id) as lastID FROM `proyecto`";
 		$resultado = queryGeneral($query);

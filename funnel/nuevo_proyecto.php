@@ -127,8 +127,9 @@
 			 				$("#empresa").val(datos_proyecto.empint);
 			 				$("#kam").val(datos_proyecto.kam);
 			 				$("#kam2").val(datos_proyecto.kam2);
-			 				$("#puestoRequerido").val(datos_proyecto.puestoRequerido);
+			 				$("#proyectoRequerido").val(datos_proyecto.proyectoRequerido);
 			 				$("#fechaInicio").val(datos_proyecto.fechainicio);
+
 			 				$("#proyectoReq").val(datos_proyecto.proyectoReq);
 			 				
 			 				$("#lblCliente").html(cliente.publico);
@@ -769,7 +770,6 @@
 									<option value="SICSA">Servicios Industriales Contrata SA</option>
 									<option value="SCO">Servicios Contrata</option>
 									<option value="OCO">Outsourcing Contrata</option>
-									<option value="LIASE">Liase</option>
 									<option value="STONEHC">Stone Human Capital</option>
 								</select>
 							</td>
