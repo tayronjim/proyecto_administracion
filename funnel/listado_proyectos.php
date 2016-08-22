@@ -31,7 +31,7 @@
 	 				
 	 				var obj = JSON.parse(data);
 
-	 				console.log(obj);
+	 				
 
 	 				$cont = 0;
 	 				$alt = -1;
@@ -42,7 +42,7 @@
 	 					var estatus = JSON.parse(obj.Estatus[proy.estatus].descripcion);
 	 					var contrato = JSON.parse(obj.Proyectos[$cont].contrato);
 
-	 					console.log(proy);
+	 					
 
 	 					ot = Date.parse(proy.fCIdealY+"-"+proy.fCIdealM+"-"+proy.fCIdealD);
 						fechaOvertime = new Date(ot);
@@ -50,9 +50,9 @@
 						var timeDiff = fechaOvertime.getTime() - fechaActual.getTime();
 						var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
 	 					if ($alt == 1) {$claseAlt = "class='alt'";}else $claseAlt = '';
-	 					$overtime='IN TIME';
-	 					$colorOvertime="green";
-	 					if(diffDays < 60){$overtime='OVERTIME'; $colorOvertime="red";}
+	 					//$overtime='IN TIME';
+	 					//$colorOvertime="green";
+	 					//if(diffDays < 60){$overtime='OVERTIME'; $colorOvertime="red";}
 	 					switch(proy.proyectoRequerido){
 	 						case "1": $nombre_proyecto = "Contrata"; break;
 	 						case "2": $nombre_proyecto = "Busqueda de Talento"; break;
@@ -109,6 +109,18 @@
 	.txtmini{
 		font-size: 10px;
 	}
+
+
+.seguimientos{
+	border:1px solid black;
+	width: 400px;
+	min-height: 500px;
+	position: relative;
+	float: right;
+	background-color: #FCFBEB;
+	color:#000;
+	
+}
 	
 	</style>
 
@@ -159,7 +171,8 @@
 		</div>
 	</div>
 		
-	<div class="recordatorios" style="position: relative;float: right;">
+	<div class="seguimientos" style="position: relative;float: left;">
+		Seguimiento de actividades:<br>
 		<?php  include_once("../recordatorios/recordatorios_funnel.php"); ?>
 	</div>
 </div>
