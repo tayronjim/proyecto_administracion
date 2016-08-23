@@ -39,7 +39,7 @@
 		
 	}
 	function datosProyectos($area){
-		$listadoCierres = buscaDatosProyectos();
+		$listadoCierres = buscaDatosProyectos($area);
 		while ($row = mysqli_fetch_assoc($listadoCierres)){
 		    $cierre[] = $row;
 		}

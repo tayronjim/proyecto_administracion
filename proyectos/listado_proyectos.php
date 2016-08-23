@@ -49,7 +49,7 @@
 	 					$overtime='IN TIME';
 	 					$colorOvertime="green";
 	 					if(diffDays < 60){$overtime='OVERTIME';$colorOvertime="red";}
-	 					$("#tblProyectos tbody").append("<tr "+$claseAlt+"><td class='colProy'>"+proy.posicion+"</td><td class='colCliente'>"+cliente.publico+" / "+rs.rs+"</td><td>"+proy.fIniY+"/"+proy.fIniM+"/"+proy.fIniD+"</td><td>"+proy.fCIdealY+"/"+proy.fCIdealM+"/"+proy.fCIdealD+"</td><td class='colEstatus'>"+estatus.nombre+"</td><td>"+estatus.avance+"</td><td>"+parseFloat(facturacion.porcfacturado).toFixed(2)+"</td><td style='font-weight: bolder;color:"+$colorOvertime+";' class='colOvertime'>"+$overtime+"</td><td><input type='hidden' value='"+obj.Proyectos[$cont].id+"'><span class='flechaProyecto boton' valor='"+obj.Proyectos[$cont].id+"'><img src='../img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
+	 					$("#tblProyectos tbody").append("<tr "+$claseAlt+"><td class='colProy'>"+proy.posicion+"</td><td class='colCliente'>"+cliente.publico+" / "+rs.rs+"</td><td class='colEstatus'>"+estatus.nombre+"</td><td>"+estatus.avance+"</td><td>"+parseFloat(facturacion.porcfacturado).toFixed(2)+"</td><td style='font-weight: bolder;color:"+$colorOvertime+";' class='colOvertime'>"+$overtime+"</td><td><input type='hidden' value='"+obj.Proyectos[$cont].id+"'><span class='flechaProyecto boton' valor='"+obj.Proyectos[$cont].id+"'><img src='../img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
 						$cont++;
 						$alt = $alt * -1;
 	 				}
@@ -118,7 +118,7 @@
 			<table id="tblProyectos">
 				<thead>
 					<tr>
-						<th>Proyecto</th><th>Cliente/RS</th><th>Fecha Inicio</th><th>Fecha Limite</th><th>Estatus</th><th>Avance</th><th>% Facturado</th><th>OVERTIME</th><th></th>
+						<th>Proyecto</th><th>Cliente/RS</th><th>Estatus</th><th>Avance</th><th>% Facturado</th><th>OVERTIME</th><th></th>
 					</tr>
 				</thead>
 				<tbody></tbody>

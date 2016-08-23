@@ -9,7 +9,7 @@
 		listado = {};
 		while(listCuerpo[$cont]){
 			listado = listCuerpo[$cont];
-			$("#tblProyectos tbody").append("<tr "+listado.alt+"><td>"+listado.posicion+"</td><td>"+listado.kam+"</td><td>"+listado.convenio+"</td><td>"+listado.cliente+"</td><td>"+listado.fInicio+"</td><td>"+listado.fCIdeal+"</td><td>"+listado.estatus+"</td><td>"+listado.avance+"</td><td>"+listado.overtime+"</td><td>"+listado.prioridad+"</td><td><input type='hidden' value='"+listado.proyId+"'><span class='flechaProyecto boton' valor='"+listado.proyId+"'><img src='img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
+			$("#tblProyectos tbody").append("<tr "+listado.alt+"><td>"+listado.posicion+"</td><td>"+listado.kam+"</td><td>"+listado.convenio+"</td><td>"+listado.cliente+"</td><td>"+listado.estatus+"</td><td>"+listado.avance+"</td><td>"+listado.overtime+"</td><td>"+listado.prioridad+"</td><td><input type='hidden' value='"+listado.proyId+"'><span class='flechaProyecto boton' valor='"+listado.proyId+"'><img src='img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
 			$cont++;
 		}
 	}
@@ -29,7 +29,7 @@
 						$contKam ++;
 	 				}
 	 				
-	 				console.log($kams[1].nombrec);
+	 				//console.log($kams[1].nombrec);
 	 			}
 	 		});
 
@@ -41,7 +41,7 @@
 	 				var listCuerpo = [];
 	 				
 	 				var obj = JSON.parse(data);
-	 				console.log(obj);
+	 				//console.log(obj);
 	 				$cont = 0;
 	 				$alt = -1;
 	 				while(obj.Proyectos[$cont]){
@@ -117,7 +117,7 @@
 			<table id="tblProyectos" >
 				<thead>
 					<tr>
-						<th>Proyecto</th><th>KAM</th><th>Conv.</th><th>Cliente</th><th>Fecha Inicio</th><th>Fecha Limite</th><th>Estatus</th><th>Avance</th><th>Overtime</th><th></th><th></th>
+						<th>Proyecto</th><th>KAM</th><th>Conv.</th><th>Cliente</th><th>Estatus</th><th>Avance</th><th>Overtime</th><th></th><th></th>
 					</tr>
 				</thead>
 				<tbody></tbody>
@@ -126,8 +126,8 @@
 			</table>
 		</div>
 	</div>
-	<div class="recordatorios" style="position: relative;float: right;"> 
-		<?php //include_once("recordatorios/recordatorios.php"); ?>
+	<div class="recordatorios" style="position: relative;"> 
+		<?php include_once("recordatorios/recordatorios.php"); ?>
 	</div>
 </div>
 

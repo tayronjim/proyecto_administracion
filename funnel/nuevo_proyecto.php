@@ -113,7 +113,7 @@
 		 			data: { "funcion" : "recuperaProyecto", "proyecto": $proyecto },
 		 			success: function(data){
 		 				var obj = JSON.parse(data);
-		 				console.log(obj);
+		 				
 
 		 				var datos_proyecto = JSON.parse(obj.Proyecto[0].datos_proyecto);
 		 				var rs = JSON.parse(obj.Cliente[0].facturacion);
@@ -140,7 +140,7 @@
 
 			 				$cont = 0;
 							while(contacto[$cont]){
-								console.log(datos_cliente);
+								
 								$filasContacto = contacto[$cont].idcontacto;
 
 								$("#tblContacto > tbody").append('<tr id="filaContacto_'+$filasContacto+'" class="noprimario" style="border-bottom:1px solid #E1EEF4"><td><!-- <div id="btnMenosContacto_'+$filasContacto+'" class="btnMenosCont"></div> --><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" value="'+contacto[$cont].nombre+'" name="nombre" style="width:250px;" placeholder="Nombre Completo"><br><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" value="'+contacto[$cont].area+'" name="area" style="width:170px;" placeholder="Area / Puesto"></td><td><table id="tblMedioContacto_'+$filasContacto+'" contacto="'+$filasContacto+'" ><tbody></tbody></table></td><td><input type="date" class="datoContacto_'+$filasContacto+'" id="txtCumpleaños_'+$filasContacto+'" value="'+contacto[$cont].cumpleaños+'" name="cumpleaños" style="width:130px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;">'+contacto[$cont].observaciones+'</textarea></td><td><input type="radio" name="contacPrimario" onclick="seleccionaContacto('+$filasContacto+');"></td></tr>');
@@ -203,13 +203,13 @@
 		 			success: function(data){
 		 			 	var obj = JSON.parse(data);
 		 			 	$.each( obj.actividad, function( filasActividades, actividad ) {
-						  $("#tblActividades tbody").append('<tr><td><input type="hidden" class="registroActividades" id="numeroFila" value="'+filasActividades+'"></td><td><input type="date" value="'+actividad.fecha+'" id="fecha_'+filasActividades+'" disabled></td><td colspan="1"> <textarea id="txtActividad_'+filasActividades+'" disabled>'+actividad.act+'</textarea></td><td></td></tr>');
+						  $("#tblActividades tbody").append('<tr><td><input type="hidden" class="registroActividades" id="numeroFila" value="'+filasActividades+'"></td><td><input type="date" value="'+actividad.fecha+'" id="fecha_'+filasActividades+'" disabled></td><td colspan="1"> <textarea  cols="38" rows="5" id="txtActividad_'+filasActividades+'" disabled>'+actividad.act+'</textarea></td><td></td></tr>');
 						  $filasActividades = filasActividades;
 						});
 	 					
 
 						$.each( obj.seguimiento, function( filasSeguimientos, actividad ) {
-						  $("#tblSeguimientos tbody").append('<tr id="filaSeg_'+filasSeguimientos+'"><td><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+filasSeguimientos+'" value="'+actividad.fecha+'" disabled> </td><td colspan="1"><textarea id="txtAreaSeg_'+filasSeguimientos+'" disabled>'+actividad.act+'</textarea></td><td><div class="btnAcepSeg" id="btnAcepSeg_'+filasSeguimientos+'"></div></td><td><div class="btnCancelSeg" id="btnCancelSeg_'+filasSeguimientos+'"></div></td><td></td></tr>');
+						  $("#tblSeguimientos tbody").append('<tr id="filaSeg_'+filasSeguimientos+'"><td><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+filasSeguimientos+'" value="'+actividad.fecha+'" disabled> </td><td colspan="1"><textarea  cols="38" rows="5" id="txtAreaSeg_'+filasSeguimientos+'" disabled>'+actividad.act+'</textarea></td><td><div class="btnAcepSeg" id="btnAcepSeg_'+filasSeguimientos+'"></div></td><td><div class="btnCancelSeg" id="btnCancelSeg_'+filasSeguimientos+'"></div></td><td></td></tr>');
 						  $filasSeguimientos = filasSeguimientos;
 						});
 						
@@ -314,7 +314,7 @@
 
 			$("#btnMas").click(function(){
 				$filasActividades ++;
-				$("#tblActividades tbody").append('<tr id="fila_'+$filasActividades+'"><td><div class="btnMenos" id="btnMenos_'+$filasActividades+'"></div><input type="hidden" class="registroActividades" id="numeroFila" value="'+$filasActividades+'"></td><td><input type="date" id="fecha_'+$filasActividades+'"></td><td colspan="1"> <textarea id="txtActividad_'+$filasActividades+'"></textarea></td><td></td></tr>');
+				$("#tblActividades tbody").append('<tr id="fila_'+$filasActividades+'"><td><div class="btnMenos" id="btnMenos_'+$filasActividades+'"></div><input type="hidden" class="registroActividades" id="numeroFila" value="'+$filasActividades+'"></td><td><input type="date" id="fecha_'+$filasActividades+'"></td><td colspan="1"> <textarea cols="38" rows="5" id="txtActividad_'+$filasActividades+'"></textarea></td><td></td></tr>');
 			});
 
 			$("#btnMasSeg").click(function(){
@@ -448,7 +448,7 @@
 			
 		        jsSeguimiento.push(itemS);
 		    });
-		    console.log(jsSeguimiento);
+		    
 
 		    $(".datosContrato").each(function(){
 		    	var name = $(this).attr("name");
@@ -490,9 +490,9 @@
 							    	$diaHoy = $fechaHoy.getDate();
 							    	if (parseInt($diaHoy) < 10) {$diaHoy = "0"+$diaHoy;}
 							    	if (parseInt($mesHoy) < 10) {$mesHoy = "0"+$mesHoy;}
-							    	console.log($listadoKam);
+							    	
 							    	$datosProyectoPlus = {"wbs":$preWBS+"-"+$kamPrincipal,"kam":$kamPrincipal,"reclutador":"-1","kam2":"-1","apoyo":"-1","prioridad":"1","fIniY":$anioHoy,"fIniM":$mesHoy,"fIniD":$diaHoy,"estatus":"1","posicion":"","disciplina":"-1","cta":"1","nivel":"1","salario":"0"};
-							    	console.log($datosProyectoPlus);
+							    	
 							    	$.each($datosProyectoPlus, function($key, $value){
 							    		general[$key] = $value;
 							    	});
@@ -501,7 +501,7 @@
 							    	
 							    	jsonStringFacturacion = JSON.stringify($datosFacturacionPlus);
 							    	jsonStringGeneral2 = JSON.stringify(general);
-							    	console.log(jsonStringGeneral2);
+							    	
 							    	
 							    	mandaAProyectos(jsonStringGeneral2,jsonStringCliente,jsonStringContrato,$proyecto,jsonStringFacturacion);
 							
@@ -659,7 +659,7 @@
 
 		function agregaFilaSeguimiento($filasSeguimientos,$fecha,$actividad){
     		
-    		$("#tblSeguimientos tbody").append('<tr id="filaSeg_'+$filasSeguimientos+'"><td><div class="btnMenosSeg" id="btnMenosSeg_'+$filasSeguimientos+'"></div><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+$filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+$filasSeguimientos+'" value="'+$fecha+'"> </td><td colspan="1"><textarea id="txtAreaSeg_'+$filasSeguimientos+'">'+$actividad+'</textarea></td><td></td><td></td><td></td></tr>');
+    		$("#tblSeguimientos tbody").append('<tr id="filaSeg_'+$filasSeguimientos+'"><td><div class="btnMenosSeg" id="btnMenosSeg_'+$filasSeguimientos+'"></div><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+$filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+$filasSeguimientos+'" value="'+$fecha+'"> </td><td colspan="1"><textarea cols="38" rows="5" id="txtAreaSeg_'+$filasSeguimientos+'">'+$actividad+'</textarea></td><td></td><td></td><td></td></tr>');
     	}
 
 	    function showBuscaCliente(){

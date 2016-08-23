@@ -9,10 +9,10 @@
 			$.ajax({
 	 			type: "POST",
 	 			url: "/proyecto_administracion/recordatorios/control.php",
-	 			data: { "funcion" : "seguimientos"},
+	 			data: { "funcion" : "seguimientos", "area":"proyecto"},
 	 			success: function(data){
 	 				var obj = JSON.parse(data);
-	 				//console.log(obj);
+	 				console.log(obj);
 	 				$cont=0;
 	 				$contSeguimientos = 0;
 	 				$jsonObj = {};
@@ -33,7 +33,7 @@
 								var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
 	 							if (diffDays <= 4) {
 									
-		 							$("#seguimientoActividades").append("<b>Fecha: </b>"+$seguimiento[$cont2].fecha+"<br><a href='proyectos/proyectos.php?p="+obj.Seguimiento[$cont].id_proyecto+"'><b>Proyecto: </b>"+$proyecto.posicion+"</a><br><b>Cliente: </b>"+$cliente.publico+"</a><br><b>Actividad: </b>"+$seguimiento[$cont2].act+"<br><br>");
+		 							$("#segActividades").append("<div class='segActividades'><b>Fecha: </b>"+$seguimiento[$cont2].fecha+"<br><a href='proyectos/proyectos.php?p="+obj.Seguimiento[$cont].id_proyecto+"'><b>Proyecto: </b>"+$proyecto.posicion+"</a><br><b>Cliente: </b>"+$cliente.publico+"</a><br><b>Actividad: </b>"+$seguimiento[$cont2].act+"</div>");
 		 							$contSeguimientos ++;
 	 							}
 	 							$cont2++;
@@ -52,7 +52,7 @@
 	 		$.ajax({
 	 			type: "POST",
 	 			url: "/proyecto_administracion/recordatorios/control.php",
-	 			data: { "funcion" : "datosProyectos"},
+	 			data: { "funcion" : "datosProyectos", "area":"proyecto"},
 	 			success: function(data){
 	 				var obj = JSON.parse(data);
 	 				//console.log(obj);
@@ -75,11 +75,8 @@
 						var timeDiff = fecha.getTime() - hoy.getTime();
 						var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
 						if (diffDays < 31) {
-							$("#proyectosEnCierre").append("<b>Fecha: </b>"+fIdeal+"<br><a href='proyectos/proyectos.php?p="+obj.proyecto[$cont].id+"'><b>Proyecto: </b>"+$datos_proyecto.posicion+"</a>");
+							$("#proyectosEnOvertime").append("<div class='enOvertime'><b>Fecha: </b>"+fIdeal+"<br><a href='proyectos/proyectos.php?p="+obj.proyecto[$cont].id+"'><b>Proyecto: </b>"+$datos_proyecto.posicion+"</a></div>");
 							$inOvertime ++;
-							if (diffDays < 31) {
-								$("#proyectosEnCierre").append("<br><br>");
-							}
 						}
 
 						if ($datos_proyecto.estatus == "8") {
@@ -92,7 +89,7 @@
 							//var diffDays2 = Math.ceil(timeDiff2 / (1000 * 3600 * 24));
 								
 							//if (diffDays2 < 6) { 
-								$("#proyectosEnGarantia5").append("<b>Fecha: </b>"+$FG+"<br><a href='proyectos/proyectos.php?p="+obj.proyecto[$cont].id+"'><b>Proyecto: </b>"+$datos_proyecto.posicion+"</a><br><br>");
+								$("#proyectosEnGarantia").append("<div class='proyEnGarantia'><b>Fecha: </b>"+$FG+"<br><a href='proyectos/proyectos.php?p="+obj.proyecto[$cont].id+"'><b>Proyecto: </b>"+$datos_proyecto.posicion+"</a></div>");
 								$contGarantia ++;
 							//}else{
 							//	if (diffDays2 < (parseInt($datos_contrato.garantia)/2)) {
@@ -183,28 +180,29 @@
 	 		// });
 
 			$("#desplegarSeguimiento").click(function(){
-				$("#seguimientoActividades").slideToggle("slow");
+				$("#segActividades").slideToggle("slow");
 			});
-			$("#seguimientoActividades").css("display","none");
+			$("#segActividades").css("display","none");
+
 
 			$("#desplegarCierres").click(function(){
-				$("#proyectosEnCierre").slideToggle("slow");
+				$("#proyectosEnOvertime").slideToggle("slow");
 			});
-			$("#proyectosEnCierre").css("display","none");
+			$("#proyectosEnOvertime").css("display","none");
+
 
 			$("#desplegarGarantias").click(function(){
-				$("#proyectosEnGarantia50").slideToggle("slow");
-				$("#proyectosEnGarantia5").slideToggle("slow");
+				$("#proyectosEnGarantia").slideToggle("slow");
 			});
-			$("#proyectosEnGarantia50").css("display","none");
-			$("#proyectosEnGarantia5").css("display","none");
+			$("#proyectosEnGarantia").css("display","none");
+			
 
 			$("#desplegarFacturado").click(function(){
-				$("#facturasPagadasActual").slideToggle("slow");
-				$("#facturasPagadasAnterior").slideToggle("slow");
+				$("#proyectosFacturados").slideToggle("slow");
+				//$("#facturasPagadasAnterior").slideToggle("slow");
 			});
-			$("#facturasPagadasActual").css("display","none");
-			$("#facturasPagadasAnterior").css("display","none");
+			$("#proyectosFacturados").css("display","none");
+			//$("#facturasPagadasAnterior").css("display","none");
 
 		});
 		function confirm(){
@@ -226,32 +224,37 @@
 	</script>
 </head>
 <body>
-	<a id='desplegarSeguimiento'>--Seguimiento de Actividades--</a>
-	<label id="contSeg" ></label>
-	<div id="segActividades">
-		<div id="seguimientoActividades"></div>
+
+	<div class="infoBox">
+		<a class="infoBoxTitulo" id='desplegarSeguimiento'><b>Seguimiento de Actividades</b><label class="contSeg" id="contSeg" ></label></a>
+		<div class="bodySegActividades" id="segActividades"></div>
 	</div>
-	<br>
 
-	<a id='desplegarCierres'>--Proyectos en Overtime--</a>
-	<label id="contCierre" ></label>
-	<div id="EnCierre"><div id="proyectosEnCierre"></div></div>
+	<div class="infoBox">
+		<a class="infoBoxTitulo" id='desplegarCierres'><b>Proyectos en Overtime</b><label class="contSeg" id="contCierre" ></label></a>
+		<div class="bodyEnOvertime" id="proyectosEnOvertime"></div>
+	</div>
 
-	<a id='desplegarGarantias'>--Garantia--</a>
-	<label id="contGarantia" ></label>
-	<div id="proyectosEnGarantia">
-		<div id="proyectosEnGarantia5"></div>
-		<!-- <div id="proyectosEnGarantia50"><b>Mitad de tiempo:</b><br></div> -->
+	<div class="infoBox">
+		<a class="infoBoxTitulo" id='desplegarGarantias'><b>Garantia</b><label class="contSeg" id="contGarantia" ></label></a>
+		<div class="bodyEnGarantia" id="proyectosEnGarantia">
+		</div>
+	</div>
+
 		
-	</div>
-
-	<a id='desplegarFacturado'>--Facturado Reciente--</a>
-	<label id="contFacturado" style="float: right; padding-right: 10px;">$ </label>
-	<div id="proyectosFacturados">
-		<div id="facturasPagadasActual"><b>-Facturado Mes Actual:</b><label style="float: right; padding-right: 10px;">$ </label></div>
-		<div id="facturasPagadasAnterior"><b>-Facturado Mes Anterior:</b><label style="float: right; padding-right: 10px;">$ </label></div>
+	<div class="infoBox">
+		<a class="infoBoxTitulo" id='desplegarFacturado'><b>Facturado Reciente</b><label class="contSeg" id="contFacturado" style="padding-right: 10px;">$ </label></a>
 		
+		<div id="proyectosFacturados" style="float: left; background-color: transparent;font-size: 12px; width: 350px;">
+			
+				<div id="facturasPagadasActual"><b>Facturado Mes Actual:</b><label style="float: right; padding-right: 10px;">$ </label></div>
+				<div id="facturasPagadasAnterior"><b>Facturado Mes Anterior:</b><label style="float: right; padding-right: 10px;">$ </label></div>
+			
+				
+			
+		</div>
 	</div>
+		
 		
 	<br>
 </body>
