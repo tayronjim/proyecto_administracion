@@ -112,12 +112,12 @@
 
 
 .seguimientos{
-	border:1px solid black;
-	width: 400px;
-	min-height: 500px;
+	
+	width: auto;
+	
 	position: relative;
 	float: right;
-	background-color: #FCFBEB;
+	background-color: rgba(255,255,255,0.4);
 	color:#000;
 	
 }
@@ -171,8 +171,8 @@
 		</div>
 	</div>
 		
-	<div class="seguimientos" style="position: relative;float: left;">
-		Seguimiento de actividades:<br>
+	<div class="seguimientos" style="position: relative;">
+		
 		<?php  include_once("../recordatorios/recordatorios_funnel.php"); ?>
 	</div>
 </div>
