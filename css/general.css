@@ -14,10 +14,12 @@
 	border:0px solid;
 	z-index: 999;
 	position: relative;
+	min-width: 1450px;
 }
 .cuerpo{
 	width: 90%;
 	max-width: 1800px;
+	min-width: 1330px;
 	margin: auto;
 }
 .boton{

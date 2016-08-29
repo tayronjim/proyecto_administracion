@@ -16,48 +16,47 @@
 		$listadoKam="";
 		$terminaFunnel = 0;
 		$proyecto = <?php echo $proyecto; ?>;
-		$(document).ready(function(){
-			$("li").removeClass( "current" );
-			$("#menuFunnel").addClass('current');
 
+		function cargaKam(){
 			$.ajax({
 	 			type: "POST",
 	 			url: "control.php",
 	 			data: { "funcion" :  "buscaKam" },
 	 			success: function(data){
-	 				
 	 				$listadoKam = JSON.parse(data);
-	 				
 	 				$cont = 0;
-	 				
+	 				console.log($listadoKam);
 	 				while($listadoKam[$cont]){
-	 					
 	 					var kamDatos = JSON.parse($listadoKam[$cont].datos);
 	 					if (kamDatos.puesto.consultor == "1") {
 	 						$("#kam").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
 	 						$("#kam2").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
-	 						
+	 						$("#kam3").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
 	 					}
-	 					
+	 					if (kamDatos.puesto.reclutador == "1") {
+	 						$("#recl3").append("<option value='"+kamDatos.idColaborador+"'>"+kamDatos.nombrec+"</option>");
+	 					}
 						$cont++;
 	 				}
 	 				ordenarSelect('kam');
 	 				ordenarSelect('kam2');
-	 				
-	 				
+
+	 				cargaEstatus();
 	 			}
 	 		});
+	 		
+	 		
+		}
 
+		function cargaClientes(){
 			$.ajax({
 	 			type: "POST",
 	 			url: "control.php",
 	 			data: { "funcion" :  "buscaClientes" },
 	 			success: function(data){
 	 				var obj = JSON.parse(data);
-	 					
 	 				$cont = 0;
 	 				$alt = -1;
-
 	 				while(obj[$cont]){
 	 					$clientes[obj[$cont].id] = obj[$cont];
 	 					
@@ -84,10 +83,18 @@
 	 				}
 	 				$("#tblClientes tbody > tr").hide();
 
+	 				if ($proyecto > 0) {
+						buscaDatosProyecto();
+						buscaActividades();
+					}
+
 	 				}
 	 				
 	 		});
+	 		
+		}
 
+		function cargaEstatus(){
 			$.ajax({
 	 			type: "POST",
 	 			url: "control.php",
@@ -103,122 +110,141 @@
 	 				
 						$cont++;
 	 				}
+	 				cargaClientes();
 	 			}
 	 		});
+	 		
+		}
 
-			if ($proyecto > 0) {
-				$.ajax({ // Busca datos del proyecto
-		 			type: "POST",
-		 			url: "control.php",
-		 			data: { "funcion" : "recuperaProyecto", "proyecto": $proyecto },
-		 			success: function(data){
-		 				var obj = JSON.parse(data);
+		function buscaDatosProyecto(){
+			$.ajax({ // Busca datos del proyecto
+	 			type: "POST",
+	 			url: "control.php",
+	 			data: { "funcion" : "recuperaProyecto", "proyecto": $proyecto },
+	 			success: function(data){
+	 				var obj = JSON.parse(data);
+	 				
+
+	 				var datos_proyecto = JSON.parse(obj.Proyecto[0].datos_proyecto);
+	 				var rs = JSON.parse(obj.Cliente[0].facturacion);
+	 				var datos_cliente = JSON.parse(obj.Proyecto[0].cliente);
+
+	 				var cliente = JSON.parse(obj.Cliente[0].datos_cliente);
+	 				var contacto = JSON.parse(obj.Cliente[0].datos_contacto);
+	 				
+	 				var datos_contrato = JSON.parse(obj.Proyecto[0].contrato);
+
+		 				$("#empresa").val(datos_proyecto.empint);
+		 				$("#kam").val(datos_proyecto.kam); console.log(datos_proyecto.kam);
+		 				$("#kam2").val(datos_proyecto.kam2);
+		 				$("#proyectoRequerido").val(datos_proyecto.proyectoRequerido);
+		 				$("#fechaInicio").val(datos_proyecto.fechainicio);
+
+		 				$("#proyectoReq").val(datos_proyecto.proyectoReq);
 		 				
+		 				$("#lblCliente").html(cliente.publico);
+		 				$("#idCliente").val(datos_cliente.cliente);
+		 				$.each(rs, function($key, $value){
+		 					if ($value.idfac == datos_cliente.razonS) {$("#rsClienteResumen").html($value.rs); $("#rfcClienteResumen").html($value.rfc); $("#hdnDatoFiscal").val(datos_cliente.razonS);}
+		 				});
 
-		 				var datos_proyecto = JSON.parse(obj.Proyecto[0].datos_proyecto);
-		 				var rs = JSON.parse(obj.Cliente[0].facturacion);
-		 				var datos_cliente = JSON.parse(obj.Proyecto[0].cliente);
-
-		 				var cliente = JSON.parse(obj.Cliente[0].datos_cliente);
-		 				var contacto = JSON.parse(obj.Cliente[0].datos_contacto);
-		 				
-		 				var datos_contrato = JSON.parse(obj.Proyecto[0].contrato);
-
-			 				$("#empresa").val(datos_proyecto.empint);
-			 				$("#kam").val(datos_proyecto.kam);
-			 				$("#kam2").val(datos_proyecto.kam2);
-			 				$("#proyectoRequerido").val(datos_proyecto.proyectoRequerido);
-			 				$("#fechaInicio").val(datos_proyecto.fechainicio);
-
-			 				$("#proyectoReq").val(datos_proyecto.proyectoReq);
-			 				
-			 				$("#lblCliente").html(cliente.publico);
-			 				$("#idCliente").val(datos_cliente.cliente);
-			 				$.each(rs, function($key, $value){
-			 					if ($value.idfac == datos_cliente.razonS) {$("#rsClienteResumen").html($value.rs); $("#rfcClienteResumen").html($value.rfc); $("#hdnDatoFiscal").val(datos_cliente.razonS);}
-			 				});
-
-			 				$cont = 0;
-							while(contacto[$cont]){
-								
-								$filasContacto = contacto[$cont].idcontacto;
-
-								$("#tblContacto > tbody").append('<tr id="filaContacto_'+$filasContacto+'" class="noprimario" style="border-bottom:1px solid #E1EEF4"><td><!-- <div id="btnMenosContacto_'+$filasContacto+'" class="btnMenosCont"></div> --><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" value="'+contacto[$cont].nombre+'" name="nombre" style="width:250px;" placeholder="Nombre Completo"><br><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" value="'+contacto[$cont].area+'" name="area" style="width:170px;" placeholder="Area / Puesto"></td><td><table id="tblMedioContacto_'+$filasContacto+'" contacto="'+$filasContacto+'" ><tbody></tbody></table></td><td><input type="date" class="datoContacto_'+$filasContacto+'" id="txtCumpleaños_'+$filasContacto+'" value="'+contacto[$cont].cumpleaños+'" name="cumpleaños" style="width:130px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;">'+contacto[$cont].observaciones+'</textarea></td><td><input type="radio" name="contacPrimario" onclick="seleccionaContacto('+$filasContacto+');"></td></tr>');
-
-								$cont2=0;
-								
-								while(contacto[$cont].medioDeContacto[$cont2]){
-									$idTipoContacto = contacto[$cont].medioDeContacto[$cont2].tipoContacto;
-									$idValorContacto = contacto[$cont].medioDeContacto[$cont2].valorContacto;
-									
-									$('#tblMedioContacto_'+$filasContacto+' > tbody').append('<tr class="tblFilaContacto'+$filasContacto+'" fila="'+$cont2+'"><td></td><td><select id="tipoContactoFila'+$filasContacto+'_'+$cont2+'"><option value="1">Telefono Movil</option><option value="2">Telefono Trabajo</option><option value="3">e-Mail</option><option value="4">linkedin</option><option value="5">ubicacion</option></select></td><td><input id="valorTipoContactoFila'+$filasContacto+'_'+$cont2+'" type="text" class="datoContacto" name="valor" style="width:150px;"></td></tr>');
-									$('#tipoContactoFila'+$filasContacto+'_'+$cont2).val($idTipoContacto);
-									$('#valorTipoContactoFila'+$filasContacto+'_'+$cont2).val($idValorContacto);
-									$cont2++;
-								}
-
-								$('#tblMedioContacto_'+$filasContacto+' > tbody').append('<tr class="tblFilaContacto'+$filasContacto+'" fila="-1"><td><!-- <div id="btnMasMedioContacto" class="btnMas" onclick="agregaMedioContacto('+$filasContacto+','+$cont2+')"></div> --></td><td></td><td></td></tr>');
-
-								$cont++;
-							}
-							$('#filaContacto_'+datos_cliente.contacto+' input:radio').attr('checked',true);
-							seleccionaContacto(datos_cliente.contacto);
-
-							$filasContacto++;
-			 				
-			 				$("#slcConvenio").val(datos_contrato.convenio);
-			 				
-			 				$("#slcGarantia").val(datos_contrato.garantia);
-			 				$("#slcHonorarios").val(datos_contrato.honorarios);
-			 				if (datos_contrato.honorarios == "fijo" || datos_contrato.honorarios == "otro" ) {
-			 					$("#txtHonorarios").attr("hidden",false);
-			 				}
-			 				else{ $("#txtHonorarios").attr("hidden",true); }
-			 				$("#txtHonorarios").val(datos_contrato.txthonorarios);
-
-			 				$("#slcAcuerdo").val(datos_contrato.acuerdo);
-			 				$("#txtAcuerdo").val(datos_contrato.txtacuerdo);
-			 				if (datos_contrato.acuerdo == "facOtro") {
-			 					$("#txtAcuerdo").attr("hidden",false);
-			 				}
-			 				else{$("#txtAcuerdo").attr("hidden",true);}
-
-
-			 				$("#obsContrato").val(datos_contrato.obscontrato);
-
-			 				 
-			 				$("#txtValorProyecto").val(addCommas(parseFloat(datos_contrato.valorProyecto.replace(/,/g, '')).toFixed(2)));
-			 				
-				 				
-				 			
-			 				$("#slcEstatus").val(datos_proyecto.estatus);
+		 				$cont = 0;
+						while(contacto[$cont]){
 							
-		 			}
-		 		});
+							$filasContacto = contacto[$cont].idcontacto;
 
-		 		$.ajax({  // Carga registro Actividades / Seguimiento
-		 			type: "POST",
-		 			url: "control.php",
-		 			data: { "funcion" : "listaActividades", "proyecto": $proyecto },
-		 			success: function(data){
-		 			 	var obj = JSON.parse(data);
-		 			 	$.each( obj.actividad, function( filasActividades, actividad ) {
-						  $("#tblActividades tbody").append('<tr><td><input type="hidden" class="registroActividades" id="numeroFila" value="'+filasActividades+'"></td><td><input type="date" value="'+actividad.fecha+'" id="fecha_'+filasActividades+'" disabled></td><td colspan="1"> <textarea  cols="38" rows="5" id="txtActividad_'+filasActividades+'" disabled>'+actividad.act+'</textarea></td><td></td></tr>');
-						  $filasActividades = filasActividades;
-						});
-	 					
+							$("#tblContacto > tbody").append('<tr id="filaContacto_'+$filasContacto+'" class="noprimario" style="border-bottom:1px solid #E1EEF4"><td><!-- <div id="btnMenosContacto_'+$filasContacto+'" class="btnMenosCont"></div> --><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" value="'+contacto[$cont].nombre+'" name="nombre" style="width:250px;" placeholder="Nombre Completo"><br><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" value="'+contacto[$cont].area+'" name="area" style="width:170px;" placeholder="Area / Puesto"></td><td><table id="tblMedioContacto_'+$filasContacto+'" contacto="'+$filasContacto+'" ><tbody></tbody></table></td><td><input type="date" class="datoContacto_'+$filasContacto+'" id="txtCumpleaños_'+$filasContacto+'" value="'+contacto[$cont].cumpleaños+'" name="cumpleaños" style="width:130px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;">'+contacto[$cont].observaciones+'</textarea></td><td><input type="radio" name="contacPrimario" onclick="seleccionaContacto('+$filasContacto+');"></td></tr>');
 
-						$.each( obj.seguimiento, function( filasSeguimientos, actividad ) {
-						  $("#tblSeguimientos tbody").append('<tr id="filaSeg_'+filasSeguimientos+'"><td><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+filasSeguimientos+'" value="'+actividad.fecha+'" disabled> </td><td colspan="1"><textarea  cols="38" rows="5" id="txtAreaSeg_'+filasSeguimientos+'" disabled>'+actividad.act+'</textarea></td><td><div class="btnAcepSeg" id="btnAcepSeg_'+filasSeguimientos+'"></div></td><td><div class="btnCancelSeg" id="btnCancelSeg_'+filasSeguimientos+'"></div></td><td></td></tr>');
-						  $filasSeguimientos = filasSeguimientos;
-						});
-						
+							$cont2=0;
+							
+							while(contacto[$cont].medioDeContacto[$cont2]){
+								$idTipoContacto = contacto[$cont].medioDeContacto[$cont2].tipoContacto;
+								$idValorContacto = contacto[$cont].medioDeContacto[$cont2].valorContacto;
+								
+								$('#tblMedioContacto_'+$filasContacto+' > tbody').append('<tr class="tblFilaContacto'+$filasContacto+'" fila="'+$cont2+'"><td></td><td><select id="tipoContactoFila'+$filasContacto+'_'+$cont2+'"><option value="1">Telefono Movil</option><option value="2">Telefono Trabajo</option><option value="3">e-Mail</option><option value="4">linkedin</option><option value="5">ubicacion</option></select></td><td><input id="valorTipoContactoFila'+$filasContacto+'_'+$cont2+'" type="text" class="datoContacto" name="valor" style="width:150px;"></td></tr>');
+								$('#tipoContactoFila'+$filasContacto+'_'+$cont2).val($idTipoContacto);
+								$('#valorTipoContactoFila'+$filasContacto+'_'+$cont2).val($idValorContacto);
+								$cont2++;
+							}
 
-		 		
-		 			}
-		 		});
-			}
-		 		
+							$('#tblMedioContacto_'+$filasContacto+' > tbody').append('<tr class="tblFilaContacto'+$filasContacto+'" fila="-1"><td><!-- <div id="btnMasMedioContacto" class="btnMas" onclick="agregaMedioContacto('+$filasContacto+','+$cont2+')"></div> --></td><td></td><td></td></tr>');
+
+							$cont++;
+						}
+						$('#filaContacto_'+datos_cliente.contacto+' input:radio').attr('checked',true);
+						seleccionaContacto(datos_cliente.contacto);
+
+						$filasContacto++;
+		 				
+		 				$("#slcConvenio").val(datos_contrato.convenio);
+		 				
+		 				$("#slcGarantia").val(datos_contrato.garantia);
+		 				$("#slcHonorarios").val(datos_contrato.honorarios);
+		 				if (datos_contrato.honorarios == "fijo" || datos_contrato.honorarios == "otro" ) {
+		 					$("#txtHonorarios").attr("hidden",false);
+		 				}
+		 				else{ $("#txtHonorarios").attr("hidden",true); }
+		 				$("#txtHonorarios").val(datos_contrato.txthonorarios);
+
+		 				$("#slcAcuerdo").val(datos_contrato.acuerdo);
+		 				$("#txtAcuerdo").val(datos_contrato.txtacuerdo);
+		 				if (datos_contrato.acuerdo == "facOtro") {
+		 					$("#txtAcuerdo").attr("hidden",false);
+		 				}
+		 				else{$("#txtAcuerdo").attr("hidden",true);}
+
+
+		 				$("#obsContrato").val(datos_contrato.obscontrato);
+
+		 				 
+		 				$("#txtValorProyecto").val(addCommas(parseFloat(datos_contrato.valorProyecto.replace(/,/g, '')).toFixed(2)));
+		 				
+			 				
+			 			
+		 				$("#slcEstatus").val(datos_proyecto.estatus); console.log(datos_proyecto.estatus);
+		 				cambiaBotonGuardado(datos_proyecto.estatus);
+		 				
+		 				switch(datos_proyecto.estatus){
+		 					case "7":
+		 					case "9":
+		 					case "10": bloqueaFormulario(); break;
+		 				}
+			 					
+	 			}
+	 		});
+		}
+
+		function buscaActividades(){
+			$.ajax({  // Carga registro Actividades / Seguimiento
+	 			type: "POST",
+	 			url: "control.php",
+	 			data: { "funcion" : "listaActividades", "proyecto": $proyecto },
+	 			success: function(data){
+	 			 	var obj = JSON.parse(data);
+	 			 	$.each( obj.actividad, function( filasActividades, actividad ) {
+					  $("#tblActividades tbody").append('<tr><td><input type="hidden" class="registroActividades" id="numeroFila" value="'+filasActividades+'"></td><td><input type="date" value="'+actividad.fecha+'" id="fecha_'+filasActividades+'" disabled></td><td colspan="1"> <textarea  cols="38" rows="5" id="txtActividad_'+filasActividades+'" disabled>'+actividad.act+'</textarea></td><td></td></tr>');
+					  $filasActividades = filasActividades;
+					});
+ 					
+
+					$.each( obj.seguimiento, function( filasSeguimientos, actividad ) {
+					  $("#tblSeguimientos tbody").append('<tr id="filaSeg_'+filasSeguimientos+'"><td><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+filasSeguimientos+'" value="'+actividad.fecha+'" disabled> </td><td colspan="1"><textarea  cols="38" rows="5" id="txtAreaSeg_'+filasSeguimientos+'" disabled>'+actividad.act+'</textarea></td><td><div class="btnAcepSeg" id="btnAcepSeg_'+filasSeguimientos+'"></div></td><td><div class="btnCancelSeg" id="btnCancelSeg_'+filasSeguimientos+'"></div></td><td></td></tr>');
+					  $filasSeguimientos = filasSeguimientos;
+					});
+					
+
+	 		
+	 			}
+	 		});
+		}
+
+
+		$(document).ready(function(){
+			$("li").removeClass( "current" );
+			$("#menuFunnel").addClass('current');
+
+			cargaKam();
+			
 	 		$(document).on('click','.btnMenosSeg',function(){
 				$elemento = this.id;
 				$elementoSeparado = $elemento.split("_");
@@ -257,28 +283,8 @@
 			});
 			
 	 		$("#slcEstatus").change(function(){
-	 			switch($(this).val()){
-	 				case '1':
-	 				case '2':
-	 				case '3':
-	 				case '4':
-	 				case '5':
-	 				case '6': 
-	 				case '8': $("#guardaProyecto").html("Guardar"); 
-	 				          $("#guardaProyecto").css('height','50px'); 
-	 				          $("#guardaProyecto").removeClass('mandaproyecto'); 
-	 				          $terminaFunnel = 0; break;
-	 				case '7': $("#guardaProyecto").html("Guardar y<br>Enviar a Proyectos"); 
-	 						  $("#guardaProyecto").css('height','62px'); 
-	 						  $("#guardaProyecto").addClass('mandaproyecto'); 
-	 						  $terminaFunnel = 1; break;
-	 				case '9':
-	 				case '10': $("#guardaProyecto").html("Guardar y<br>Terminar"); 
-	 				           $("#guardaProyecto").css('height','50px'); break;
-	 				default: $("#guardaProyecto").html("Guardar"); 
-	 				         $("#guardaProyecto").css('height','50px'); break;
-
-	 			}
+	 			cambiaBotonGuardado($(this).val());
+	 			
 	 		});
 
 			$("#guardaProyecto").click(function(){
@@ -338,22 +344,81 @@
 			});
 			$("#contenidoContactos").css("display","none");
 
-			$("#tipoFunner").change(function(){
-				if ($("#tipoFunner").val() == 1) {
-					showBuscaCliente();
+			// $("#tipoFunner").change(function(){
+			// 	if ($("#tipoFunner").val() == 1) {
+			// 		showBuscaCliente();
 					
-				}
-				if ($("#tipoFunner").val() == 2) {
+			// 	}
+			// 	if ($("#tipoFunner").val() == 2) {
 					
-				}
-				if ($("#tipoFunner").val() == -1) {
+			// 	}
+			// 	if ($("#tipoFunner").val() == -1) {
 				
+			// 	}
+			// });
+
+			$("#iniciaProyecto").click(function(){
+				if ( $("#kam3").val() != -1 ) {
+					guardaDatos();
 				}
+				else{ alert("Debes seleccionar al menos a un Consultor"); }
 			});
 
 		}); // fin document ready
+	
+		function cambiaBotonGuardado($val){
 
+ 			switch($val){
+ 				case '1':
+ 				case '2':
+ 				case '3':
+ 				case '4':
+ 				case '5':
+ 				case '6': 
+ 				case '8': $("#guardaProyecto").html("Guardar"); 
+ 				          $("#guardaProyecto").css('height','50px'); 
+ 				          $("#guardaProyecto").removeClass('mandaproyecto'); 
+ 				          $terminaFunnel = 0; 
+			 			  break;
 
+ 				case '7': $("#guardaProyecto").html("Guardar y<br>Enviar a Proyectos"); 
+ 						  $("#guardaProyecto").css('height','62px'); 
+ 						  $("#guardaProyecto").addClass('mandaproyecto'); 
+ 						  $terminaFunnel = 1;
+			 			  break;
+
+ 				case '9':
+ 				case '10': 	$("#guardaProyecto").html("Guardar y<br>Terminar"); 
+ 				           	$("#guardaProyecto").css('height','50px'); 
+ 				           
+ 				           	$terminaFunnel = 0; 
+			 				break;
+
+ 				default: $("#guardaProyecto").html("Guardar"); 
+ 				         $("#guardaProyecto").css('height','50px'); 
+ 				         $terminaFunnel = 0; 
+ 				         break;
+
+ 			}
+	 		
+		}
+
+		function desbloqueaFormulario(){
+			$("input").prop('disabled', false);
+			$(".btnAcepSeg").show();
+			$(".btnCancelSeg").show();
+			$(".btnMas").show();
+			$("select").prop('disabled', false);
+		}
+
+		function bloqueaFormulario(){
+			$("input").prop('disabled', true);
+			$(".btnAcepSeg").hide();
+			$(".btnCancelSeg").hide();
+			$(".btnMas").hide();
+			$("select").prop('disabled', true);
+			$("textarea").prop('disabled', true);
+		}
 
 		function ordenarSelect(id_componente){
 	    	var selectToSort = jQuery('#' + id_componente);
@@ -393,11 +458,16 @@
 			}
 		});
 
-    function dotosObligatorios(){
-
-    	guardaDatos();
-    	
-    }
+	    function dotosObligatorios(){
+	    	if ($terminaFunnel == 1) {
+	    		$(".fondoEmergente").css("visibility","visible");
+	    		$(".boxKam").css("visibility","visible");
+	   
+	    	}
+	    	else{
+	    		guardaDatos();	
+	    	}
+	    }
 
 	    function guardaDatos(){
 	    	general = {};
@@ -483,15 +553,20 @@
 
 				 				 $(".mandaproyecto").each(function($key, $value){
 							    	alert("manda");
-							    	$kamPrincipal = $("#kamProyecto").val();
+							    	$kamPrincipal = $("#kam3").val();
+							    	$recl = $("#recl3").val();
 							    	$fechaHoy = new Date();
 							    	$anioHoy = $fechaHoy.getFullYear();
 							    	$mesHoy = $fechaHoy.getMonth()+1;
 							    	$diaHoy = $fechaHoy.getDate();
-							    	if (parseInt($diaHoy) < 10) {$diaHoy = "0"+$diaHoy;}
-							    	if (parseInt($mesHoy) < 10) {$mesHoy = "0"+$mesHoy;}
+							    	if (parseInt($diaHoy) < 10) {$diaHoy = "0" + $diaHoy;}
+							    	if (parseInt($mesHoy) < 10) {$mesHoy = "0" + $mesHoy;}
+
+							    	$proyRequerido = $("#proyectoRequerido").val();
+							    	$proyectoReq = $("#proyectoReq").val();
+
 							    	
-							    	$datosProyectoPlus = {"wbs":$preWBS+"-"+$kamPrincipal,"kam":$kamPrincipal,"reclutador":"-1","kam2":"-1","apoyo":"-1","prioridad":"1","fIniY":$anioHoy,"fIniM":$mesHoy,"fIniD":$diaHoy,"estatus":"1","posicion":"","disciplina":"-1","cta":"1","nivel":"1","salario":"0"};
+							    	$datosProyectoPlus = {"wbs":$preWBS+"-"+$kamPrincipal,"kam":$kamPrincipal,"reclutador":$recl,"kam2":"-1","apoyo":"-1","prioridad":"1","fIniY":$anioHoy,"fIniM":$mesHoy,"fIniD":$diaHoy,"proyRequerido":$proyRequerido,"proyectoReq":$proyectoReq,"estatus":"1","posicion":"","disciplina":"-1","cta":"1","nivel":"1","salario":"0"};
 							    	
 							    	$.each($datosProyectoPlus, function($key, $value){
 							    		general[$key] = $value;
@@ -510,7 +585,7 @@
 				 		});
 	 				}
 	 				 else{
-	 				 	 window.location="listado_proyectos.php";
+	 				 	window.location="listado_proyectos.php";
 	 				 }
 		 				
 	 			}
@@ -662,7 +737,7 @@
     		$("#tblSeguimientos tbody").append('<tr id="filaSeg_'+$filasSeguimientos+'"><td><div class="btnMenosSeg" id="btnMenosSeg_'+$filasSeguimientos+'"></div><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+$filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+$filasSeguimientos+'" value="'+$fecha+'"> </td><td colspan="1"><textarea cols="38" rows="5" id="txtAreaSeg_'+$filasSeguimientos+'">'+$actividad+'</textarea></td><td></td><td></td><td></td></tr>');
     	}
 
-	    function showBuscaCliente(){
+		function showBuscaCliente(){
 	    	$("#hdnBuscaClientes").show();
 	    }
 
@@ -746,12 +821,28 @@
 			margin-left: 30px;
 		}
 		.tblFormularios tr{vertical-align: top;}
+		.boxKam{
+			width: auto;
+			height: 170px;
+			background: linear-gradient(#f9f9f9, #e3e3e3);
+			position: fixed;
+			z-index: 9999;
+			left: 50%;
+			top: 50%;
+			border-radius: 10px;
+			border:2px solid black;
+			margin-top: -100px;
+			margin-left: -200px;
+			visibility: hidden;
+		}
+		
+		.bodyBoxKam{}
 	</style>
 </head>
 <body>
 <?php include_once("../header.htm"); ?>
 <div class="cuerpo">
-	Tipo de Funnel: <select id="tipoFunner" name="tipofunner"><option value="-1">-</option><option value="1">Prospecto de Cliente</option><option value="2" selected>Prospecto de Proyecto</option></select>
+	<!-- Tipo de Funnel: <select id="tipoFunner" name="tipofunner"><option value="-1">-</option><option value="1">Prospecto de Cliente</option><option value="2" selected>Prospecto de Proyecto</option></select> -->
 	
 	<br><br>
 
@@ -956,12 +1047,38 @@
 		</table>
 	</fieldset>
 	<br>
-	<input type="text" name="kamProyecto" id="kamProyecto" value="3">
+	
+	
 	<br>
 	<button value="Guardar" id="guardaProyecto"> Guardar </button>
 	
 		
 </div>
+<div class="boxKam">
+	
+
+	<div class="bodyBoxKam">
+		<div class="datagrid">
+			<table style=" margin-bottom:30px;">
+				<thead>
+					<tr>
+						<th colspan="4">¿Quien estara a cargoo del proyecto?</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="height:50px;">
+						<td><b>Kam: </b></td><td><select id="kam3" name="kamProyecto"><option value="-1"> - Selecciona - </option></select></td>
+						<td><b>Reclutador: </b></td><td><select id="recl3" name="reclProyecto"><option value="-1"> - Selecciona - </option></select></td>
+					</tr>
+				</tbody>
+					
+				
+			</table>
+		</div>
+			
+		 <div style="right:20px; bottom:40px; position:absolute;"><input type="button" name="" value="Terminar" id="iniciaProyecto"></div>
+	</div>
+</div> 
 
 <div class="fondoEmergente"></div>
 
@@ -981,7 +1098,6 @@
 					<td class="filaBotones" id="colCancSeg"><input type="hidden" id="filaSeguimientoTerminado"><input type="button" value="Cancelar" onclick="cancelaSeguimientoTerminado();"></td><td class="filaBotones" id="colAcepSeg"><input type="button" value="Aceptar" class="agregaSeguimientoTerminado" onclick="agregaSeguimientoTerminado();"></td>
 				</tr>
 			</tbody>
-				
 		</table>
 	
 </div>
