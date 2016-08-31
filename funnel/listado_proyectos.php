@@ -16,8 +16,14 @@
 	 				var obj = JSON.parse(data);
 	 				$cont = 0;
 	 				while(obj[$cont]){
+	 					console.log(obj[$cont]);
 	 					var estatus = JSON.parse(obj[$cont].descripcion)
-			 			$("#filtroEstatus").append("<option value='"+estatus.nombre+"'>"+estatus.nombre+"</option>");
+			 			//$("#filtroEstatus").append("<option value='"+estatus.nombre+"'>"+estatus.nombre+"</option>");
+			 			if (estatus.clave == "7" || estatus.clave == "9" || estatus.clave == "10") {
+			 				$checked = "";
+			 			}
+			 			else{$checked = "checked";}
+			 			$("#filtroEstatus").append("<input type='checkbox' onchange='filtraTabla()' class='filtroEstatus' "+$checked+" value='"+estatus.nombre+"'><label>"+estatus.nombre+"</label><br>");
 	 					$cont ++ ;
 	 				}
 	 			}
@@ -65,7 +71,9 @@
 						$cont++;
 						$alt = $alt * -1;
 	 				}
+	 				filtraTabla();
 	 			}
+
 	 		});
 
 	 		$(document).on('click','.flechaProyecto',function(){
@@ -76,16 +84,23 @@
 
 		});//Fin Document Ready
 		function filtraTabla(){
+			//alert($(".filtroProyecto:not(:checked)").attr('valor'));
 			$("#tblProyectos tbody > tr").show();
-			if( $("#filtroProyecto").val() != "0"){
-				$("#tblProyectos tbody > tr:visible > td.colProy:not(:contains-ci('" + $("#filtroProyecto option:selected").text() + "'))").parent("tr").hide();
-			}
+			//if( $(".filtroProyecto").val() != "0"){
+			$(".filtroProyecto:not(:checked)").each(function(){
+				$("#tblProyectos tbody > tr:visible > td.colProy:contains-ci('" + $(this).val() + "')").parent("tr").hide();
+			});
+				
+			//}
  			if( $("#filtroCliente").val() != ""){
 				$("#tblProyectos tbody > tr:visible > td.colCliente:not(:contains-ci('" + $("#filtroCliente").val() + "'))").parent("tr").hide();
 			}
-			if( $("#filtroEstatus").val() != "-1"){
-				$("#tblProyectos tbody > tr:visible > td.colEstatus:not(:contains-ci('" + $("#filtroEstatus").val() + "'))").parent("tr").hide();
-			}
+			//if( $("#filtroEstatus").val() != "-1"){
+			$(".filtroEstatus:not(:checked)").each(function(){
+				$("#tblProyectos tbody > tr:visible > td.colEstatus:contains-ci('" + $(this).val() + "')").parent("tr").hide();
+			});
+				
+			//}
 			
 			
 		}
@@ -121,6 +136,12 @@
 	color:#000;
 	
 }
+.tblFiltros td{
+	vertical-align: top;
+}
+.tblFiltros label{
+	font-size: 12px;
+}
 	
 	</style>
 
@@ -129,18 +150,22 @@
 <?php include_once("../header.htm"); ?>
 <div class="cuerpo">
 	<div class="contenido" style="position: relative; float: left; max-width: 75%;">
-		<table>
+		<table class="tblFiltros">
 			<tr>
 				
 				<td>
-					<label class="txtmini">Proyecto:</label><br>
-					<select type="text" id="filtroProyecto" onchange="filtraTabla()">
+					<label class="txtmini">	Proyecto:</label><br>
+					<input type="checkbox" class="filtroProyecto" value="Contrata" onchange="filtraTabla()" checked> <label>Contrata</label><br>
+					<input type="checkbox" class="filtroProyecto" value="Busqueda de Talento" onchange="filtraTabla()" checked> <label>Busqueda de Talento</label><br>
+					<input type="checkbox" class="filtroProyecto" value="Mapeo de Talento" onchange="filtraTabla()" checked> <label>Mapeo de Talento</label><br>
+					<input type="checkbox" class="filtroProyecto" value="Talent Management" onchange="filtraTabla()" checked> <label>Talent Management</label>
+					<!-- <select type="text" id="filtroProyecto" onchange="filtraTabla()">
 						<option value="0">Todos</option>
 						<option value="1">Contrata</option>
 						<option value="2">Busqueda de Talento</option>
 						<option value="3">Mapeo de Talento</option>
 						<option value="4">Talent Management</option>
-					</select>
+					</select> -->
 				</td>
 				<td>
 					<label class="txtmini">Cliente:</label><br>
@@ -148,7 +173,8 @@
 				</td>
 				<td>
 					<label class="txtmini">Estatus:</label><br>
-					<select id="filtroEstatus" onchange="filtraTabla()"><option value="-1"> - Todos - </option></select>
+					<div id="filtroEstatus"></div>
+					<!--- <select id="filtroEstatus" onchange="filtraTabla()"><option value="-1"> - Todos - </option></select> -->
 				</td>
 			</tr>
 		</table>
