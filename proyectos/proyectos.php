@@ -41,6 +41,7 @@
 		 				$("#txtcta").val(datos_proyecto.cta);
 		 				$("#txtsem").val(datos_proyecto.sem);
 		 				$("#proyectoReq").val(datos_proyecto.proyectoReq);
+		 				$("#proyectoRequerido").val(datos_proyecto.proyectoRequerido);
 		 				$("#lblCliente").html(cliente.publico);
 		 				
 		 				$("#hdnCliente").val(datos_cliente.cliente);
@@ -107,6 +108,7 @@
 				 				$("#txtkam").val(datos_proyecto.kam);
 				 				$("#txtkam2").val(datos_proyecto.kam2);
 				 				$("#slcRec").val(datos_proyecto.reclutador);
+				 				$("#slcApoyo").val(datos_proyecto.apoyo);
 		 				
 				 			}
 				 		});
@@ -147,7 +149,7 @@
 		 				}
 		 				else{$("#txtAcuerdo").attr("hidden",true);}
 
-		 				$("#obsContrato").val(datos_contrato.obscontrato);
+		 				$("#obsContrato").text(datos_contrato.obscontrato);
 
 		 			
 		 				$("#fGarantiaY").val(datos_contrato.fGarantiaY);
@@ -178,8 +180,14 @@
 			 				
 			 			$cont=0;
 			 			while(obj.Estatus[$cont]){
-							var estatus = JSON.parse(obj.Estatus[$cont].descripcion)
-			 				$("#slcEstatus").append("<option value='"+estatus.id+"'>"+estatus.nombre+"</option>");
+							var estatus = JSON.parse(obj.Estatus[$cont].descripcion);
+							if (parseInt(estatus.id) > 0) {
+								$("#slcEstatus").append("<option value='"+estatus.id+"'>"+estatus.nombre+"</option>");	
+							}
+							else{
+								$("#slcEstatus").append("<option hidden value='"+estatus.id+"'>"+estatus.nombre+"</option>");
+							}
+			 				
 			 				if (estatus.id == datos_proyecto.estatus) {
 			 					$("#avance").html(estatus.avance);
 			 				}
@@ -887,7 +895,7 @@
 						<tr><td>&nbsp;</td></tr>
 						<tr class="proyecto">
 							<td>Tipo de Proyecto: </td>
-							<td><select id="proyectoRequerido" name="proyectoRequerido" class="datosProyecto">
+							<td><select id="proyectoRequerido" name="proyectoRequerido" class="formProyect">
 									<option value="1">Contrata</option>
 									<option value="2">Busqueda de Talento</option>
 									<option value="3">Mapeo de Talento</option>
@@ -897,7 +905,7 @@
 							<td><select class="formProyect" id="txtPrioridad" name="prioridad"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></td><td></td><td></td>
 						</tr>
 						<tr class="proyecto">
-							<td>Descripcion del Proyecto: </td><td><textarea id="proyectoReq" name="proyectoReq" class="datosProyecto"></textarea></td><td></td>
+							<td>Descripcion del Proyecto: </td><td><textarea id="proyectoReq" name="proyectoReq" class="formProyect"></textarea></td><td></td>
 						</tr>
 				
 					</table>
@@ -1303,7 +1311,7 @@
 						</tr>
 						<tr>
 							<td><b>Acuerdo de Facturacion: </b></td><td>
-							<select id="slcAcuerdo" name="acuerdo">
+							<select id="slcAcuerdo" name="acuerdo" class="formProyectContrato">
 								<option value="fac100">100%</option>
 								<option value="fac3070">30% 70%</option>
 								<option value="fac303040">30% 30% 40%</option>
@@ -1315,7 +1323,7 @@
 								<b>Observaciones del Contrato: </b>
 							</td>
 							<td>
-								<textarea class="datosContrato" name="obscontrato" id="obsContrato" cols="30" rows="7"></textarea>
+								<textarea class="formProyectContrato" name="obscontrato" id="obsContrato" cols="30" rows="7"></textarea>
 							</td>
 						</tr>
 					</table>

@@ -193,7 +193,7 @@
 		 				}
 		 				else{$("#txtAcuerdo").attr("hidden",true);}
 
-
+		 				$("#exclusividad").val(datos_contrato.exclusividad);
 		 				$("#obsContrato").val(datos_contrato.obscontrato);
 
 		 				 
@@ -286,6 +286,31 @@
 	 			cambiaBotonGuardado($(this).val());
 	 			
 	 		});
+
+	 		$("#slcAcuerdo").change(function(){
+	 			if ($("#slcAcuerdo").val() != "facOtro") {
+	 				$("#txtAcuerdo").attr("hidden",true);
+					$("#txtAcuerdo").val($("#slcAcuerdo").val());
+	 			}
+	 			else{
+	 				$("#txtAcuerdo").val("");
+	 				$("#txtAcuerdo").attr("hidden",false);
+	 			}
+	 				
+	 		});
+
+	 		$("#slcHonorarios").change(function(){
+	 			
+	 			if ($("#slcHonorarios").val() != "otro" && $("#slcHonorarios").val() != "fijo" ) {
+	 				$("#txtHonorarios").attr("hidden",true);
+					$("#txtHonorarios").val($("#slcHonorarios").val());
+	 			}
+	 			else{
+	 				$("#txtHonorarios").val("");
+	 				$("#txtHonorarios").attr("hidden",false);
+	 			}
+	 		});
+
 
 			$("#guardaProyecto").click(function(){
 				dotosObligatorios();
@@ -715,7 +740,7 @@
 			$act = $("#actividadSeguimientoTerminado").val();
 			$filaSeguimiento = $("#filaSeguimientoTerminado").val();
 			$filasActividades++;
-			$("#tblActividades tbody").append('<tr><td><input type="hidden" class="registroActividades" id="numeroFila" value="'+$filasActividades+'"></td><td><input type="date" value="'+$fecha+'" id="fecha_'+$filasActividades+'"></td><td colspan="2"> <textarea id="txtActividad_'+$filasActividades+'">'+$act+'</textarea></td></tr>');
+			$("#tblActividades tbody").append('<tr><td><input type="hidden" class="registroActividades" id="numeroFila" value="'+$filasActividades+'"></td><td><input type="date" value="'+$fecha+'" id="fecha_'+$filasActividades+'"></td><td colspan="2"> <textarea cols="38" rows="5" id="txtActividad_'+$filasActividades+'">'+$act+'</textarea></td></tr>');
 			
 
 			$("#tblSeguimientos tbody tr#filaSeg_"+$filaSeguimiento).remove();
@@ -732,6 +757,22 @@
 			$("#hideCancelaSegimiento").css("visibility","hidden");
 		}
 
+		function cancelaSeguimientoTerminado(){
+			$("#fechaSeguimientoTerminado").val("");
+			$("#actividadSeguimientoTerminado").val("");
+			$("#filaSeguimientoTerminado").val("");
+			$(".fondoEmergente").css("visibility","hidden");
+			$("#hideAceptaSegimiento").css("visibility","hidden");
+		}
+
+		function cancelaSeguimientoCancelado(){
+			$("#actividadSeguimientoCancelado").val();
+			$("#fechaSeguimientoCancelado").val();
+			$("#filaSeguimientoCancelado").val();
+			$(".fondoEmergente").css("visibility","hidden");
+			$("#hideCancelaSegimiento").css("visibility","hidden");
+		}
+		
 		function agregaFilaSeguimiento($filasSeguimientos,$fecha,$actividad){
     		
     		$("#tblSeguimientos tbody").append('<tr id="filaSeg_'+$filasSeguimientos+'"><td><div class="btnMenosSeg" id="btnMenosSeg_'+$filasSeguimientos+'"></div><input type="hidden" class="registroSeguimientos" id="numeroFilaSeg" value="'+$filasSeguimientos+'"></td><td><input type="date" id="fechaSeg_'+$filasSeguimientos+'" value="'+$fecha+'"> </td><td colspan="1"><textarea cols="38" rows="5" id="txtAreaSeg_'+$filasSeguimientos+'">'+$actividad+'</textarea></td><td></td><td></td><td></td></tr>');
@@ -837,6 +878,36 @@
 		}
 		
 		.bodyBoxKam{}
+
+		.filaBotones{
+			height: 50px;
+			vertical-align: bottom;
+		}
+		.filaBotones input{
+			border-radius: 3px;
+			width: 90px;
+			height: 30px;
+			color: white;
+			font-weight: bold;
+		}
+
+		#colCancSeg, #colCancCancSeg{
+			text-align: left;
+			
+		}
+		#colCancSeg input, #colCancCancSeg input{
+			background-color: red;
+			border:1px solid red;
+			
+		}
+		#colAcepSeg, #colAcepCancSeg{
+			text-align: right;
+			
+		}
+		#colAcepSeg input, #colAcepCancSeg input{
+			background-color: green;
+			border:1px solid green;
+		}
 	</style>
 </head>
 <body>
@@ -1042,7 +1113,7 @@
 				<td><b>Garantia</b></td><td><select class="datosContrato" name="garantia" id="slcGarantia"><option value="dias30">30 Días</option><option value="dias60">60 Días</option><option value="dias90">90 Días</option><option value="dias180">180 Días</option><option value="anios1">1 Año</option></select></td>
 			</tr>
 			<tr>
-				<td><b>Exclusividad</b></td><td><select class="datosContrato" name="exclusividad"><option value="permanente">1- PERMANENTE</option><option value="temporal">2- TEMPORAL</option><option value="contingencia">3- CONTINGENCIA</option><option value="otro">4- OTRO</option></select></td>
+				<td><b>Exclusividad</b></td><td><select class="datosContrato" name="exclusividad" id="exclusividad"><option value="permanente">1- PERMANENTE</option><option value="temporal">2- TEMPORAL</option><option value="contingencia">3- CONTINGENCIA</option><option value="otro">4- OTRO</option></select></td>
 			</tr>
 		</table>
 	</fieldset>

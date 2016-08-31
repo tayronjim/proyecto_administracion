@@ -17,11 +17,13 @@
 	function seguimientos($area){
 		if ($area == "funnel") {
 			$columna = "id_funnel";
+			$alterCol ="id_proyecto"; 
 		}
 		if ($area == "proyecto") {
 			$columna = "id_proyecto";
+			$alterCol = "id_funnel";
 		}
-		$listadoSeguimientos = buscaSeguimientos($columna);
+		$listadoSeguimientos = buscaSeguimientos($columna,$alterCol);
 		while ($row = mysqli_fetch_assoc($listadoSeguimientos)){
 		    
 		    $proyecto = filtraProyecto($row[$columna],$area);

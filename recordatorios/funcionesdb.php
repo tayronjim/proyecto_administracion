@@ -8,9 +8,9 @@
 		return $resultado;
 	}
 
-	function buscaSeguimientos($columna){
+	function buscaSeguimientos($columna,$alterCol){
 		
-		$query = "SELECT ".$columna.", seguimiento FROM `actividades` WHERE ".$columna." != 0";
+		$query = "SELECT ".$columna.", seguimiento FROM `actividades` WHERE ".$columna." != 0 && ".$alterCol." = 0";
 		$resultado = queryGeneral($query);
 		return $resultado;	
 	}
