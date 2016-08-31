@@ -40,6 +40,8 @@
 		 				$("#txtEmpInt").val(datos_proyecto.empint);
 		 				$("#txtcta").val(datos_proyecto.cta);
 		 				$("#txtsem").val(datos_proyecto.sem);
+		 				$("#proyectoReq").val(datos_proyecto.proyectoReq);
+		 				$("#proyectoRequerido").val(datos_proyecto.proyectoRequerido);
 		 				$("#lblCliente").html(cliente.publico);
 		 				
 		 				$("#hdnCliente").val(datos_cliente.cliente);
@@ -105,6 +107,8 @@
 
 				 				$("#txtkam").val(datos_proyecto.kam);
 				 				$("#txtkam2").val(datos_proyecto.kam2);
+				 				$("#slcRec").val(datos_proyecto.reclutador);
+				 				$("#slcApoyo").val(datos_proyecto.apoyo);
 		 				
 				 			}
 				 		});
@@ -145,7 +149,7 @@
 		 				}
 		 				else{$("#txtAcuerdo").attr("hidden",true);}
 
-		 				$("#obsContrato").val(datos_contrato.obscontrato);
+		 				$("#obsContrato").text(datos_contrato.obscontrato);
 
 		 			
 		 				$("#fGarantiaY").val(datos_contrato.fGarantiaY);
@@ -176,8 +180,14 @@
 			 				
 			 			$cont=0;
 			 			while(obj.Estatus[$cont]){
-							var estatus = JSON.parse(obj.Estatus[$cont].descripcion)
-			 				$("#slcEstatus").append("<option value='"+estatus.id+"'>"+estatus.nombre+"</option>");
+							var estatus = JSON.parse(obj.Estatus[$cont].descripcion);
+							if (parseInt(estatus.id) > 0) {
+								$("#slcEstatus").append("<option value='"+estatus.id+"'>"+estatus.nombre+"</option>");	
+							}
+							else{
+								$("#slcEstatus").append("<option hidden value='"+estatus.id+"'>"+estatus.nombre+"</option>");
+							}
+			 				
 			 				if (estatus.id == datos_proyecto.estatus) {
 			 					$("#avance").html(estatus.avance);
 			 				}
@@ -857,7 +867,10 @@
 				<fieldset><legend>Proyecto</legend>
 					<table class="tblFormularios"> 
 						<tr>
-							<td><b>WBS:</b> </td><td><input id="txtwbs" type="text" value="" name="wbs" class="formProyect" disabled></td><td><b>Empresa Interna:</b> </td><td>
+							<td><b>WBS:</b> </td><td><input id="txtwbs" type="text" value="" name="wbs" class="formProyect" disabled></td>
+						</tr>
+						<tr>
+							<td><b>Empresa Interna:</b> </td><td>
 								<select id="txtEmpInt" type="text" value="" name="empint" class="formProyect">
 									<option value="AIMS">AIMS</option>
 									<option value="DMA">Diaz Morones y Asociados</option>
@@ -868,22 +881,33 @@
 									<option value="STONEHC">Stone Human Capital</option>
 								</select>
 							</td>
-						</tr>
-						<tr><td>&nbsp;</td></tr>
-						<tr>
 							<td><b>KAM*:</b></td><td><select class="formProyect" id="txtkam" name="kam"><option value="-1"> - </option></select></td>
 							<td><b>Reclutador:</b></td><td><select class="formProyect" id="slcRec" name="reclutador"><option value="-1"> N/A </option></select></td>
 						</tr>
+						
+						
 							
-						<tr>
+						<tr><td></td><td></td>
 							<td><b>KAM 2:</b></td><td><select class="formProyect" id="txtkam2" name="kam2"><option value="-1"> - </option></select></td>
 							<td><b>Apoyo:</b></td><td><select class="formProyect" id="slcApoyo" name="apoyo"><option value="-1"> N/A </option></select></td>
 							
 						</tr>
 						<tr><td>&nbsp;</td></tr>
-						<tr>
-							<td><b>Prioridad:</b></td><td><select class="formProyect" id="txtPrioridad" name="prioridad"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></td><td></td>
+						<tr class="proyecto">
+							<td>Tipo de Proyecto: </td>
+							<td><select id="proyectoRequerido" name="proyectoRequerido" class="formProyect">
+									<option value="1">Contrata</option>
+									<option value="2">Busqueda de Talento</option>
+									<option value="3">Mapeo de Talento</option>
+									<option value="4">Talent Management</option>
+								</select></td>
+							<td><b>Prioridad:</b></td>
+							<td><select class="formProyect" id="txtPrioridad" name="prioridad"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></td><td></td><td></td>
 						</tr>
+						<tr class="proyecto">
+							<td>Descripcion del Proyecto: </td><td><textarea id="proyectoReq" name="proyectoReq" class="formProyect"></textarea></td><td></td>
+						</tr>
+				
 					</table>
 					<table>
 						<tr><td>&nbsp;</td></tr>
@@ -916,7 +940,10 @@
 								 ?>
 								</select>
 							</td>
-						
+							<td><b>Días transcurridos:</b></td><td><u><label id="diasTranscurridos"></label></u></td>
+							
+						</tr>
+						<tr>
 							<td style="width: 170px;"><b>Fecha de Cierre Ideal</b></td>
 							<td>
 
@@ -946,9 +973,7 @@
 							 ?>
 							</select>
 							</td>
-						</tr>
-						<tr>
-							<td colspan="2"></td><td class="FCR"><b>Fecha de Cierre Real</b></td>
+							<td class="FCR"><b>Fecha de Cierre Real</b></td>
 							<td class="FCR">
 							<select class="formProyect" id="fCRealY" name="fCRealY"><?php insertAnioMasDos(); ?></select>
 							<select class="formProyect" id="fCRealM" name="fCRealM">
@@ -976,14 +1001,9 @@
 							 ?>
 							</select></td>
 						</tr>
-					</table>
-					<table>
-						<tr><td>&nbsp;</td></tr>
-						<tr>
-							<td><b>Días transcurridos:</b></td><td><u><label id="diasTranscurridos"></label></u></td>
-						</tr>
 						<tr><td>&nbsp;</td></tr>
 					</table>
+					
 					<table>
 						<tr>
 							<td><b>Estatus: </b></td>
@@ -992,16 +1012,18 @@
 									
 								</select>
 							</td>
-							<td class="candSelec"><b>Candidato Seleccionado: </b></td><td class="candSelec"><input type="text" placeholder="Nombre" id="nombreCandidato" name="nombrecandidato" style="width: 250px;"></td>
+							<td><b>Proyecto Completado al: </b><span id="avance">0%</span></td>
+							
 						</tr>
 						<tr>
-							<td colspan="2"></td><td class="candSelec"><b>Fecha de Cumpleaños: </b></td><td class="candSelec"><input type="date" id="cumpleCandidato" name="cumplecandidato"></td>
+							<td class="candSelec"><b>Candidato Seleccionado: </b></td><td class="candSelec"><input type="text" placeholder="Nombre" id="nombreCandidato" name="nombrecandidato" style="width: 250px;"></td>
+							<td class="candSelec"><b>Fecha de Cumpleaños: </b></td><td class="candSelec"><input type="date" id="cumpleCandidato" name="cumplecandidato"></td>
 						</tr>	
 					
 					
 					</table>
 					<br><br>
-					<b>Proyecto Completado al: </b><span id="avance">0%</span>
+					
 				</fieldset>
 			</td>
 			<td>
@@ -1119,6 +1141,106 @@
 					</table>
 				</fieldset>
 			</td>
+			
+		</tr>
+		<tr style="vertical-align: top;">
+			<td colspan="2">
+				<fieldset><legend>Actividades</legend>
+					<table width="100%">
+						<tr  style="vertical-align: top;">
+							<td style="width: 50%;">
+								<div class="datagrid">
+									<table border="1" id="tblActividades" >
+										<thead>
+											<tr><th colspan="4" style="text-align: center; width:560px;">Registro de Actividades</th></tr>
+											<tr>
+												<th colspan="2" style="text-align: center; width:175px;">Fecha</th><th style="text-align: center; width:310px;">Actividad</th><th><div id="btnMas" class="btnMas"></div></th>
+											</tr>
+										</thead>
+										<tbody>
+											
+										</tbody>
+									</table>
+								</div>
+							</td>
+							<td style="width: 50%;">
+								<div class="datagrid">
+									<table border="1" id="tblSeguimientos" >
+										<thead>
+											<tr><th colspan="6" style="text-align: center; width:560px;">Seguimiento</th></tr>
+											<tr>
+												<th colspan="2" style="text-align: center; width:175px;">Fecha</th><th style="text-align: center; width:310px;">Actividad</th><th colspan="2" style="width:65px;"></th><th><div id="btnMasSeg" class="btnMas"></div></th>
+											</tr>
+											
+										</thead>
+										<tbody>
+											
+										</tbody>
+									</table>
+								</div>
+							</td>
+						</tr>
+					</table>
+								
+				</fieldset>
+			</td>
+		</tr>
+		<tr style="vertical-align: top;">
+			<td>
+				<fieldset><legend>Facturación</legend>
+					<h2>Facturacion</h2>
+					<table class="tblFormularios" class="tblFormularios">
+						<tr>
+							<td><b>Valor del Proyecto:</b></td><td><input type="text" class="formProyectFacturacion" id="txtValorProyecto" name="valorproyecto"></td>
+						</tr>
+						<tr>
+							<td><b>Total Facturado: </b></td><td><input type="text" class="formProyectFacturacion" id="txtTotalFacturado" name="totalfacturado" disabled></td>
+						</tr>
+						<tr>
+							<td><b>% Facturado: </b></td><td><input type="text" class="formProyectFacturacion" id="txtPorcFacturado" name="porcfacturado" disabled></td>
+						</tr>
+						<tr>
+							<td><b>$ por Facturar: </b></td><td> <input type="text" class="formProyectFacturacion" id="txtXFacturar" name="xfacturar" disabled></td>
+						</tr>
+					</table>
+					 
+					
+					<br>
+					<div class="datagrid">
+						<table border="1" id="tblFacturas"> <!-- Listado Pago de facturas -->
+							<thead>
+								<tr>
+									<th></th><th>No.</th><th>Monto</th><th>Fecha de Factura</th><th>Fecha Pago</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th style="background-color:#4D80E6; color:#fff;">Factura 1</th>
+									<td><input type="text" id="n1" name="facno1" class="formProyectFacturas"></td>
+									<td><input type="text" id="monto1" name="monto1" class="formProyectFacturas"></td>
+									<td><input type="date" id="fEnvio1" name="fenvio1" class="formProyectFacturas"></td>
+									<td><input type="date" id="fPago1" name="fpago1" class="formProyectFacturas"></td>
+								</tr>
+								<tr >
+									<th style="background-color:#4D80E6; color:#fff;">Factura 2</th>
+									<td><input type="text" id="n2" name="facno2" class="formProyectFacturas"></td>
+									<td><input type="text" id="monto2" name="monto2" class="formProyectFacturas"></td>
+									<td><input type="date" id="fEnvio2" name="fenvio2" class="formProyectFacturas"></td>
+									<td><input type="date" id="fPago2" name="fpago2" class="formProyectFacturas"></td>
+								</tr>
+								<tr>
+									<th style="background-color:#4D80E6; color:#fff;">Factura 3</th>
+									<td><input type="text" id="n3" name="facno3" class="formProyectFacturas"></td>
+									<td><input type="text" id="monto3" name="monto3" class="formProyectFacturas"></td>
+									<td><input type="date" id="fEnvio3" name="fenvio3" class="formProyectFacturas"></td>
+									<td><input type="date" id="fPago3" name="fpago3" class="formProyectFacturas"></td>
+								</tr>
+							</tbody>
+								
+						</table>
+					</div>
+				</fieldset>
+			</td>
 			<td>
 				<fieldset><legend>Contrato</legend>
 					<table>
@@ -1189,7 +1311,7 @@
 						</tr>
 						<tr>
 							<td><b>Acuerdo de Facturacion: </b></td><td>
-							<select id="slcAcuerdo" name="acuerdo">
+							<select id="slcAcuerdo" name="acuerdo" class="formProyectContrato">
 								<option value="fac100">100%</option>
 								<option value="fac3070">30% 70%</option>
 								<option value="fac303040">30% 30% 40%</option>
@@ -1201,109 +1323,10 @@
 								<b>Observaciones del Contrato: </b>
 							</td>
 							<td>
-								<textarea class="datosContrato" name="obscontrato" id="obsContrato" cols="30" rows="7"></textarea>
+								<textarea class="formProyectContrato" name="obscontrato" id="obsContrato" cols="30" rows="7"></textarea>
 							</td>
 						</tr>
 					</table>
-				</fieldset>
-			</td>
-		</tr>
-		<tr style="vertical-align: top;">
-			<td colspan="2">
-				<fieldset><legend>Actividades</legend>
-					<table width="100%">
-						<tr  style="vertical-align: top;">
-							<td style="width: 50%;">
-								<div class="datagrid">
-									<table border="1" id="tblActividades" >
-										<thead>
-											<tr><th colspan="4" style="text-align: center; width:560px;">Registro de Actividades</th></tr>
-											<tr>
-												<th colspan="2" style="text-align: center; width:175px;">Fecha</th><th style="text-align: center; width:310px;">Actividad</th><th><div id="btnMas" class="btnMas"></div></th>
-											</tr>
-										</thead>
-										<tbody>
-											
-										</tbody>
-									</table>
-								</div>
-							</td>
-							<td style="width: 50%;">
-								<div class="datagrid">
-									<table border="1" id="tblSeguimientos" >
-										<thead>
-											<tr><th colspan="6" style="text-align: center; width:560px;">Seguimiento</th></tr>
-											<tr>
-												<th colspan="2" style="text-align: center; width:175px;">Fecha</th><th style="text-align: center; width:310px;">Actividad</th><th colspan="2" style="width:65px;"></th><th><div id="btnMasSeg" class="btnMas"></div></th>
-											</tr>
-											
-										</thead>
-										<tbody>
-											
-										</tbody>
-									</table>
-								</div>
-							</td>
-						</tr>
-					</table>
-								
-				</fieldset>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<fieldset><legend>Facturación</legend>
-					<h2>Facturacion</h2>
-					<table class="tblFormularios" class="tblFormularios">
-						<tr>
-							<td><b>Valor del Proyecto:</b></td><td><input type="text" class="formProyectFacturacion" id="txtValorProyecto" name="valorproyecto"></td>
-						</tr>
-						<tr>
-							<td><b>Total Facturado: </b></td><td><input type="text" class="formProyectFacturacion" id="txtTotalFacturado" name="totalfacturado" disabled></td>
-						</tr>
-						<tr>
-							<td><b>% Facturado: </b></td><td><input type="text" class="formProyectFacturacion" id="txtPorcFacturado" name="porcfacturado" disabled></td>
-						</tr>
-						<tr>
-							<td><b>$ por Facturar: </b></td><td> <input type="text" class="formProyectFacturacion" id="txtXFacturar" name="xfacturar" disabled></td>
-						</tr>
-					</table>
-					 
-					
-					<br>
-					<div class="datagrid">
-						<table border="1" id="tblFacturas"> <!-- Listado Pago de facturas -->
-							<thead>
-								<tr>
-									<th></th><th>No.</th><th>Monto</th><th>Fecha de Factura</th><th>Fecha Pago</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<th style="background-color:#4D80E6; color:#fff;">Factura 1</th>
-									<td><input type="text" id="n1" name="facno1" class="formProyectFacturas"></td>
-									<td><input type="text" id="monto1" name="monto1" class="formProyectFacturas"></td>
-									<td><input type="date" id="fEnvio1" name="fenvio1" class="formProyectFacturas"></td>
-									<td><input type="date" id="fPago1" name="fpago1" class="formProyectFacturas"></td>
-								</tr>
-								<tr >
-									<th style="background-color:#4D80E6; color:#fff;">Factura 2</th>
-									<td><input type="text" id="n2" name="facno2" class="formProyectFacturas"></td>
-									<td><input type="text" id="monto2" name="monto2" class="formProyectFacturas"></td>
-									<td><input type="date" id="fEnvio2" name="fenvio2" class="formProyectFacturas"></td>
-									<td><input type="date" id="fPago2" name="fpago2" class="formProyectFacturas"></td>
-								</tr>
-								<tr>
-									<th style="background-color:#4D80E6; color:#fff;">Factura 3</th>
-									<td><input type="text" id="n3" name="facno3" class="formProyectFacturas"></td>
-									<td><input type="text" id="monto3" name="monto3" class="formProyectFacturas"></td>
-									<td><input type="date" id="fEnvio3" name="fenvio3" class="formProyectFacturas"></td>
-									<td><input type="date" id="fPago3" name="fpago3" class="formProyectFacturas"></td>
-								</tr>
-							</tbody>
-								
-						</table>
-					</div>
 				</fieldset>
 			</td>
 		</tr>

@@ -35,7 +35,7 @@
 	}
 
 	function buscaUltimoID(){
-		$ultimoProyecto = ultimoFunnel();
+		$ultimoProyecto = ultimoProyecto();
 			$row = mysqli_fetch_assoc($ultimoProyecto);
 		print json_encode($row['lastID']);
 	}
