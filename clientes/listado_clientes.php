@@ -20,7 +20,7 @@
 	 					var datos = JSON.parse(obj.Cliente[$cont].datos_cliente);
 	 					console.log(datos);
 	 					if ($alt == 1) {$claseAlt = "class='alt'";}else $claseAlt = '';
-	 					$("#tblClientes tbody").append("<tr "+$claseAlt+"><td class='colCliente'>"+datos.publico+"</td><td><span class='flechaClientes boton' valor='"+obj.Cliente[$cont].id+"'><img src='../img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
+	 					$("#tblClientes tbody").append("<tr "+$claseAlt+"><td class='colCliente' style='width:300px;'>"+datos.publico+"</td><td><span class='flechaClientes boton' valor='"+obj.Cliente[$cont].id+"'><img src='../img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
 						$cont++;
 						$alt = $alt * -1;
 	 				}
@@ -54,22 +54,33 @@
 		max-width: 80%;
 		margin: auto;
 	}
+	label.txtmini{
+		font-size: 14px;
+	}
+#areaFiltros{
+	float: left;
+	height: 100%;
+	width: auto;
+	position: relative;
+	margin-right: 30px;
+}
 	
 	</style>
 </head>
 <body>
 <?php include_once("../header.htm"); ?>
-<div class="cuerpo" >
+<div class="cuerpo" ><h1>Listado de Cliente</h1>
+	<div id="areaFiltros">
+		<label class="txtmini"><b>Proyecto:</b></label><br>
+		<input type="text" id="filtroCliente" onkeyup="filtraTabla()">
+	</div>
 	<div class="contenido" style="position: relative; float: left;">
-		<h1>Listado de Cliente</h1>
-		Filtros
-		<input type="text" id="filtroCliente" placeholder="Cliente" onkeyup="filtraTabla()">
-		<br><br>
+		
 		<div class="datagrid">
 			<table id="tblClientes" border="1">
 				<thead>
 					<tr>
-						<th>Nombre Comercial</th><th></th>
+						<th >Nombre Comercial</th><th></th>
 					</tr>
 				</thead>
 				<tbody></tbody>
@@ -79,9 +90,9 @@
 		</div>
 	</div>
 		
-	<div class="recordatorios" style="position: relative;float: right;">
-		<?php include_once("../recordatorios/recordatorios.php"); ?>
-	</div>
+	<!-- <div class="recordatorios" style="position: relative;float: right;">
+		<?php //include_once("../recordatorios/recordatorios.php"); ?>
+	</div> -->
 
 </div>
 	
