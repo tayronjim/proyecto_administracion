@@ -127,7 +127,7 @@
 		</div>
 	</div>
 	<div class="recordatorios" style="position: relative;"> 
-		<?php include_once("recordatorios/recordatorios.php"); ?>
+		<?php include_once("recordatorios/recordatorios_home.php"); ?>
 	</div>
 </div>
 

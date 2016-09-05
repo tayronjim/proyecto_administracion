@@ -121,9 +121,7 @@
 	.datagrid{
 		
 	}
-	.txtmini{
-		font-size: 10px;
-	}
+	
 
 
 .seguimientos{
@@ -142,6 +140,15 @@
 .tblFiltros label{
 	font-size: 12px;
 }
+label.txtmini{
+		font-size: 14px;
+	}
+#areaFiltros{
+	float: left;
+	height: 100%;
+	width: auto;
+	position: relative;
+}
 	
 	</style>
 
@@ -149,12 +156,12 @@
 <body>
 <?php include_once("../header.htm"); ?>
 <div class="cuerpo">
-	<div class="contenido" style="position: relative; float: left; max-width: 75%;">
+	<div id="areaFiltros">
 		<table class="tblFiltros">
 			<tr>
 				
 				<td>
-					<label class="txtmini">	Proyecto:</label><br>
+					<label class="txtmini"><b>Proyecto:</b></label><br>
 					<input type="checkbox" class="filtroProyecto" value="Contrata" onchange="filtraTabla()" checked> <label>Contrata</label><br>
 					<input type="checkbox" class="filtroProyecto" value="Busqueda de Talento" onchange="filtraTabla()" checked> <label>Busqueda de Talento</label><br>
 					<input type="checkbox" class="filtroProyecto" value="Mapeo de Talento" onchange="filtraTabla()" checked> <label>Mapeo de Talento</label><br>
@@ -167,17 +174,25 @@
 						<option value="4">Talent Management</option>
 					</select> -->
 				</td>
+			</tr>
+			<tr>
 				<td>
-					<label class="txtmini">Cliente:</label><br>
+					<label class="txtmini"><b>Cliente:</b></label><br>
 					<input type="text" id="filtroCliente" onkeyup="filtraTabla()">
 				</td>
+			</tr>
+			<tr>
 				<td>
-					<label class="txtmini">Estatus:</label><br>
+					<label class="txtmini"><b>Estatus:</b></label><br>
 					<div id="filtroEstatus"></div>
 					<!--- <select id="filtroEstatus" onchange="filtraTabla()"><option value="-1"> - Todos - </option></select> -->
 				</td>
 			</tr>
 		</table>
+	</div>
+	<div class="contenido" style="position: relative; float: left; max-width: 75%;">
+
+			
 		
 			
 		
