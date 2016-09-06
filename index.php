@@ -106,13 +106,23 @@
 	<style type="text/css">
 	
 	.d{text-decoration:none;}
+	.cuerpoHome{
+		width: 90%;
+		max-width: 1800px;
+		min-width: 1330px;
+		height: auto;
+		margin: auto;
+		position: relative;		
+		background-color: rgba(255,255,255,0.4);
+		color:#000;
+	}
 	</style>
 
 </head>
 <body>
 <?php include_once("header.htm"); ?>
-<div class="cuerpo">
-	<div class="contenido" style="position: relative; float: left; max-width: 80%;">
+<div class="cuerpoHome">
+	<!-- <div class="contenido" style="position: relative; float: left; max-width: 80%;">
 		<div class="datagrid">
 			<table id="tblProyectos" >
 				<thead>
@@ -124,11 +134,12 @@
 				<tfoot><tr><td colspan="8"></td></tr></tfoot>	
 					
 			</table>
-		</div>
-	</div>
-	<div class="recordatorios" style="position: relative;"> 
+		</div> -->
 		<?php include_once("recordatorios/recordatorios_home.php"); ?>
 	</div>
+	<!-- <div class="recordatorios" style="position: relative;"> 
+		
+	</div> -->
 </div>
 
 

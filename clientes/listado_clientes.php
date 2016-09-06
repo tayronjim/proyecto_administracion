@@ -71,7 +71,7 @@
 <?php include_once("../header.htm"); ?>
 <div class="cuerpo" ><h1>Listado de Cliente</h1>
 	<div id="areaFiltros">
-		<label class="txtmini"><b>Proyecto:</b></label><br>
+		<label class="txtmini"><b>Cliente:</b></label><br>
 		<input type="text" id="filtroCliente" onkeyup="filtraTabla()">
 	</div>
 	<div class="contenido" style="position: relative; float: left;">
