@@ -55,6 +55,7 @@
 	border: 2px solid #bababa;
 	background: linear-gradient(#f9f9f9, #e3e3e3);
 	margin: 5px;
+	
 	max-height: 380px;
 	min-height: 45px;
 	overflow: hidden;

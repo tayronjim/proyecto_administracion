@@ -65,7 +65,7 @@
 	 				$totalMesActual = 0;
 					$totalMesAnterior = 0;
 					$estatus = Array(12);
-					for($i=0;$i<=10;$i++){
+					for($i=0;$i<=11;$i++){
 						$estatus[$i] = 0;
 					}
 	 				while(obj.proyecto[$cont]){
@@ -206,14 +206,26 @@
 	 		// 	success: function(data){}
 	 		// });
 
-			$("#desplegarSeguimiento").click(function(){
-				$("#segActividades").slideToggle("slow");
-			});
-			$("#segActividades").css("display","none");
+			// $("#desplegarSeguimiento").click(function(){
+			// 	$("#segActividades").slideToggle("slow");
+			// });
+			// $("#segActividades").css("display","none");
 
 
 			$("#desplegarCierres").click(function(){
-				$("#proyectosEnOvertime").slideToggle("slow");
+				if ($("#graf_overtime").is(":visible")) {
+					$("#graf_overtime").animate({width: 'toggle'},function(){
+						$("#proyectosEnOvertime").animate({width: 'toggle'});
+					});
+				}
+				else{
+					$("#proyectosEnOvertime").animate({width: 'toggle'},function(){
+						$("#graf_overtime").animate({width: 'toggle'});
+					});
+				}
+				
+				
+
 			});
 			$("#proyectosEnOvertime").css("display","none");
 
@@ -221,15 +233,15 @@
 			$("#desplegarGarantias").click(function(){
 				$("#proyectosEnGarantia").slideToggle("slow");
 			});
-			$("#proyectosEnGarantia").css("display","none");
+			// $("#proyectosEnGarantia").css("display","none");
 			
 
-			$("#desplegarFacturado").click(function(){
-				$("#proyectosFacturados").slideToggle("slow");
-				//$("#facturasPagadasAnterior").slideToggle("slow");
-			});
-			$("#proyectosFacturados").css("display","none");
-			//$("#facturasPagadasAnterior").css("display","none");
+			// $("#desplegarFacturado").click(function(){
+			// 	$("#proyectosFacturados").slideToggle("slow");
+			// 	//$("#facturasPagadasAnterior").slideToggle("slow");
+			// });
+			// $("#proyectosFacturados").css("display","none");
+			// //$("#facturasPagadasAnterior").css("display","none");
 
 		});
 		// Load the Visualization API and the corechart package.
@@ -319,6 +331,16 @@
 				return x1 + x2;
 		}
 	</script>
+	<style type="text/css">
+		.infoBox{
+			float: left;
+			height: 240px;
+		}
+		.bodySegActividades{
+			height: 200px !important;
+			margin: 5px !important;
+		}
+	</style>
 </head>
 <body>
 
@@ -338,12 +360,11 @@
 		<div id="graf_estatus" style="float:left;"></div>
 	</div>
 
-	<div class="infoBox">
+	<!-- <div class="infoBox">
 		<a class="infoBoxTitulo" id='desplegarGarantias'><b>Garantia</b><label class="contSeg" id="contGarantia" ></label></a>
 		<div class="bodyEnGarantia" id="proyectosEnGarantia">
 		</div>
 	</div>
-
 		
 	<div class="infoBox">
 		<a class="infoBoxTitulo" id='desplegarFacturado'><b>Facturado Reciente</b><label class="contSeg" id="contFacturado" style="padding-right: 10px;">$ </label></a>
@@ -354,7 +375,7 @@
 				<div id="facturasPagadasAnterior"><b>Facturado Mes Anterior:</b><label style="float: right; padding-right: 10px;">$ </label></div>
 			
 		</div>
-	</div>
+	</div> -->
 		
 </body>
 </html>

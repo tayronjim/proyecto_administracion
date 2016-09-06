@@ -4,6 +4,10 @@
 	<?php include_once("../librerias_base.htm"); ?>
 
 	<script type="text/javascript">
+				$estatus = Array(11);
+					for($i=0;$i<=10;$i++){
+						$estatus[$i] = 0;
+				}
 		$(document).ready(function(){
 			$("li").removeClass( "current" )
 			$("#menuFunnel").addClass('current');
@@ -66,6 +70,21 @@
 	 						case "4": $nombre_proyecto = "Talent Management"; break;
 	 						default: $nombre_proyecto = ""; break;
 	 					}
+
+	 					switch(estatus.clave){
+							case '1': $estatus[1] = $estatus[1] + 1; break;
+							case '2': $estatus[2] = $estatus[2] + 1; break;
+							case '3': $estatus[3] = $estatus[3] + 1; break;
+							case '4': $estatus[4] = $estatus[4] + 1; break;
+							case '5': $estatus[5] = $estatus[5] + 1; break;
+							case '6': $estatus[6] = $estatus[6] + 1; break;
+							case '7': $estatus[7] = $estatus[7] + 1; break;
+							case '8': $estatus[8] = $estatus[8] + 1; break;
+							case '9': $estatus[9] = $estatus[9] + 1; break;
+							case '10': $estatus[10] = $estatus[10] + 1; break;
+							case '10': $estatus[0] = $estatus[0] + 1; break;
+							
+						}
 	 					
 	 					$("#tblProyectos tbody").append("<tr "+$claseAlt+"><td class='colProy'>"+$nombre_proyecto+"</td><td class='colCliente'>"+cliente.publico+" / "+rs.rs+"</td><td>"+proy.fechainicio+"</td><td class='colEstatus'>"+estatus.nombre+"</td><td><input type='hidden' value='"+obj.Proyectos[$cont].id+"'><span class='flechaProyecto boton' valor='"+obj.Proyectos[$cont].id+"'><img src='../img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
 						$cont++;
