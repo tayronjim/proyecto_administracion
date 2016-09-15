@@ -36,6 +36,7 @@
 	 					$("#txtNombreCorto").val(Col.nombrec);
 	 					$("#txtNombreLargo").val(Col.nombrel);
 	 					$("#idColaborador").val($colaborador);
+	 					$("#txtEMail").val(Col.email);
 	 					$("#txtPuesto").val(Col.puesto);
 	 					if (Col.activo == "1") {$("#chkactivo").attr('checked',true);}
 	 					else{$("#chkactivo").attr('checked',false);}
@@ -100,21 +101,26 @@
 		}
 
 	</script>
+	<style type="text/css">
+		input[type="text"].dataColaborador,input[type="email"].dataColaborador{
+			width: 200px;
+		}
+	</style>
 </head>
 <body>
 	<?php include_once("../header.htm"); ?>
 <div class="cuerpo">
 	<h1>Registro de Colaboradores</h1>
 	<input	type="hidden" value="0" class="dataColaborador"  name="idColaborador" id="idColaborador">
-	<table class="tblFormularios">
+	<table class="tblFormularios" border="0">
 		<!-- <tr>
 			<td>Codigo</td>	<td><input type="text" class="dataColaborador" id="txtCodigo" name="codigo"></td>
 		</tr> -->
 		<tr>
-			<td>Nombre Corto</td><td><input type="text" class="dataColaborador" id="txtNombreCorto" name="nombrec"></td>
+			<td>Nombre Corto</td><td><input type="text" class="dataColaborador" id="txtNombreCorto" name="nombrec"></td><td>e-Mail</td><td><input type="email" class="dataColaborador" id="txtEMail" name="email"></td>
 		</tr>
 		<tr>
-			<td>Nombre Completo</td><td><input type="text" class="dataColaborador" id="txtNombreLargo" name="nombrel"></td>
+			<td>Nombre Completo</td><td><input type="text" class="dataColaborador" id="txtNombreLargo" name="nombrel"></td><td colspan="2"></td>
 		</tr>
 		<tr>
 			<td>Puesto</td>
@@ -126,10 +132,10 @@
 					<tr><td>Apoyo<input type="checkbox" class="dataColaborador" id="chkPuestoApoyo" name="apoyo"></td></tr>
 				</table>
 			
-			<!-- <input type="text" class="dataColaboradorPuesto" id="txtPuesto" name="puesto"></td> -->
+			<!-- <input type="text" class="dataColaboradorPuesto" id="txtPuesto" name="puesto"> --></td><td colspan="2"></td>
 		</tr>
 		<tr>
-			<td></td><td>Activo <input type="checkbox" class="dataColaborador" id="chkactivo" name="activo" checked></td>
+			<td></td><td>Activo <input type="checkbox" class="dataColaborador" id="chkactivo" name="activo" checked></td><td colspan="2"></td>
 		</tr>
 		
 	</table>

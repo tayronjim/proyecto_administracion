@@ -2,6 +2,8 @@
 <html>
 <head>
 	<?php include_once("librerias_base.htm"); ?>
+	<?php $dirActual = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; ?>
+	<?php //include_once("sesion\check_sesion.php"); ?>
 
 	<script type="text/javascript">
 	function imprimetablaproyectos(listCuerpo){
