@@ -25,7 +25,7 @@
 	 			success: function(data){
 	 				$listadoKam = JSON.parse(data);
 	 				$cont = 0;
-	 				console.log($listadoKam);
+	 				//console.log($listadoKam);
 	 				while($listadoKam[$cont]){
 	 					var kamDatos = JSON.parse($listadoKam[$cont].datos);
 	 					if (kamDatos.puesto.consultor == "1") {
@@ -135,7 +135,7 @@
 	 				var datos_contrato = JSON.parse(obj.Proyecto[0].contrato);
 
 		 				$("#empresa").val(datos_proyecto.empint);
-		 				$("#kam").val(datos_proyecto.kam); console.log(datos_proyecto.kam);
+		 				$("#kam").val(datos_proyecto.kam); //console.log(datos_proyecto.kam);
 		 				$("#kam2").val(datos_proyecto.kam2);
 		 				$("#proyectoRequerido").val(datos_proyecto.proyectoRequerido);
 		 				$("#fechaInicio").val(datos_proyecto.fechainicio);
@@ -201,7 +201,7 @@
 		 				
 			 				
 			 			
-		 				$("#slcEstatus").val(datos_proyecto.estatus); console.log(datos_proyecto.estatus);
+		 				$("#slcEstatus").val(datos_proyecto.estatus); //console.log(datos_proyecto.estatus);
 		 				cambiaBotonGuardado(datos_proyecto.estatus);
 		 				
 		 				switch(datos_proyecto.estatus){
@@ -502,123 +502,129 @@
 	    	general = {};
 		    cliente = {};
 		    contrato = {};
+		    $error = 0;
+
+		    if($("#idCliente").val() == -1){alert("Debes seleccionar un cliente"); $error = 1;}
 		   
-
-		    $(".formProyectCliente").each(function() {
-		        var name = $(this).attr("name");
-		        var valor = $(this).val();
-		        cliente[name] = valor;
-		    }); 
-		 
-		    $(".datosProyecto").each(function() {
-		        var name = $(this).attr("name");
-		        var valor = $(this).val();
-		        general[name] = valor;
-		    }); 
-		 
-		  	jsActividades = [];
-			jsSeguimiento = [];
-		
-		    $(".registroActividades").each(function() {
-
-		    	$fila = $(this).val();
-		    	$fecha = $("#fecha_"+$fila).val();
-		    	$actividad = $("#txtActividad_"+$fila).val();
-		    	$actividad = $actividad.replace(/\n/g, "\\n");
-
-		        item = {};
-		     
-		        item ["fecha"] = $fecha;
-		        item ["act"] = $actividad;
-
-		        jsActividades.push(item);
-		    });
-		   
-		    $(".registroSeguimientos").each(function() {
-
-		    	$filaS = $(this).val();
-		    	$fechaS = $("#fechaSeg_"+$filaS).val();
-		    	$actividadS = $("#txtAreaSeg_"+$filaS).val();
-		    	$actividadS = $actividadS.replace(/\n/g, "\\n");
-
-		        itemS = {};
-		        itemS ["fecha"] = $fechaS;
-		        itemS ["act"] = $actividadS;
+		   if ($error == 0) {
+		   		$(".formProyectCliente").each(function() {
+			        var name = $(this).attr("name");
+			        var valor = $(this).val();
+			        cliente[name] = valor;
+			    }); 
+			 
+			    $(".datosProyecto").each(function() {
+			        var name = $(this).attr("name");
+			        var valor = $(this).val();
+			        general[name] = valor;
+			    }); 
+			 
+			  	jsActividades = [];
+				jsSeguimiento = [];
 			
-		        jsSeguimiento.push(itemS);
-		    });
-		    
+			    $(".registroActividades").each(function() {
 
-		    $(".datosContrato").each(function(){
-		    	var name = $(this).attr("name");
-		        var valor = $(this).val();
-		        contrato[name] = valor;
-		    });
-		  
-		    jsonStringGeneral = JSON.stringify(general);
-		    jsonStringCliente = JSON.stringify(cliente);
-		    jsonStringContrato = JSON.stringify(contrato);
-		    jsonActividades = JSON.stringify(jsActividades);
-		    jsonSeguimiento = JSON.stringify(jsSeguimiento);
-		  
-		    $nextID = "";
+			    	$fila = $(this).val();
+			    	$fecha = $("#fecha_"+$fila).val();
+			    	$actividad = $("#txtActividad_"+$fila).val();
+			    	$actividad = $actividad.replace(/\n/g, "\\n");
 
-		    $.ajax({
-	 			type: "POST",
-	 			url: "control.php",
-	 			data: { "funcion" : "guardaProyecto", "general" : jsonStringGeneral, "cliente" : jsonStringCliente, "contrato" : jsonStringContrato, "actividades" : jsonActividades, "seguimiento" : jsonSeguimiento, "proyecto" : $proyecto },
-	 			success: function(data){
-	 				if ($terminaFunnel == 1) {
-	 					$.ajax({
-				 			type: "POST",
-				 			url: "control.php",
-				 			data: { "funcion" :  "buscaUltimoID" },
-				 			success: function(data){
+			        item = {};
+			     
+			        item ["fecha"] = $fecha;
+			        item ["act"] = $actividad;
 
-				 				 $fecha = new Date();
-				 				 $anio = $fecha.getFullYear();
-				 				 $nextID = parseInt(data.replace(/"/g, ''))+1;
-				 				 $preWBS = $anio+"-"+(parseInt(data.replace(/"/g, ''))+1);
+			        jsActividades.push(item);
+			    });
+			   
+			    $(".registroSeguimientos").each(function() {
 
-				 				 $(".mandaproyecto").each(function($key, $value){
-							    	alert("manda");
-							    	$kamPrincipal = $("#kam3").val();
-							    	$recl = $("#recl3").val();
-							    	$fechaHoy = new Date();
-							    	$anioHoy = $fechaHoy.getFullYear();
-							    	$mesHoy = $fechaHoy.getMonth()+1;
-							    	$diaHoy = $fechaHoy.getDate();
-							    	if (parseInt($diaHoy) < 10) {$diaHoy = "0" + $diaHoy;}
-							    	if (parseInt($mesHoy) < 10) {$mesHoy = "0" + $mesHoy;}
+			    	$filaS = $(this).val();
+			    	$fechaS = $("#fechaSeg_"+$filaS).val();
+			    	$actividadS = $("#txtAreaSeg_"+$filaS).val();
+			    	$actividadS = $actividadS.replace(/\n/g, "\\n");
 
-							    	$proyRequerido = $("#proyectoRequerido").val();
-							    	$proyectoReq = $("#proyectoReq").val();
+			        itemS = {};
+			        itemS ["fecha"] = $fechaS;
+			        itemS ["act"] = $actividadS;
+				
+			        jsSeguimiento.push(itemS);
+			    });
+			    
 
-							    	
-							    	$datosProyectoPlus = {"wbs":$preWBS+"-"+$kamPrincipal,"kam":$kamPrincipal,"reclutador":$recl,"kam2":"-1","apoyo":"-1","prioridad":"1","fIniY":$anioHoy,"fIniM":$mesHoy,"fIniD":$diaHoy,"proyRequerido":$proyRequerido,"proyectoReq":$proyectoReq,"estatus":"1","posicion":"","disciplina":"-1","cta":"1","nivel":"1","salario":"0"};
-							    	
-							    	$.each($datosProyectoPlus, function($key, $value){
-							    		general[$key] = $value;
-							    	});
+			    $(".datosContrato").each(function(){
+			    	var name = $(this).attr("name");
+			        var valor = $(this).val();
+			        contrato[name] = valor;
+			    });
+			  
+			    jsonStringGeneral = JSON.stringify(general);
+			    jsonStringCliente = JSON.stringify(cliente);
+			    jsonStringContrato = JSON.stringify(contrato);
+			    jsonActividades = JSON.stringify(jsActividades);
+			    jsonSeguimiento = JSON.stringify(jsSeguimiento);
+			  
+			    $nextID = "";
 
-							    	$datosFacturacionPlus = {"valorproyecto":contrato.valorProyecto,"totalfacturado":"0.00","porcfacturado":"0.00%","xfacturar":contrato.valorProyecto,"lista":{"facno1":"","monto1":"0","fenvio1":"","fpago1":"","facno2":"","monto2":"0","fenvio2":"","fpago2":"","facno3":"","monto3":"0","fenvio3":"","fpago3":""}};
-							    	
-							    	jsonStringFacturacion = JSON.stringify($datosFacturacionPlus);
-							    	jsonStringGeneral2 = JSON.stringify(general);
-							    	
-							    	
-							    	mandaAProyectos(jsonStringGeneral2,jsonStringCliente,jsonStringContrato,$proyecto,jsonStringFacturacion);
-							
-							    });
-				 			}
-				 		});
-	 				}
-	 				 else{
-	 				 	window.location="listado_proyectos.php";
-	 				 }
-		 				
-	 			}
-	 		});
+			    $.ajax({
+		 			type: "POST",
+		 			url: "control.php",
+		 			data: { "funcion" : "guardaProyecto", "general" : jsonStringGeneral, "cliente" : jsonStringCliente, "contrato" : jsonStringContrato, "actividades" : jsonActividades, "seguimiento" : jsonSeguimiento, "proyecto" : $proyecto },
+		 			success: function(data){
+		 				if ($terminaFunnel == 1) {
+		 					$.ajax({
+					 			type: "POST",
+					 			url: "control.php",
+					 			data: { "funcion" :  "buscaUltimoID" },
+					 			success: function(data){
+
+					 				 $fecha = new Date();
+					 				 $anio = $fecha.getFullYear();
+					 				 $nextID = parseInt(data.replace(/"/g, ''))+1;
+					 				 $preWBS = $anio+"-"+(parseInt(data.replace(/"/g, ''))+1);
+
+					 				 $(".mandaproyecto").each(function($key, $value){
+								    	alert("manda");
+								    	$kamPrincipal = $("#kam3").val();
+								    	$recl = $("#recl3").val();
+								    	$fechaHoy = new Date();
+								    	$anioHoy = $fechaHoy.getFullYear();
+								    	$mesHoy = $fechaHoy.getMonth()+1;
+								    	$diaHoy = $fechaHoy.getDate();
+								    	if (parseInt($diaHoy) < 10) {$diaHoy = "0" + $diaHoy;}
+								    	if (parseInt($mesHoy) < 10) {$mesHoy = "0" + $mesHoy;}
+
+								    	$proyRequerido = $("#proyectoRequerido").val();
+								    	$proyectoReq = $("#proyectoReq").val();
+
+								    	
+								    	$datosProyectoPlus = {"wbs":$preWBS+"-"+$kamPrincipal,"kam":$kamPrincipal,"reclutador":$recl,"kam2":"-1","apoyo":"-1","prioridad":"1","fIniY":$anioHoy,"fIniM":$mesHoy,"fIniD":$diaHoy,"proyRequerido":$proyRequerido,"proyectoReq":$proyectoReq,"estatus":"1","posicion":"","disciplina":"-1","cta":"1","nivel":"1","salario":"0"};
+								    	
+								    	$.each($datosProyectoPlus, function($key, $value){
+								    		general[$key] = $value;
+								    	});
+
+								    	$datosFacturacionPlus = {"valorproyecto":contrato.valorProyecto,"totalfacturado":"0.00","porcfacturado":"0.00%","xfacturar":contrato.valorProyecto,"lista":{"facno1":"","monto1":"0","fenvio1":"","fpago1":"","facno2":"","monto2":"0","fenvio2":"","fpago2":"","facno3":"","monto3":"0","fenvio3":"","fpago3":""}};
+								    	
+								    	jsonStringFacturacion = JSON.stringify($datosFacturacionPlus);
+								    	jsonStringGeneral2 = JSON.stringify(general);
+								    	
+								    	
+								    	mandaAProyectos(jsonStringGeneral2,jsonStringCliente,jsonStringContrato,$proyecto,jsonStringFacturacion);
+								
+								    });
+					 			}
+					 		});
+		 				}
+		 				 else{
+		 				 	window.location="listado_proyectos.php";
+		 				 }
+			 				
+		 			}
+		 		});
+		   }
+
+			    
 			 		
 	    }
  

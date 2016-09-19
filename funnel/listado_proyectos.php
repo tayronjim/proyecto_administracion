@@ -20,7 +20,7 @@
 	 				var obj = JSON.parse(data);
 	 				$cont = 0;
 	 				while(obj[$cont]){
-	 					console.log(obj[$cont]);
+	 					//console.log(obj[$cont]);
 	 					var estatus = JSON.parse(obj[$cont].descripcion)
 			 			//$("#filtroEstatus").append("<option value='"+estatus.nombre+"'>"+estatus.nombre+"</option>");
 			 			if (estatus.clave == "7" || estatus.clave == "9" || estatus.clave == "10") {
@@ -30,6 +30,7 @@
 			 			$("#filtroEstatus").append("<input type='checkbox' onchange='filtraTabla()' class='filtroEstatus' "+$checked+" value='"+estatus.nombre+"'><label>"+estatus.nombre+"</label><br>");
 	 					$cont ++ ;
 	 				}
+
 	 			}
 	 		});
 
@@ -46,6 +47,7 @@
 	 				$cont = 0;
 	 				$alt = -1;
 	 				while(obj.Proyectos[$cont]){
+	 					//console.log(obj.Proyectos[$cont]);
 	 					var proy = JSON.parse(obj.Proyectos[$cont].datos_proyecto);
 	 					var cliente = JSON.parse(obj.Proyectos[$cont].cliente.otros.datos_cliente);
 	 					var rs = JSON.parse(obj.Proyectos[$cont].cliente.otros.facturacion);

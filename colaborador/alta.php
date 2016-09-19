@@ -31,7 +31,7 @@
 	 				var Col2 = JSON.parse(data);
 	 				var Col = JSON.parse(Col2.datos);
 	 				var puestos = Col.puesto;
-	 		 console.log(puestos);
+	 		 //console.log(puestos);
 	 					//$("#txtCodigo").val(Col.codigo);
 	 					$("#txtNombreCorto").val(Col.nombrec);
 	 					$("#txtNombreLargo").val(Col.nombrel);

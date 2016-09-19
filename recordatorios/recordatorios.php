@@ -15,7 +15,7 @@
 	 			data: { "funcion" : "seguimientos", "area":"proyecto"},
 	 			success: function(data){
 	 				var obj = JSON.parse(data);
-	 				console.log(obj);
+	 				//console.log(obj);
 	 				$cont=0;
 	 				$contSeguimientos = 0;
 	 				$jsonObj = {};

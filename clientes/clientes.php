@@ -67,11 +67,11 @@
 						$("#tblContacto > tbody").append('<tr id="filaContacto_'+$filasContacto+'" style="border-bottom:1px solid #E1EEF4"><td><div id="btnMenosContacto_'+$filasContacto+'" class="btnMenosCont"></div><input type="hidden" value="'+$filasContacto+'" class="registroContactos"><input type="hidden" class="datoContacto_'+$filasContacto+'" id="idContacto_'+$filasContacto+'" name="idcontacto" value="'+$filasContacto+'"></td><td><input type="text" class="datoContacto_'+$filasContacto+'" id="txtNombre_'+$filasContacto+'" value="'+datosContacto[$cont].nombre+'" name="nombre" style="width:250px;" placeholder="Nombre Completo"><br><input type="text" class="datoContacto_'+$filasContacto+'" id="txtArea_'+$filasContacto+'" value="'+datosContacto[$cont].area+'" name="area" style="width:170px;" placeholder="Area / Puesto"></td><td><table id="tblMedioContacto_'+$filasContacto+'" contacto="'+$filasContacto+'" ><tbody></tbody></table></td><td><input type="date" class="datoContacto_'+$filasContacto+'" id="txtCumpleaños_'+$filasContacto+'" value="'+datosContacto[$cont].cumpleaños+'" name="cumpleaños" style="width:130px;"></td><td><textarea class="datoContacto_'+$filasContacto+'" id="txtObservaciones_'+$filasContacto+'" name="observaciones" style="width:200px; height:40px;">'+datosContacto[$cont].observaciones+'</textarea></td><td></td></tr>');
 
 						$cont2=0;
-						console.log(datosContacto[$cont].medioDeContacto[$cont2]);
+						//console.log(datosContacto[$cont].medioDeContacto[$cont2]);
 						while(datosContacto[$cont].medioDeContacto[$cont2]){
 							$idTipoContacto = datosContacto[$cont].medioDeContacto[$cont2].tipoContacto;
 							$idValorContacto = datosContacto[$cont].medioDeContacto[$cont2].valorContacto;
-							console.log($idTipoContacto + "," + $idValorContacto);
+							//console.log($idTipoContacto + "," + $idValorContacto);
 							$('#tblMedioContacto_'+$filasContacto+' > tbody').append('<tr class="tblFilaContacto'+$filasContacto+'" fila="'+$cont2+'"><td></td><td><select id="tipoContactoFila'+$filasContacto+'_'+$cont2+'"><option value="1">Telefono Movil</option><option value="2">Telefono Trabajo</option><option value="3">e-Mail</option><option value="4">linkedin</option><option value="5">ubicacion</option></select></td><td><input id="valorTipoContactoFila'+$filasContacto+'_'+$cont2+'" type="text" class="datoContacto" name="valor" style="width:150px;"></td></tr>');
 							$('#tipoContactoFila'+$filasContacto+'_'+$cont2).val($idTipoContacto);
 							$('#valorTipoContactoFila'+$filasContacto+'_'+$cont2).val($idValorContacto);

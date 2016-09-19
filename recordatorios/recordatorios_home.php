@@ -58,7 +58,7 @@
 	 			data: { "funcion" : "datosProyectos", "area":"proyecto"},
 	 			success: function(data){
 	 				var obj = JSON.parse(data);
-	 				console.log(obj);
+	 				//console.log(obj);
 	 				$inOvertime = 0;
 	 				$contGarantia = 0;
 	 				$cont=0;
@@ -182,7 +182,7 @@
 						
 	 					$cont ++;
 	 				}
-	 				console.log($estatus);
+	 				//console.log($estatus);
 	 				$totalDeProyectos = $cont;
 	 				if ($inOvertime > 0) {
 	 					$("#contCierre").html($inOvertime);

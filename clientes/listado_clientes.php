@@ -11,14 +11,14 @@
 	 			url: "control.php",
 	 			data: { "funcion" : "listado" },
 	 			success: function(data){
-	 				console.log(data);
+	 				//console.log(data);
 	 				var obj = JSON.parse(data);
 	 				$cont = 0;
 	 				$alt = -1;
 	 				while(obj.Cliente[$cont]){
-	 					console.log(obj.Cliente[$cont]);
+	 					//console.log(obj.Cliente[$cont]);
 	 					var datos = JSON.parse(obj.Cliente[$cont].datos_cliente);
-	 					console.log(datos);
+	 					//console.log(datos);
 	 					if ($alt == 1) {$claseAlt = "class='alt'";}else $claseAlt = '';
 	 					$("#tblClientes tbody").append("<tr "+$claseAlt+"><td class='colCliente' style='width:300px;'>"+datos.publico+"</td><td><span class='flechaClientes boton' valor='"+obj.Cliente[$cont].id+"'><img src='../img/arrow-yellow.png' width='20px' height='auto'></span></td></tr>");
 						$cont++;

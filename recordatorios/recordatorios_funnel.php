@@ -33,7 +33,7 @@
 	 					$seguimiento = JSON.parse(obj.Seguimiento[$cont].seguimiento);
 	 					$proyecto = JSON.parse(obj.Seguimiento[$cont].proyecto);
 	 					$cliente = JSON.parse(obj.Seguimiento[$cont].cliente);
-	 					console.log(obj.Seguimiento[$cont]);
+	 					//console.log(obj.Seguimiento[$cont]);
 	 						$cont2 = 0;
 	 						while($seguimiento[$cont2]){	 			
 	 							ms = Date.parse($seguimiento[$cont2].fecha);
