@@ -34,6 +34,7 @@
 	</style>
 </head>
 	
+RAFAEL AGUILAR OLIVARES
 
 <body>
 <?php 
@@ -59,17 +60,17 @@ function checkBusqueda(){
 	  echo $puesto." ";
 	  $findPuesto = "`candidato_historial`.Puesto LIKE '%".$puesto."%' AND ";
 
-	  $recidencia = test_input($_POST["recidencia"]);
-	  echo $recidencia." ";
+	  $residencia = test_input($_POST["residencia"]);
+	  echo $residencia." ";
 	  $nombre = test_input($_POST["nombre"]); 
 	  echo $nombre." ";
 	  $findName = "concat(`candidato`.Nombre,' ',`candidato`.ApPaterno,' ',`candidato`.ApMaterno) LIKE '%".$nombre."%' AND ";
-	  $findRecidence = "concat(candidato_generales.Dir_Ciudad,' ',candidato_generales.Dir_Estado) LIKE '%".$recidencia."%' AND ";
+	  $findRecidence = "concat(candidato_generales.Dir_Ciudad,' ',candidato_generales.Dir_Estado) LIKE '%".$residencia."%' AND ";
 	  $conocimientos = test_input($_POST["conocimientos"]);
 	  echo $conocimientos." ";
 	  $findKnowed ="";
 	  $output = preg_split( "/,/", $conocimientos);
-	  foreach ($output as $key => $value) { $findKnowed .= "`candidato_extras`.Descripcion LIKE '%".test_input($value)."%' AND "; }
+	  foreach ($output as $key => $value) { $findKnowed .= "(SELECT IF(`candidato_extras`.IdCandidato > 0, `candidato_extras`.Descripcion LIKE '%".test_input($value)."%', 1)) AND "; }
 	  
 	  
 
@@ -88,7 +89,7 @@ function test_input($data) {
   return $data;
 }
 
-function busqueda($nombre,$recidencia,$conocimientos,$empresa,$puesto){
+function busqueda($nombre,$residencia,$conocimientos,$empresa,$puesto){
 
 	$query = "SELECT `candidato`.IdCandidato, concat(`candidato`.Nombre,' ',`candidato`.ApPaterno,' ',`candidato`.ApMaterno) as nombre, `candidato`.eMail, ";
 	//$query .=	 "group_concat(DISTINCT '<li>',`candidato_estudios`.Institucion,' > ',`catestudio_grado`.Descripcion,'</li>') as estudios, ";
@@ -97,12 +98,12 @@ function busqueda($nombre,$recidencia,$conocimientos,$empresa,$puesto){
 	$query .="FROM `candidato` ";
 	//$query .=	 "INNER JOIN `candidato_estudios` ON `candidato`.IdCandidato = `candidato_estudios`.IdCandidato ";
 	//$query .=	 "INNER JOIN `catestudio_grado` ON `candidato_estudios`.IdGradoEstudio = `catestudio_grado`.IdGrado ";
-	$query .=	 "INNER JOIN `candidato_extras` ON `candidato`.IdCandidato = `candidato_extras`.IdCandidato ";
+	$query .=	 "LEFT JOIN `candidato_extras` ON `candidato`.IdCandidato = `candidato_extras`.IdCandidato ";
 	$query .=	 "INNER JOIN `candidato_generales` ON `candidato`.IdCandidato = `candidato_generales`.IdCandidato ";
 	$query .=	 "LEFT JOIN `candidato_historial` ON `candidato_historial`.IdCandidato = `candidato`.IdCandidato ";
 	$query .="WHERE ";
 	$query .=	 $nombre;
-	$query .=	 $recidencia;
+	$query .=	 $residencia;
 	//$query .=	 "Institucion LIKE '%u%' AND ";
 	$query .=	 $conocimientos;
 	$query .=	 $empresa;
@@ -112,7 +113,7 @@ function busqueda($nombre,$recidencia,$conocimientos,$empresa,$puesto){
 	$query .="ORDER BY `candidato`.IdCandidato limit 0,100";
 
 	//echo $query;
-	
+
 	$connectdb = connectdb();
 	
 	$tablaCandidato = $connectdb->query($query);
@@ -125,6 +126,7 @@ function busqueda($nombre,$recidencia,$conocimientos,$empresa,$puesto){
 
 	
 
+
 ?>
 <div class="header"><h1>BUSQUEDA DE CANDIDATOS</h1></div>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
@@ -134,8 +136,8 @@ function busqueda($nombre,$recidencia,$conocimientos,$empresa,$puesto){
 		<input type="text" name="nombre" id="nombre"><br>
 		<!-- eMail:<br>
 		<input type="text"><br> -->
-		Recidencia:<br>
-		<input type="text" name="recidencia" id="recidencia"><br>
+		Residencia:<br>
+		<input type="text" name="residencia" id="residencia"><br>
 		Conocimientos:<br>
 		<input type="text" name="conocimientos" id="conocimientos"><br>
 		<!-- Giro:<br>
@@ -164,7 +166,7 @@ function busqueda($nombre,$recidencia,$conocimientos,$empresa,$puesto){
 				<td>eMail</td>
 				<!-- <td>Instituto</td> -->
 				<td>Conocimientos</td>
-				<td>Recidencia</td>
+				<td>Residencia</td>
 				<td>Historial Laboral</td>
 			</tr>
 		</thead>
@@ -175,7 +177,7 @@ function busqueda($nombre,$recidencia,$conocimientos,$empresa,$puesto){
 				$email = "";
 				//$estudios = "";
 				$conocimientos = "";
-				$recidencia = "";
+				$residencia = "";
 				$historialLaboral = "";
 
 				$tablaCandidato = checkBusqueda();
@@ -187,10 +189,10 @@ function busqueda($nombre,$recidencia,$conocimientos,$empresa,$puesto){
 							$email = $row['eMail'];
 							//$estudios = $row['estudios'];
 							$conocimientos = $row['extras'];
-							$recidencia = $row['Dir_Ciudad']." ".$row['Dir_Estado']." ".$row['Dir_Pais'];
+							$residencia = $row['Dir_Ciudad']." ".$row['Dir_Estado']." ".$row['Dir_Pais'];
 							$historialLaboral = $row['historialLaboral'];
 							
-							echo "<tr id='".$idCandidato."' onclick='abrePerfil(this.id);'><td>".$nombre."</td><td>".$email."</td><td>".$conocimientos."</td><td>".$recidencia."</td><td><ul>".$historialLaboral."</ul></td></tr>";
+							echo "<tr id='".$idCandidato."' onclick='abrePerfil(this.id);'><td>".$nombre."</td><td>".$email."</td><td>".$conocimientos."</td><td>".$residencia."</td><td><ul>".$historialLaboral."</ul></td></tr>";
 
 					}
 				}
