@@ -164,7 +164,7 @@
 		 				$("#monto3").val(addCommas(datos_facturacion.lista.monto3));
 		 				$("#fEnvio3").val(datos_facturacion.lista.fenvio3);
 		 				$("#fPago3").val(datos_facturacion.lista.fpago3);
-		 			}catch(err){console.log(err.message);}
+		 			}catch(err){//console.log(err.message);}
 			 				
 			 			$cont=0;
 			 			while(obj.Estatus[$cont]){

@@ -20,7 +20,7 @@
 	 			success: function(data){
 	 				
 	 				var obj = JSON.parse(data);
-	 				console.log(obj);
+	 				//console.log(obj);
 	 				$cont = 0;
 	 				$alt = -1;
 	 				while(obj[$cont]){
@@ -151,9 +151,9 @@
 
 	function selectCliente($idCliente,$idFac){
 		
-		console.log($facturacion[$idCliente][$idFac]);
-		console.log($contacto[$idCliente]);
-		console.log($cliente[$idCliente]);
+		//console.log($facturacion[$idCliente][$idFac]);
+		//console.log($contacto[$idCliente]);
+		//console.log($cliente[$idCliente]);
 
 		$clienteActivo = $idCliente;
 
@@ -181,7 +181,7 @@
 	}
 	function seleccionaContacto($key){
 		$datoContacto = $contacto[$clienteActivo][$key];
-		console.log($datoContacto);
+		//console.log($datoContacto);
 		$("#lblContacto").html("");
 		$("#lblContacto").append("<table border='0' style=' border-spacing: 0px;'><tr><td style='border-right:1px solid white; text-align: right;'>Nombre</td><td style='text-align: left;'>"+$datoContacto.nombre +"</td></tr><tr><td style='border-right:1px solid white; text-align: right;'>Área/Puesto</td><td style='text-align: left;'>"+$datoContacto.area +"</td></tr>");
 
@@ -246,7 +246,7 @@
 			        var valor = $(this).val();
 			        cliente[name] = valor;
 			    }); 
-			    console.log(cliente);
+			    //console.log(cliente);
 
 			    $(".formProyect").each(function() {
 			        var name = $(this).attr("name");
@@ -280,7 +280,7 @@
 		 			url: "control.php",
 		 			data: { "funcion" : "guardaProyecto", "general" : jsonStringGeneral, "cliente" : jsonStringCliente, "contrato" : jsonStringContrato, "facturacion" : jsonStringFacturacion },
 		 			success: function(data){
-		 				 console.log(data);
+		 				 //console.log(data);
 		 				 window.location="proyectos.php?p="+data;
 		 			}
 		 		});

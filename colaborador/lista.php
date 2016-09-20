@@ -24,9 +24,9 @@
  				while(col[$cont]){
  					
  					var dato = JSON.parse(col[$cont].datos);
- 					console.log(dato);
+ 					//console.log(dato);
  					var puesto = dato.puesto;
- 					console.log(puesto);
+ 					//console.log(puesto);
  					$puestos = "";
  					$coma = "";
  					if (puesto.consultor == "1") {$puestos += "Consultor"; $coma = ", ";}

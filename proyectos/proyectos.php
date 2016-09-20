@@ -28,7 +28,7 @@
 	 				$contacto = JSON.parse(obj.Cliente[0].datos_contacto);
 	 				var rs = JSON.parse(obj.Cliente[0].facturacion);
 
-	 				console.log(cliente);
+	 				//console.log(cliente);
 
 	 				var datos_cliente = JSON.parse(obj.Proyecto[0].cliente);
 	 				var datos_proyecto = JSON.parse(obj.Proyecto[0].datos_proyecto);
@@ -52,7 +52,7 @@
 		 				});
 		 				$cont = 0;
 		 				
-		 				console.log(datos_cliente);
+		 				//console.log(datos_cliente);
 		 				$("#hdnContacto").val(datos_cliente.contacto);
 		 				$.each($contacto, function($key, $value){
 		 					$("#tblContactos tbody").append("<tr id='cont_"+$value.idcontacto+"'><td>"+$value.nombre+"</td><td>"+$value.area+"</td><td>(ver mas)</td><td><input type='button' value='Principal' onclick='seleccionaContacto("+$key+")'></td></option>");
@@ -176,7 +176,7 @@
 		 				$("#monto3").val(addCommas(datos_facturacion.lista.monto3));
 		 				$("#fEnvio3").val(datos_facturacion.lista.fenvio3);
 		 				$("#fPago3").val(datos_facturacion.lista.fpago3);
-		 			}catch(err){console.log(err.message);}
+		 			}catch(err){//console.log(err.message);}
 			 				
 			 			$cont=0;
 			 			while(obj.Estatus[$cont]){
@@ -702,7 +702,7 @@
 			$prima = ($salarioBase/30 * $vacaciones * $primaVacacional)/12; 
 			$honorarios = parseFloat($("#slcHonorarios").val())/100;
 			$mensual = $salarioBase + $vales + $ahorro + $aguinaldo + $prima + $bono;
-			console.log($vales +" "+ $ahorro +" "+ $aguinaldo +" "+ $prima +" "+ $bono);
+			//console.log($vales +" "+ $ahorro +" "+ $aguinaldo +" "+ $prima +" "+ $bono);
 			$anual = $mensual*12;
 
 			$subtotal = $anual * $honorarios;
@@ -720,7 +720,7 @@
 	    }
 
 	    function seleccionaContacto($key){
-			console.log($contacto);
+			//console.log($contacto);
 			if ($key > -1) {
 				$datoContacto = $contacto[$key];
 				
