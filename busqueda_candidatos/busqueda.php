@@ -16,25 +16,51 @@
 		}
 	</script>
 	<style type="text/css">
+	body{
+		background-color: #EEE;
+		font-family: arial;
+	}
 		.header{
 			width: 100%;
 			height: 80px;
 			border:1px solid black;
+			background-color: #335599;
+			color: #FFF;
 		}
 		.menuleft{
 			width: 200px;
 			float: left;
 			border:1px solid black;
+			padding: 10px;
 		}
 		.cuerpo{
-			width: 80%;
-			border: 1px solid black;
+			width: auto;
+			max-width: 85%;
+			
 			float: left;
+		}
+		thead td{
+			background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #3C63B3), color-stop(1, #4D80E6) );
+			color: #FFF;
+			padding: 10px;
+			text-align: center;
+		}
+		.filaResultado > td{
+			background-color: #FFF;
+			font-size: 12px;
+			padding: 5px;
+		}
+		
+		.filaResultado:hover > td{
+			background-color: RGB(0,172,237);
+			cursor: pointer;
+		}
+		.filaResultado ul{
+			padding-left: 15px;
 		}
 	</style>
 </head>
 	
-RAFAEL AGUILAR OLIVARES
 
 <body>
 <?php 
@@ -90,6 +116,7 @@ function test_input($data) {
 }
 
 function busqueda($nombre,$residencia,$conocimientos,$empresa,$puesto){
+	$contador = "SELECT COUNT(`IdCandidato`) as contador FROM `candidato` WHERE 1";
 
 	$query = "SELECT `candidato`.IdCandidato, concat(`candidato`.Nombre,' ',`candidato`.ApPaterno,' ',`candidato`.ApMaterno) as nombre, `candidato`.eMail, ";
 	//$query .=	 "group_concat(DISTINCT '<li>',`candidato_estudios`.Institucion,' > ',`catestudio_grado`.Descripcion,'</li>') as estudios, ";
@@ -99,7 +126,7 @@ function busqueda($nombre,$residencia,$conocimientos,$empresa,$puesto){
 	//$query .=	 "INNER JOIN `candidato_estudios` ON `candidato`.IdCandidato = `candidato_estudios`.IdCandidato ";
 	//$query .=	 "INNER JOIN `catestudio_grado` ON `candidato_estudios`.IdGradoEstudio = `catestudio_grado`.IdGrado ";
 	$query .=	 "LEFT JOIN `candidato_extras` ON `candidato`.IdCandidato = `candidato_extras`.IdCandidato ";
-	$query .=	 "INNER JOIN `candidato_generales` ON `candidato`.IdCandidato = `candidato_generales`.IdCandidato ";
+	$query .=	 "LEFT JOIN `candidato_generales` ON `candidato`.IdCandidato = `candidato_generales`.IdCandidato ";
 	$query .=	 "LEFT JOIN `candidato_historial` ON `candidato_historial`.IdCandidato = `candidato`.IdCandidato ";
 	$query .="WHERE ";
 	$query .=	 $nombre;
@@ -131,7 +158,7 @@ function busqueda($nombre,$residencia,$conocimientos,$empresa,$puesto){
 <div class="header"><h1>BUSQUEDA DE CANDIDATOS</h1></div>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
 	<div class="menuleft">
-		Filtro:<br><br>
+		<b>Filtro:</b><br><br>
 		Nombre:<br>
 		<input type="text" name="nombre" id="nombre"><br>
 		<!-- eMail:<br>
@@ -148,12 +175,22 @@ function busqueda($nombre,$residencia,$conocimientos,$empresa,$puesto){
 		<input type="text" name="puesto" id="puesto"><br>
 		<br>
 		<input type="submit" value="Buscar" id="btnBuscar">
-		<br>
-		<div style="border:1px solid black; padding-left:3px;">
+		<br><br>
+		<div style="border:1px solid black; padding-left:3px; font-size:12px;">
 			+ Texto Obligatorio (AND)<br>
 			- Texto a Ignorar (NOT)<br>
 			, Texto Optativo (OR)<br>
 		</div>
+		<br>
+		<?php 
+			$contador = "SELECT COUNT(`IdCandidato`) as contador FROM `candidato` WHERE 1";
+			$connectdb = connectdb();
+			$totalCandidatos = $connectdb->query($contador);
+			unconnectdb($connectdb);
+			$contCand = mysqli_fetch_assoc($totalCandidatos);
+			echo "<label style='font-size:13px; font-weight:bold;'>Candidatos Registrados: ".$contCand['contador']."</label>";
+		 ?>
+			
 	</div>
 </form>
 
@@ -162,12 +199,12 @@ function busqueda($nombre,$residencia,$conocimientos,$empresa,$puesto){
 	<table border="1">
 		<thead>
 			<tr>
-				<td>Candidato</td>
-				<td>eMail</td>
+				<td width="200px">Candidato</td>
+				<td width="210px">eMail</td>
 				<!-- <td>Instituto</td> -->
-				<td>Conocimientos</td>
-				<td>Residencia</td>
-				<td>Historial Laboral</td>
+				<td width="260px">Conocimientos</td>
+				<td width="150px">Residencia</td>
+				<td width="310px">Historial Laboral</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -182,6 +219,7 @@ function busqueda($nombre,$residencia,$conocimientos,$empresa,$puesto){
 
 				$tablaCandidato = checkBusqueda();
 				if ($tablaCandidato) {
+					$alt = -1;
 					while ($row = mysqli_fetch_assoc($tablaCandidato)) {
 						
 							$idCandidato = $row['IdCandidato'];
@@ -189,10 +227,13 @@ function busqueda($nombre,$residencia,$conocimientos,$empresa,$puesto){
 							$email = $row['eMail'];
 							//$estudios = $row['estudios'];
 							$conocimientos = $row['extras'];
-							$residencia = $row['Dir_Ciudad']." ".$row['Dir_Estado']." ".$row['Dir_Pais'];
+							$residencia = $row['Dir_Ciudad']."<br>".$row['Dir_Estado']."<br>".$row['Dir_Pais'];
 							$historialLaboral = $row['historialLaboral'];
 							
-							echo "<tr id='".$idCandidato."' onclick='abrePerfil(this.id);'><td>".$nombre."</td><td>".$email."</td><td>".$conocimientos."</td><td>".$residencia."</td><td><ul>".$historialLaboral."</ul></td></tr>";
+							
+							echo "<tr class='filaResultado' id='".$idCandidato."' onclick='abrePerfil(this.id);'><td>".$nombre."</td><td>".$email."</td><td>".$conocimientos."</td><td>".$residencia."</td><td><ul>".$historialLaboral."</ul></td></tr>";
+
+							$alt = $alt * -1;
 
 					}
 				}

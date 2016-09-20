@@ -1,8 +1,8 @@
 ﻿body{
-	background-color: #EEEEEE;
-	background-image: url(/proyecto_administracion/img/back2.jpg);
+	/*background-color: #EEEEEE;*/
+	background-image: url(/proyecto_administracion/img/fondo-verde-200548.jpg);
 	background-position: left top;
-	background-size: 100%;
+	background-size: auto;
 	background-repeat: repeat-y;
 	color: #fff;
 	font-family: arial;

@@ -45,8 +45,16 @@
 	unconnectdb($connectdb);
 	 ?>
 	 <style type="text/css">
+	 body{
+	 	background-image: url("fondo-blanco-204663.jpg");
+	 }
 	 	#tblInfoCV td{
 	 		padding: 6px;
+	 		background-color: #EEEEEE;
+	 	}
+	 	#tblInfoCV .titulo{
+	 		background-color: #DDD;
+	 		font-weight: bold;
 	 	}
 	 </style>
 </head>
@@ -55,34 +63,34 @@
 	<?php $row = mysqli_fetch_assoc($tablaCandidato); ?>
 	<table border="1" id="tblInfoCV">
 		<tr>
-			<td>Nombre: </td><td><?php echo $row['nombre']; ?></td>
+			<td class="titulo">Nombre: </td><td><?php echo $row['nombre']; ?></td>
 		</tr>
 		<tr>
-			<td>eMail: </td><td><?php echo $row['eMail']; ?><br><?php echo $row['email2']; ?></td>
+			<td class="titulo">eMail: </td><td><?php echo $row['eMail']; ?><br><?php echo $row['email2']; ?></td>
 		</tr>
 		<tr>
-			<td>Telefonos: </td><td><?php echo $row['telefonos']; ?></td>
+			<td class="titulo">Telefonos: </td><td><?php echo $row['telefonos']; ?></td>
 		</tr>
 		<tr>
-			<td>Linkedin: </td><td><?php echo $row['linkedin']; ?></td>
+			<td class="titulo">Linkedin: </td><td><?php echo $row['linkedin']; ?></td>
 		</tr>
 		<tr>
-			<td>Recidencia: </td><td><?php echo $row['recidencia']; ?></td>
+			<td class="titulo">Recidencia: </td><td><?php echo $row['recidencia']; ?></td>
 		</tr>
 		<tr>
-			<td>Sueldo deceado</td><td><?php echo $row['SueldoDes']; ?></td>
+			<td class="titulo">Sueldo deceado</td><td><?php echo $row['SueldoDes']; ?></td>
 		</tr>
 		<tr>
-			<td>Puesto Deceado: </td><td><?php echo $row['PuestoDes1']; ?><br><?php echo $row['PuestoDes2']; ?><br><?php echo $row['PuestoDes3']; ?></td>
+			<td class="titulo">Puesto Deceado: </td><td><?php echo $row['PuestoDes1']; ?><br><?php echo $row['PuestoDes2']; ?><br><?php echo $row['PuestoDes3']; ?></td>
 		</tr>
 		<tr>
-			<td>Estudios: </td><td><?php echo $row['estudios']; ?></td>
+			<td class="titulo">Estudios: </td><td><?php echo $row['estudios']; ?></td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<table border="1">
 					<tr>
-						<td>Idioma</td><td>Nivel</td>
+						<td class="titulo">Idioma</td><td class="titulo">Nivel</td>
 					</tr>
 					
 						<?php echo $row['idioma']; ?>
@@ -92,10 +100,10 @@
 			</td>
 		</tr>
 		<tr>
-			<td>historial laboral: </td><td><?php echo $row['historialLaboral']; ?></td>
+			<td class="titulo">historial laboral: </td><td><?php echo $row['historialLaboral']; ?></td>
 		</tr>
 		<tr>
-			<td>
+			<td class="titulo">
 				Descargar CV:
 			</td>
 			<td>
