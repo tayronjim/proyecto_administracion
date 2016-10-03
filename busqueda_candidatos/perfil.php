@@ -78,10 +78,10 @@
 			<td class="titulo">Recidencia: </td><td><?php echo $row['recidencia']; ?></td>
 		</tr>
 		<tr>
-			<td class="titulo">Sueldo deceado</td><td><?php echo $row['SueldoDes']; ?></td>
+			<td class="titulo">Sueldo deseado</td><td><?php echo $row['SueldoDes']; ?></td>
 		</tr>
 		<tr>
-			<td class="titulo">Puesto Deceado: </td><td><?php echo $row['PuestoDes1']; ?><br><?php echo $row['PuestoDes2']; ?><br><?php echo $row['PuestoDes3']; ?></td>
+			<td class="titulo">Puesto Deseado: </td><td><?php echo $row['PuestoDes1']; ?><br><?php echo $row['PuestoDes2']; ?><br><?php echo $row['PuestoDes3']; ?></td>
 		</tr>
 		<tr>
 			<td class="titulo">Estudios: </td><td><?php echo $row['estudios']; ?></td>
