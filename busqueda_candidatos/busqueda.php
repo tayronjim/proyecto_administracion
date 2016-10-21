@@ -82,6 +82,12 @@ function checkBusqueda(){
 	  echo $empresa." ";
 	  $findJob = "`candidato_historial`.Empresa LIKE '%".$empresa."%' AND ";
 
+	  $salarioMayor = test_input($_POST["salarioMayor"]);
+	  $salarioMenor = test_input($_POST["salarioMenor"]);
+	  echo "(".$salarioMayor. "->".$salarioMenor.") ";
+	  $findSalario = "(candidato_generales.SueldoDes > ".$salarioMenor." AND candidato_generales.SueldoDes < ".$salarioMayor.") OR candidato_generales.SueldoDes = 0 ";
+
+
 	  $puesto = test_input($_POST["puesto"]); 
 	  echo $puesto." ";
 	  $findPuesto = "`candidato_historial`.Puesto LIKE '%".$puesto."%' AND ";
@@ -100,7 +106,7 @@ function checkBusqueda(){
 	  
 	  
 
-	   $busqueda = busqueda($findName,$findRecidence,$findKnowed,$findJob,$findPuesto);
+	   $busqueda = busqueda($findName,$findRecidence,$findKnowed,$findJob,$findPuesto,$findSalario);
 	  
 	 	return $busqueda;
 	}
@@ -115,7 +121,7 @@ function test_input($data) {
   return $data;
 }
 
-function busqueda($nombre,$residencia,$conocimientos,$empresa,$puesto){
+function busqueda($nombre,$residencia,$conocimientos,$empresa,$puesto,$SueldoDes){
 	$contador = "SELECT COUNT(`IdCandidato`) as contador FROM `candidato` WHERE 1";
 
 	$query = "SELECT `candidato`.IdCandidato, concat(`candidato`.Nombre,' ',`candidato`.ApPaterno,' ',`candidato`.ApMaterno) as nombre, `candidato`.eMail, ";
@@ -135,6 +141,7 @@ function busqueda($nombre,$residencia,$conocimientos,$empresa,$puesto){
 	$query .=	 $conocimientos;
 	$query .=	 $empresa;
 	$query .=	 $puesto;
+	$query .=	 $SueldoDes;
 	$query .=	 "1 ";
 	$query .="GROUP BY `candidato_historial`.IdCandidato ";
 	$query .="ORDER BY `candidato`.IdCandidato limit 0,100";
@@ -173,6 +180,9 @@ function busqueda($nombre,$residencia,$conocimientos,$empresa,$puesto){
 		<input type="text" name="empresa" id="empresa"><br>
 		Puesto:<br>
 		<input type="text" name="puesto" id="puesto"><br>
+		<br>
+		Sueldo Deseado:<br>
+		<input type="text" name="salarioMenor" id="salarioMenor">-<input type="text" name="salarioMayor" id="salarioMayor"><br>
 		<br>
 		<input type="submit" value="Buscar" id="btnBuscar">
 		<br><br>
@@ -216,6 +226,7 @@ function busqueda($nombre,$residencia,$conocimientos,$empresa,$puesto){
 				$conocimientos = "";
 				$residencia = "";
 				$historialLaboral = "";
+				$SueldoDes = "";
 
 				$tablaCandidato = checkBusqueda();
 				if ($tablaCandidato) {
